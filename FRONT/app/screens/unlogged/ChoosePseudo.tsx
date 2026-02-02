@@ -1,0 +1,144 @@
+import BackArrow from '@/app/components/atoms/BackArrow';
+import MyButton from '@/app/components/atoms/MyButton';
+import Title0 from '@/app/components/atoms/Title0';
+import GlowTopGradient from '@/app/components/molecules/GlowTopGradient';
+import InputField from '@/app/components/molecules/InputField';
+import LoadingScreen from '@/app/components/molecules/LoadingScreen';
+import ProgressBar from '@/app/components/molecules/ProgressBar';
+import Colors from '@/app/constants/Colors';
+import { UserContext } from '@/app/contexts/UserContext';
+import { useApi } from '@/app/hooks/useApi';
+import { NavParams } from '@/app/navigations/UnloggedNav';
+import { userService } from '@/app/services/user.service';
+import AsyncStorageUser from '@/app/utils/AsyncStorageUser';
+import { LinearGradient } from 'expo-linear-gradient';
+import React, { useContext, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { showMessage } from 'react-native-flash-message';
+import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack/types';
+
+
+type Props = NativeStackScreenProps<NavParams, 'ChoosePseudo'>;
+export default function ChoosePseudoScreen({ navigation, route }: Props) {
+
+    const [pseudo, setPseudo] = useState('');
+    const [pseudoErrorText, setPseudoErrorText] = useState<string | null>(null);
+    const [user, setUser] = useContext(UserContext);
+
+
+    const { execute: testPseudoValidity, loading } = useApi(
+        (pseudo: string) => userService.testPseudoValidity(pseudo),
+        'ChoosePseudoScreen - testPseudoValidity'
+    );
+
+    const { execute: updateUser, loading: loadingUser } = useApi(
+        (userData: any) => userService.update(userData),
+        'ChoosePseudoScreen - updateUser'
+    );
+
+    function onPseudoChange(text: string) {
+
+        setPseudo(text);
+
+        if (!text || text === '') {
+            setPseudoErrorText('Veuillez entrer un pseudo');
+        }
+        else if (!/^[a-zA-Z0-9_]+$/.test(text)) {
+            setPseudoErrorText('Veuillez entrer un pseudo valide');
+        }
+        else if (text.length < 3 || text.length > 20) {
+            setPseudoErrorText('Le pseudo doit contenir entre 3 et 20 caractères');
+        }
+        else {
+            setPseudoErrorText(null);
+        }
+    }
+
+    const next = async () => {
+        // if no input we show an error
+        if (!pseudo || pseudo === '') {
+            showMessage({
+                message: 'Erreur',
+                description: 'Veuillez entrer un pseudo',
+                type: 'danger',
+            })
+            setPseudoErrorText('Veuillez entrer un pseudo');
+            return;
+        }
+
+        // if email not valid we show an error
+        if (pseudoErrorText) {
+            showMessage({
+                message: 'Erreur',
+                description: pseudoErrorText,
+                type: 'danger',
+            });
+            return;
+        }
+
+        setPseudoErrorText(null);
+
+        const validity = await testPseudoValidity(pseudo);
+        if (validity) {
+            if (validity.available) {
+                const updatedUser = { ...route.params.user };
+                updatedUser.pseudo = pseudo;
+                updatedUser.currentCountryCode = route.params.country!.code;
+
+                const result = await updateUser({ user: updatedUser });
+                if (result) {
+                    AsyncStorageUser.setUser(updatedUser);
+                    setUser(updatedUser);
+                }
+            }
+            else {
+                showMessage({
+                    message: 'Erreur',
+                    description: 'Ce pseudo est déjà pris',
+                    type: 'warning',
+                });
+                setPseudoErrorText('Ce pseudo est déjà pris');
+                setPseudo('');
+            }
+        }
+    }
+
+    return (
+        <LinearGradient
+            colors={[Colors.black, Colors.darkGrey]}
+            style={styles.container}>
+            <GlowTopGradient />
+            <BackArrow onPress={() => navigation.goBack()} />
+            <View style={{ gap: 24 }}>
+                <ProgressBar progress={3} total={4} title="Pseudo" width={80} />
+                <Title0 title={'Choisissez un pseudo'} color={Colors.white} />
+                <InputField placeholder="Entrez votre pseudo"
+                    value={pseudo}
+                    title={'Pseudo'}
+                    onChangeText={(text) => { onPseudoChange(text) }}
+                    errorText={pseudoErrorText}
+                />
+            </View>
+            <MyButton title="Suivant"
+                onPress={next}
+                rightIcon='arrow-right'
+                variant='glass'
+                bump
+                disabled={!!pseudoErrorText || pseudo.length === 0}
+            />
+
+            {
+                loading && <LoadingScreen />
+            }
+        </LinearGradient>
+    )
+}
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'space-between',
+        padding: 20,
+        paddingVertical: 50,
+    },
+})

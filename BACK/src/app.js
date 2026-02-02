@@ -1,0 +1,50 @@
+const express = require('express');
+const mongoose = require('mongoose');
+const path = require('path');
+require('dotenv').config()
+const rateLimit = require('express-rate-limit');
+
+const app = express();
+
+
+const userRoutes = require('./routes/user');
+const ThemeRoutes = require('./routes/theme');
+const storyRoutes = require('./routes/story');
+
+mongoose.connect(process.env.MONGO_URI,
+    {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    })
+    .then(() => console.log('Connexion à MongoDB réussie !'))
+    .catch((error) => console.log('Connexion à MongoDB échouée !' + error));
+
+app.use(express.json());
+
+// Set up rate limiter: maximum of 100 requests per 2 minutes per IP
+const limiter = rateLimit({
+    windowMs: 2 * 60 * 1000,
+    max: 1000,
+    message: "Too many requests from this IP, please try again after 10 minutes",
+    standardHeaders: true,
+    legacyHeaders: false,
+    getKey: (req) => {
+        return req.headers['x-forwarded-for'] || req.ip;
+    },
+});
+
+// Apply the rate limiter to all requests
+app.use(limiter);
+
+
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+    next();
+});
+
+app.use('/api/user', userRoutes);
+app.use('/api/theme', ThemeRoutes);
+app.use('/api/story', storyRoutes);
+module.exports = app;

@@ -1,0 +1,166 @@
+[
+    {
+        "storyId": "FR00",
+        "countryCode": "FR",
+        "city": "Paris",
+        "title": "Bienvenue à Paris",
+        "isCapital": true,
+        "rarity": "common",
+        "xpReward": 100,
+        "rewardCollectibleId": "flag_fr",
+        "steps": [
+            {
+                "id": "step_1",
+                "type": "dialogue",
+                "title": "L'arrivée",
+                "content": "Mesdames et messieurs, bienvenue à l'aéroport Charles de Gaulle. La température extérieure est de 20°C.",
+                "imageUrl": "https://ton-bucket-s3.com/paris_airport.jpg",
+                "nextStepId": "step_2",
+                "duration": 5000
+            },
+            {
+                "id": "step_2",
+                "type": "order",
+                "title": "Contrôle Douane",
+                "content": "Vite ! Rangez vos documents pour passer la douane sans encombre.",
+                "orderItems": [
+                    "Passeport",
+                    "Billet d'avion",
+                    "Carte d'embarquement",
+                    "Visa"
+                ],
+                "nextStepId": "step_3"
+            },
+            {
+                "id": "step_3",
+                "type": "reward",
+                "title": "Bienvenue !",
+                "content": "Vous avez officiellement posé le pied en France. Votre aventure commence !",
+                "rewardImage": "https://ton-bucket-s3.com/badge_touriste.png"
+            }
+        ]
+    },
+    {
+        "storyId": "PE00",
+        "countryCode": "PE",
+        "city": "Lima",
+        "title": "Bienvenue à Lima",
+        "isCapital": true,
+        "rarity": "common",
+        "xpReward": 100,
+        "rewardCollectibleId": "flag_fr",
+        "steps": [
+            {
+                "id": "step_1",
+                "type": "dialogue",
+                "title": "L'arrivée",
+                "content": "Mesdames et messieurs, bienvenue à l'aéroport Charles de Gaulle. La température extérieure est de 20°C.",
+                "imageUrl": "https://ton-bucket-s3.com/paris_airport.jpg",
+                "nextStepId": "step_2",
+                "duration": 5000
+            },
+            {
+                "id": "step_2",
+                "type": "order",
+                "title": "Contrôle Douane",
+                "content": "Vite ! Rangez vos documents pour passer la douane sans encombre.",
+                "orderItems": [
+                    "Passeport",
+                    "Billet d'avion",
+                    "Carte d'embarquement",
+                    "Visa"
+                ],
+                "nextStepId": "step_3"
+            },
+            {
+                "id": "step_3",
+                "type": "reward",
+                "title": "Bienvenue !",
+                "content": "Vous avez officiellement posé le pied en France. Votre aventure commence !",
+                "rewardImage": "https://ton-bucket-s3.com/badge_touriste.png"
+            }
+        ]
+    },
+    {
+        "storyId": "JP00",
+        "countryCode": "JP",
+        "city": "Tokyo",
+        "title": "Bienvenue à Tokyo",
+        "isCapital": true,
+        "rarity": "common",
+        "xpReward": 100,
+        "rewardCollectibleId": "flag_fr",
+        "steps": [
+            {
+                "id": "step_1",
+                "type": "dialogue",
+                "title": "L'arrivée",
+                "content": "Mesdames et messieurs, bienvenue à l'aéroport Charles de Gaulle. La température extérieure est de 20°C.",
+                "imageUrl": "https://ton-bucket-s3.com/paris_airport.jpg",
+                "nextStepId": "step_2",
+                "duration": 5000
+            },
+            {
+                "id": "step_2",
+                "type": "order",
+                "title": "Contrôle Douane",
+                "content": "Vite ! Rangez vos documents pour passer la douane sans encombre.",
+                "orderItems": [
+                    "Passeport",
+                    "Billet d'avion",
+                    "Carte d'embarquement",
+                    "Visa"
+                ],
+                "nextStepId": "step_3"
+            },
+            {
+                "id": "step_3",
+                "type": "reward",
+                "title": "Bienvenue !",
+                "content": "Vous avez officiellement posé le pied en France. Votre aventure commence !",
+                "rewardImage": "https://ton-bucket-s3.com/badge_touriste.png"
+            }
+        ]
+    },
+    {
+        "storyId": "EG00",
+        "countryCode": "EG",
+        "city": "Cairo",
+        "title": "Bienvenue au Caire",
+        "isCapital": true,
+        "rarity": "common",
+        "xpReward": 100,
+        "rewardCollectibleId": "flag_fr",
+        "steps": [
+            {
+                "id": "step_1",
+                "type": "dialogue",
+                "title": "L'arrivée",
+                "content": "Mesdames et messieurs, bienvenue à l'aéroport Charles de Gaulle. La température extérieure est de 20°C.",
+                "imageUrl": "https://ton-bucket-s3.com/paris_airport.jpg",
+                "nextStepId": "step_2",
+                "duration": 5000
+            },
+            {
+                "id": "step_2",
+                "type": "order",
+                "title": "Contrôle Douane",
+                "content": "Vite ! Rangez vos documents pour passer la douane sans encombre.",
+                "orderItems": [
+                    "Passeport",
+                    "Billet d'avion",
+                    "Carte d'embarquement",
+                    "Visa"
+                ],
+                "nextStepId": "step_3"
+            },
+            {
+                "id": "step_3",
+                "type": "reward",
+                "title": "Bienvenue !",
+                "content": "Vous avez officiellement posé le pied en France. Votre aventure commence !",
+                "rewardImage": "https://ton-bucket-s3.com/badge_touriste.png"
+            }
+        ]
+    }
+]
