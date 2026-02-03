@@ -2,12 +2,14 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const Story = require('../models/Story');
 const sendEmail = require("../scripts/email");
+const mongoose = require('mongoose');
+const UserMemory = require('../models/UserMemory');
 
 exports.loginOrSignup = (req, res, next) => {
 
     const email = req.body.email;
     // create a 6 digits random code
-    let code = Math.floor(100000 + Math.random() * 900000);
+    let code = Math.floor(100000 + Math.random() * 900000).toString();
 
     if (email == 'antoine.cheval.darracq@gmail.com')
         code = '123456';
@@ -191,43 +193,37 @@ exports.completeStory = async (req, res, next) => {
         }
 
         // --- 1. INITIALISATION DE L'ENTRÉE PAYS (Si pas encore visité) ---
-        // On vérifie si la clé 'FR', 'JP'... existe dans la Map
         if (!user.passport.has(countryCode)) {
             user.passport.set(countryCode, {
-                hasFlag: false, // On va le mettre à true juste après
+                hasFlag: false,
                 isCompleted: false,
                 storiesDone: [],
                 lastVisitedAt: new Date()
             });
         }
 
-        // On récupère l'objet mutable pour ce pays
         const countryEntry = user.passport.get(countryCode);
 
         // --- 2. GESTION DU DRAPEAU (Dès la 1ère visite) ---
         let flagUnlocked = false;
         if (!countryEntry.hasFlag) {
             countryEntry.hasFlag = true;
-            flagUnlocked = true; // Signal pour le Frontend
+            flagUnlocked = true;
         }
 
         // --- 3. HISTORIQUE & RÉCOMPENSES ---
-
-        // Est-ce un Replay ?
         const alreadyPlayed = countryEntry.storiesDone.includes(storyId);
 
-        // Ajout de la story si nouvelle
         if (!alreadyPlayed) {
             countryEntry.storiesDone.push(storyId);
         }
 
-        // Mise à jour date visite
         countryEntry.lastVisitedAt = new Date();
 
         // Calcul XP (Divisé par 2 si replay)
         const xpEarned = alreadyPlayed ? Math.floor(story.xpReward / 2) : story.xpReward;
 
-        // Collectible (Si existe et pas déjà dans l'inventaire global)
+        // Collectible
         let newCollectible = null;
         if (!alreadyPlayed && story.rewardCollectibleId) {
             if (!user.inventory.includes(story.rewardCollectibleId)) {
@@ -238,28 +234,40 @@ exports.completeStory = async (req, res, next) => {
 
         // --- 4. VÉRIFICATION 100% (Badge Or) ---
         let countryCompleted = false;
-
-        // On ne vérifie que si le pays n'est pas déjà marqué comme complété
         if (!countryEntry.isCompleted) {
             const totalStories = await Story.countDocuments({ countryCode: countryCode });
-
             if (countryEntry.storiesDone.length >= totalStories) {
                 countryEntry.isCompleted = true;
-                countryCompleted = true; // Signal pour le Frontend
+                countryCompleted = true;
             }
         }
 
         // --- 5. SAUVEGARDE ---
-        // Important avec les Maps Mongoose : confirmer la modif
         user.passport.set(countryCode, countryEntry);
-
-        // On vide currentStoryId car le voyage est fini
         user.currentStoryId = null;
-
         await user.save();
 
-        // --- 6. RÉPONSE ---
-        // On renvoie le passport converti en objet standard JS pour le front
+        // --- 6. GESTION DES SOUVENIRS UTILISATEUR (SRS) ---
+        // C'est ici qu'on initialise les cartes de révision pour ce pays
+        if (!alreadyPlayed) {
+            const memoriesToCreate = [
+                { userId, countryCode, factType: 'flag' },
+                { userId, countryCode, factType: 'capital' },
+                { userId, countryCode, factType: 'location' },
+                // ✅ AJOUT : On crée aussi la mémoire "Anecdote" pour le filtre Culture
+                { userId, countryCode, factType: 'anecdote' }
+            ];
+
+            // insertMany avec ordered:false permet de continuer même si certaines entrées existent déjà (doublons ignorés)
+            try {
+                await UserMemory.insertMany(memoriesToCreate, { ordered: false });
+            } catch (e) {
+                // On ignore silencieusement les erreurs de duplicata (E11000) 
+                // car ça veut dire que l'utilisateur a déjà débloqué ce pays via une autre story
+            }
+        }
+
+        // --- 7. RÉPONSE ---
         res.status(200).json({
             success: true,
             earned: {
@@ -269,7 +277,6 @@ exports.completeStory = async (req, res, next) => {
             flagUnlocked: flagUnlocked,
             countryCompleted: countryCompleted,
             updatedUser: {
-                // Le front recevra un objet : { "FR": { hasFlag: true... }, "JP": {...} }
                 passport: user.passport,
                 inventory: user.inventory,
                 coins: user.coins,
@@ -362,3 +369,104 @@ exports.deleteUser = (req, res, next) => {
         .catch(error => res.status(400).json({ error: 'user not found' }));
 
 }
+
+// --- API : Récupérer le compte par catégorie (Optimisation) ---
+exports.getDueMemoriesCount = (req, res) => {
+    const userId = req.auth.userId;
+
+    UserMemory.aggregate([
+        {
+            $match: {
+                userId: new mongoose.Types.ObjectId(userId), // Important: caster en ObjectId pour l'agrégation
+                dueDate: { $lte: new Date() }
+            }
+        },
+        {
+            $group: {
+                _id: "$factType", // On groupe par type (flag, capital...)
+                count: { $sum: 1 } // On compte
+            }
+        }
+    ])
+        .then(results => {
+            // results ressemble à : [ { _id: 'flag', count: 5 }, { _id: 'capital', count: 2 } ]
+            // On transforme en objet plus simple : { flag: 5, capital: 2 }
+            const breakdown = {
+                flag: 0,
+                capital: 0,
+                location: 0,
+                anecdote: 0
+            };
+
+            results.forEach(r => {
+                if (breakdown.hasOwnProperty(r._id)) {
+                    breakdown[r._id] = r.count;
+                }
+            });
+
+            res.status(200).json(breakdown);
+        })
+        .catch(error => {
+            console.error(error);
+            res.status(500).json({ error });
+        });
+};
+
+// --- API : Récupérer les cartes (Mise à jour avec anecdote) ---
+exports.getDueMemories = (req, res) => {
+    const userId = req.auth.userId;
+    const { geo, flag, capital, anecdote } = req.query;
+    console.log("Getting due memories with filters - geo:", geo, "flag:", flag, "capital:", capital, "anecdote:", anecdote);
+
+    const types = [];
+    if (geo === 'true') types.push('location');
+    if (flag === 'true') types.push('flag');
+    if (capital === 'true') types.push('capital');
+    if (anecdote === 'true') types.push('anecdote');
+
+    UserMemory.find({
+        userId: userId,
+        dueDate: { $lte: new Date() },
+        factType: { $in: types }
+    })
+        .limit(20)
+        .then(memories => res.status(200).json(memories))
+        .catch(error => res.status(500).json({ error }));
+};
+
+// --- API : Valider une révision (Algorithme SRS Simplifié) ---
+exports.reviewMemory = (req, res) => {
+    const { memoryId, isSuccess } = req.body;
+    console.log(`Reviewing memory ${memoryId}, success: ${isSuccess}`);
+
+    UserMemory.findById(memoryId)
+        .then(memory => {
+            if (!memory) return res.status(404).json({ error: 'Not found' });
+
+            // ALGORITHME
+            if (isSuccess) {
+                // Succès : On augmente l'intervalle
+                if (memory.repetition === 0) memory.interval = 1;
+                else if (memory.repetition === 1) memory.interval = 3; // On espace un peu plus vite
+                else memory.interval = Math.round(memory.interval * memory.easeFactor);
+
+                memory.repetition += 1;
+            } else {
+                // Echec : Retour à la case départ (ou presque)
+                memory.interval = 0; // A revoir tout de suite (ou demain)
+                memory.repetition = 0;
+            }
+
+            // Calcul nouvelle date
+            const nextDate = new Date();
+            nextDate.setDate(nextDate.getDate() + memory.interval);
+
+            memory.dueDate = nextDate;
+            memory.lastReviewedAt = new Date();
+
+            memory.save()
+                .then(() => res.status(200).json({ message: 'Saved' }))
+                .catch(err => res.status(500).json({ error: err }));
+        })
+        .catch(err => res.status(500).json({ error: err }));
+};

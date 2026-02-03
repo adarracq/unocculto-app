@@ -4,13 +4,13 @@ import SmallText from '@/app/components/atoms/SmallText';
 import Title0 from '@/app/components/atoms/Title0';
 import Title2 from '@/app/components/atoms/Title2';
 import Colors from '@/app/constants/Colors';
-import { StoryStep } from '@/app/models/Story';
+import { OrderStep } from '@/app/models/Story';
 import * as Haptics from 'expo-haptics';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, Vibration, View } from 'react-native';
 
 interface Props {
-    step: StoryStep;
+    step: OrderStep;
     onValid: () => void;
 }
 
@@ -141,6 +141,7 @@ export default function OrderGameView({ step, onValid }: Props) {
                     </TouchableOpacity>
                 ))}
             </View>
+            {status === 'error' && <SmallText text="Ce n'est pas le bon ordre." style={{ color: Colors.red }} />}
 
             <View style={styles.footer}>
                 <MyButton
@@ -151,7 +152,6 @@ export default function OrderGameView({ step, onValid }: Props) {
                     rightIcon='arrow-right'
                     bump
                 />
-                {status === 'error' && <SmallText text="Ce n'est pas le bon ordre." style={{ color: Colors.red }} />}
             </View>
         </View>
     );

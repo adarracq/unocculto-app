@@ -17,4 +17,8 @@ router.get('/verifyPseudo/:pseudo', auth, userCtrl.verifyPseudo);
 router.post('/completeStory', auth, userCtrl.completeStory);
 router.delete('/:id', auth, userCtrl.deleteUser);
 
+router.get('/memories/due', auth, userCtrl.getDueMemories);
+router.get('/memories/count', auth, userCtrl.getDueMemoriesCount);
+router.post('/memories/review', auth, userCtrl.reviewMemory);
+
 module.exports = router;

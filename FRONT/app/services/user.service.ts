@@ -20,6 +20,13 @@ interface ExpoPushTokenParams {
     email: string;
 }
 
+export interface MemoryCount {
+    flag: number;
+    capital: number;
+    location: number;
+    anecdote: number;
+}
+
 export const userService = {
     loginOrSignup,
     verifyEmailCode,
@@ -32,7 +39,10 @@ export const userService = {
     addCompletedChapter,
     loseLife,
     saveExpoPushToken,
-    deleteAccountAndData
+    deleteAccountAndData,
+    getDueMemories,
+    getDueMemoriesCount,
+    reviewMemory
 };
 
 function loginOrSignup(params: LoginOrSignupParams) {
@@ -81,4 +91,17 @@ function saveExpoPushToken(params: ExpoPushTokenParams) {
 
 function deleteAccountAndData(id: string) {
     return fetchWrapper.delete(`${baseUrl}/${id}`);
+}
+
+function getDueMemoriesCount() {
+    return fetchWrapper.get(baseUrl + '/memories/count');
+}
+
+function getDueMemories(filters?: any) {
+    const query = filters ? '?' + new URLSearchParams(filters).toString() : '';
+    return fetchWrapper.get(baseUrl + '/memories/due' + query);
+}
+
+function reviewMemory(memoryId: string, isSuccess: boolean) {
+    return fetchWrapper.post(baseUrl + '/memories/review', { memoryId, isSuccess });
 }

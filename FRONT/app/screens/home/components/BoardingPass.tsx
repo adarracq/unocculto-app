@@ -48,7 +48,7 @@ export default function BoardingPass({
             <View style={[styles.header, { backgroundColor: color }]}>
                 <View style={styles.airlineRow}>
                     <Image
-                        source={require('../../../assets/images/logo_white_filled.png')}
+                        source={require('../../../assets/images/logo_white.png')}
                         style={{ width: 24, height: 24 }}
                     />
                     <Title2 title="UNOCCULTO AIRLINES" color={Colors.white} style={{ fontSize: 14 }} />

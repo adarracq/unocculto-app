@@ -5,6 +5,7 @@ export const functions = {
     getIconSource,
     getRewardSource,
     shuffleArray,
+    addSpacesInNumber,
     convertImageToBase64,
     dateToString,
     simpleDateToString,
@@ -16,6 +17,8 @@ function getIconSource(name: string) {
             return require('@/app/assets/icons/museum.png');
         case 'airplane-takeoff':
             return require('@/app/assets/icons/airplane-takeoff.png');
+        case 'logo_white':
+            return require('@/app/assets/images/logo_white.png');
         case 'gamepad':
             return require('@/app/assets/icons/gamepad.png');
         case 'profile':
@@ -87,6 +90,10 @@ function shuffleArray<T>(array: T[]): T[] {
         [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
     }
     return newArray;
+}
+
+function addSpacesInNumber(num: number): string {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 }
 
 

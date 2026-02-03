@@ -4,7 +4,7 @@
     "slug": "Unocculto",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./app/assets/images/logo_white.png",
+    "icon": "./app/assets/images/logo_orange.png",
     "scheme": "unocculto",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -19,14 +19,14 @@
     },
     "web": {
       "output": "static",
-      "favicon": "./app/assets/images/logo_white.png"
+      "favicon": "./app/assets/images/logo_orange.png"
     },
     "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "image": "./app/assets/images/logo_white.png",
+          "image": "./app/assets/images/logo_orange.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff",

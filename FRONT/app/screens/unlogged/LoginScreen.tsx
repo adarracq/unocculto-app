@@ -23,7 +23,7 @@ export default function LoginScreen({ navigation, route }: Props) {
             <GlowTopGradient />
             <View style={{ gap: 20 }}>
                 <View style={styles.logoContainer}>
-                    <Image source={require('../../assets/images/logo_white_filled.png')}
+                    <Image source={require('../../assets/images/logo_white.png')}
                         style={styles.logo}
                     />
                 </View>

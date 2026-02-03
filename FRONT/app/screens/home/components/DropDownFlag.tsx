@@ -109,8 +109,6 @@ const styles = StyleSheet.create({
         borderRadius: 16,
         justifyContent: 'center',
         alignItems: 'center',
-        borderWidth: 2,
-        borderColor: Colors.black,
         elevation: 4,
     },
     sheetContainer: {

@@ -9,10 +9,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Animated, Dimensions, Easing, Pressable, StyleSheet, View } from 'react-native';
 import StoryDialogue from '../stories/StoryDialogue';
 import StoryReward from '../stories/StoryReward';
-import LocationGameView from './location/LocationGameView';
-import OrderGameView from './order/OrderGameView';
-import QuizGameView from './quiz/QuizGameView';
-import SwipeGameView from './swipe/SwipeGameView';
+import EstimationGameView from './EstimationGameView';
+import LocationGameView from './LocationGameView';
+import OrderGameView from './OrderGameView';
+import QuizGameView from './QuizGameView';
+import SwipeGameView from './SwipeGameView';
 
 const { width } = Dimensions.get('window');
 
@@ -30,7 +31,7 @@ export default function GameScreen({ story, country, onFinish, headerTitle }: Pr
     // --- DETECTION DU TYPE D'ÉTAPE ---
     // Si c'est un jeu, on désactive la navigation tactile globale "Instagram style"
     // pour laisser le joueur interagir avec la Map ou les éléments.
-    const isGameStep = ['quiz', 'order', 'location', 'swipe', 'reward'].includes(currentStep.type);
+    const isGameStep = currentStep.type !== 'dialogue';
 
     // AutoPlay seulement pour les dialogues
     const isAutoPlay = currentStep.type === 'dialogue';
@@ -173,6 +174,8 @@ export default function GameScreen({ story, country, onFinish, headerTitle }: Pr
                 return <SwipeGameView step={currentStep} onValid={handleNext} />;
             case 'reward':
                 return <StoryReward step={currentStep} onNext={handleNext} />;
+            case 'estimation':
+                return <EstimationGameView step={currentStep} onValid={handleNext} />;
             case 'location':
                 return (
                     <LocationGameView
@@ -182,7 +185,7 @@ export default function GameScreen({ story, country, onFinish, headerTitle }: Pr
                     />
                 );
             default:
-                return <SmallText text={`Type inconnu: ${currentStep.type}`} />;
+                return <SmallText text={`Type inconnu`} />;
         }
     };
 

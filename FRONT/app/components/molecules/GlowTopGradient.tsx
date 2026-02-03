@@ -9,7 +9,7 @@ type Props = {
 export default function GlowTopGradient({ color }: Props) {
     return (
         <LinearGradient
-            colors={[color ? color + '60' : Colors.main + '60', 'transparent']} // Glow orange en haut
+            colors={[color ? color + 'AA' : Colors.main + 'AA', 'transparent']} // Glow orange en haut
             style={{
                 position: 'absolute',
                 top: 0, left: 0, right: 0,

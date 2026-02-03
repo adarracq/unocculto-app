@@ -2,12 +2,12 @@ import BodyText from '@/app/components/atoms/BodyText';
 import MyButton from '@/app/components/atoms/MyButton';
 import Title0 from '@/app/components/atoms/Title0';
 import Colors from '@/app/constants/Colors';
-import { StoryStep } from '@/app/models/Story';
+import { QuizStep } from '@/app/models/Story';
 import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet, TouchableOpacity, Vibration, View } from 'react-native';
 
 interface Props {
-    step: StoryStep;
+    step: QuizStep;
     onValid: () => void;
 }
 

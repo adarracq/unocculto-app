@@ -3,7 +3,7 @@ import MyButton from '@/app/components/atoms/MyButton';
 import Title0 from '@/app/components/atoms/Title0';
 import Title1 from '@/app/components/atoms/Title1';
 import Colors from '@/app/constants/Colors';
-import { StoryStep, SwipeCard } from '@/app/models/Story';
+import { SwipeCard, SwipeStep } from '@/app/models/Story';
 import { Ionicons } from '@expo/vector-icons';
 import React, { useMemo, useRef, useState } from 'react';
 import {
@@ -20,7 +20,7 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 const SWIPE_THRESHOLD = 120;
 
 interface Props {
-    step: StoryStep;
+    step: SwipeStep;
     onValid: () => void;
 }
 
@@ -255,7 +255,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingTop: 10,
-        paddingBottom: 30,
+        paddingBottom: 40,
         justifyContent: 'space-between'
     },
     header: { alignItems: 'center', gap: 10, marginBottom: 10, paddingHorizontal: 20 },

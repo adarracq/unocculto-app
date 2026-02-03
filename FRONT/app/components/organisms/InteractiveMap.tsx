@@ -1,54 +1,82 @@
 import Colors from '@/app/constants/Colors';
-import WorldGeoJSON from '@/app/constants/world-countriesM.json';
 import MapLibreGL from '@maplibre/maplibre-react-native';
-import React, { useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-// Configuration (hack pour éviter le crash si pas de token, même si on ne s'en sert pas)
-//MapLibreGL.setAccessToken(null);
+// @ts-ignore
+import WorldGeoJSON from '@/app/constants/world-countriesS.json';
+
+// Pour éviter les warnings
+MapLibreGL.setAccessToken(null);
+
+// STYLE VIDE ABSOLU (Noir, sans sources)
+const VOID_STYLE = {
+    version: 8,
+    name: "Void",
+    sources: {}, // Aucune source de données = Pas de frontières bleues, pas de texte
+    layers: [
+        {
+            id: 'background',
+            type: 'background',
+            paint: {
+                'background-color': '#000000' // Noir profond
+            }
+        }
+    ]
+};
 
 interface Props {
     countryColors?: Record<string, string>;
     onCountryPress?: (countryCode: string) => void;
     selectedCountry?: string | null;
+    focusCoordinates?: [number, number] | null;
 }
 
-export default function InteractiveMap({ countryColors = {}, onCountryPress, selectedCountry }: Props) {
+export default function InteractiveMap({ countryColors = {}, onCountryPress, selectedCountry, focusCoordinates }: Props) {
     const cameraRef = useRef<MapLibreGL.Camera>(null);
 
-    // --- STYLE DYNAMIQUE (JSON Expression) ---
-    // C'est du code "Mapbox Style Spec" qui tourne en C++ (Ultra rapide)
+    useEffect(() => {
+        console.log('Focus coordinates changed:', focusCoordinates);
+        if (focusCoordinates && cameraRef.current) {
+            // Si on reçoit des coordonnées, on vole vers elles
+            cameraRef.current.setCamera({
+                centerCoordinate: focusCoordinates,
+                zoomLevel: 3, // Zoom suffisant pour bien voir le pays
+                animationDuration: 2000, // 2 secondes de vol (fluide)
+                animationMode: 'flyTo'
+            });
+        }
+    }, [focusCoordinates]);
 
-    // Logique pour la COULEUR DE REMPLISSAGE :
-    const fillColorExpression = [
-        'match',
-        ['get', 'iso_a2'], // On regarde la propriété iso_a2 du GeoJSON
-    ];
+    // --- LOGIQUE COULEURS ---
+    const fillColorExpression = useMemo(() => {
+        const cases: any[] = [];
 
-    // 1. Ajout des couleurs spécifiques (Gagné/Perdu)
-    Object.entries(countryColors).forEach(([code, color]) => {
-        fillColorExpression.push(code);
-        fillColorExpression.push(color);
-    });
+        // 1. COULEURS FORCÉES (Gagné/Perdu)
+        Object.entries(countryColors).forEach(([code, color]) => {
+            cases.push(code, color);
+        });
 
-    // 2. Ajout de la sélection active (Orange)
-    if (selectedCountry) {
-        fillColorExpression.push(selectedCountry);
-        fillColorExpression.push(Colors.main);
-    }
+        // 2. SÉLECTION JOUEUR (Orange)
+        if (selectedCountry && !countryColors[selectedCountry]) {
+            cases.push(selectedCountry, Colors.main);
+        }
 
-    // 3. Couleur par défaut (Gris foncé "Premium")
-    fillColorExpression.push('#1E1E1E');
+        // Si vide, retour gris foncé
+        if (cases.length === 0) {
+            return '#2A2A2A';
+        }
 
+        // MATCH sur 'iso_a2_eh' (Propriété validée pour la France)
+        return ['match', ['get', 'iso_a2_eh'], ...cases, '#2A2A2A'];
 
-    // --- GESTION DU CLIC ---
+    }, [countryColors, selectedCountry]);
+
     const handleShapePress = (e: any) => {
-        // MapLibre retourne les "features" touchées
         const feature = e.features[0];
-        const countryCode = feature?.properties?.iso_a2;
+        const countryCode = feature?.properties?.iso_a2_eh;
 
         if (countryCode && onCountryPress) {
-            console.log("Pays touché :", countryCode);
             onCountryPress(countryCode);
         }
     };
@@ -56,60 +84,47 @@ export default function InteractiveMap({ countryColors = {}, onCountryPress, sel
     return (
         <View style={styles.container}>
             <MapLibreGL.MapView
+                key="map-void" // Force un render unique propre
                 style={styles.map}
-                // Pas de styleURL (évite de charger des tuiles OSM moches ou payantes)
-                // On stylise tout nous-mêmes
-                styleJSON={JSON.stringify({
-                    version: 8,
-                    sources: {
-                        // Notre source locale
-                        'world_source': {
-                            type: 'geojson',
-                            data: WorldGeoJSON
-                        }
-                    },
-                    layers: [
-                        {
-                            id: 'background',
-                            type: 'background',
-                            paint: {
-                                'background-color': '#000000' // Fond Océan Noir
-                            }
-                        }
-                    ]
-                })}
+                mapStyle={JSON.stringify(VOID_STYLE)}
                 logoEnabled={false}
                 attributionEnabled={false}
-                rotateEnabled={false} // Garder le nord en haut
-                pitchEnabled={false}  // Pas de 3D inclinée
+                rotateEnabled={false}
+                pitchEnabled={false}
             >
                 <MapLibreGL.Camera
                     ref={cameraRef}
                     defaultSettings={{
-                        centerCoordinate: [2.35, 48.85], // Centré Europe par défaut
-                        zoomLevel: 1 // Vue monde entier
+                        centerCoordinate: [2.35, 48.85], // Europe
+                        zoomLevel: 1 // Monde
                     }}
                 />
 
-                {/* NOS PAYS (AFFICHÉS PAR DESSUS LE FOND NOIR) */}
+                {/* NOS DONNÉES GEOJSON */}
                 <MapLibreGL.ShapeSource
                     id="countriesSource"
                     shape={WorldGeoJSON}
                     onPress={handleShapePress}
                 >
+                    {/* Remplissage */}
                     <MapLibreGL.FillLayer
                         id="countriesFill"
                         style={{
-                            fillColor: fillColorExpression as any,
-                            fillOpacity: 1,
-                            fillOutlineColor: '#333333' // Contour gris subtil
+                            fillColor: fillColorExpression,
+                            fillOpacity: 1
                         }}
                     />
 
-                    {/* Optionnel : Contour plus épais au survol/sélection si besoin, 
-                        mais fillOutlineColor suffit souvent */}
+                    {/* Frontières (Gris, fin) */}
+                    <MapLibreGL.LineLayer
+                        id="countriesLine"
+                        style={{
+                            lineColor: '#333333',
+                            lineWidth: 0.5,
+                            lineOpacity: 1
+                        }}
+                    />
                 </MapLibreGL.ShapeSource>
-
             </MapLibreGL.MapView>
         </View>
     );
@@ -118,11 +133,12 @@ export default function InteractiveMap({ countryColors = {}, onCountryPress, sel
 const styles = StyleSheet.create({
     container: {
         height: 450,
-        width: '100%',
+        width: '120%',
         borderRadius: 20,
         overflow: 'hidden',
         borderWidth: 1,
-        borderColor: 'rgba(255,255,255,0.1)'
+        borderColor: 'rgba(255,255,255,0.1)',
+        backgroundColor: '#000000'
     },
     map: {
         flex: 1

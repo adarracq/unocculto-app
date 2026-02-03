@@ -1,10 +1,14 @@
+import BodyText from '@/app/components/atoms/BodyText';
+import Title1 from '@/app/components/atoms/Title1';
+import CustomModal from '@/app/components/molecules/CustomModal';
+import Colors from '@/app/constants/Colors';
 import { UserContext } from '@/app/contexts/UserContext';
 import { useApi } from '@/app/hooks/useApi';
 import { HomeNavParams } from '@/app/navigations/HomeNav';
 import { userService } from '@/app/services/user.service';
 import { generateGenericSteps } from '@/app/utils/GenericStoryGenerator'; // Ton générateur
-import React, { useContext, useMemo } from 'react';
-import { Alert } from 'react-native';
+import React, { useContext, useMemo, useState } from 'react';
+import { View } from 'react-native';
 import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack/types';
 import GameScreen from '../games/GameScreen';
 
@@ -12,6 +16,13 @@ type Props = NativeStackScreenProps<HomeNavParams, 'StoryGame'>;
 
 export default function StoryGameScreen({ navigation, route }: Props) {
     const [userContext, setUserContext] = useContext(UserContext);
+
+    const [endModalConfig, setEndModalConfig] = useState<{
+        visible: boolean;
+        title: string;
+        variant: 'default' | 'gold';
+        content: React.ReactNode;
+    }>({ visible: false, title: '', variant: 'default', content: null });
 
     // Récupération des params de navigation
     const { country, story: dbStory } = route.params;
@@ -55,46 +66,73 @@ export default function StoryGameScreen({ navigation, route }: Props) {
                 ...result.updatedUser
             });
 
-            // Préparation du message de fin
-            let title = "Voyage terminé ! ✈️";
-            let message = `Atterrissage réussi. Vous gagnez ${result.earned.xp} XP.`;
+            // On prépare le contenu selon le résultat
+            let title = "VOYAGE TERMINÉ";
+            let variant: 'default' | 'gold' = 'default';
+            let content;
 
-            // Hiérarchie des récompenses
             if (result.countryCompleted) {
-                title = "PAYS CONQUIS ! 👑";
-                message = `Incroyable ! ${country.name_fr} n'a plus de secret pour vous. Badge Or débloqué !`;
-            }
-            else if (result.flagUnlocked) {
-                title = "NOUVEAU DRAPEAU ! 🚩";
-                message = `Bienvenue en ${country.name_fr} ! Le drapeau a été ajouté à votre collection.`;
-            }
-            else if (result.earned.collectible) {
-                title = "TRÉSOR DÉCOUVERT ! 💎";
-                message = "Vous avez trouvé un nouvel objet rare pour votre musée.";
+                title = "PAYS CONQUIS !";
+                variant = 'gold';
+                content = (
+                    <View style={{ gap: 10 }}>
+                        <Title1 title="Badge Or Débloqué 👑" color="#FFD700" />
+                        <BodyText text={`Vous avez complété toutes les histoires de ${country.name_fr}.`} />
+                        <BodyText text={`+ ${result.earned.xp} XP`} style={{ color: Colors.lightGrey }} />
+                    </View>
+                );
+            } else if (result.flagUnlocked) {
+                title = "NOUVEAU VISA";
+                content = (
+                    <View style={{ gap: 10 }}>
+                        <Title1 title="Drapeau Ajouté 🚩" color={Colors.white} />
+                        <BodyText text={`Bienvenue en ${country.name_fr}.`} />
+                        <BodyText text={`+ ${result.earned.xp} XP`} style={{ color: Colors.lightGrey }} />
+                    </View>
+                );
+            } else {
+                // Cas standard
+                content = (
+                    <View style={{ gap: 10 }}>
+                        <Title1 title="Atterrissage Réussi" color={Colors.white} />
+                        <BodyText text={`Vous avez terminé l'aventure "${dbStory.title}".`} />
+                        <BodyText text={`+ ${result.earned.xp} XP`} style={{ color: Colors.lightGrey }} />
+                    </View>
+                );
             }
 
-            // Popup de fin
-            Alert.alert(
-                title,
-                message,
-                [{
-                    text: "Choisir ma prochaine destination",
-                    onPress: () => navigation.replace('SelectDestination')
-                }]
-            );
+            setEndModalConfig({ visible: true, title, variant, content });
+
         } else {
-            // Fallback en cas d'erreur réseau
-            Alert.alert("Erreur", "Sauvegarde impossible. Vérifiez votre connexion.");
+            // Fallback
             navigation.replace('Home');
         }
     };
 
     return (
-        <GameScreen
-            story={fullStory}      // On passe l'histoire complète (Générique + BDD)
-            country={country}      // On passe le pays pour la Map
-            onFinish={handleGameFinish}
-            headerTitle={`${country.flag} • ${fullStory.title}`}
-        />
+
+
+        <>
+            <GameScreen
+                story={fullStory}      // On passe l'histoire complète (Générique + BDD)
+                country={country}      // On passe le pays pour la Map
+                onFinish={handleGameFinish}
+                headerTitle={`${country.flag} • ${fullStory.title}`}
+            />
+
+            <CustomModal
+                visible={endModalConfig.visible}
+                title={endModalConfig.title}
+                variant={endModalConfig.variant}
+                onConfirm={() => {
+                    setEndModalConfig({ ...endModalConfig, visible: false });
+                    navigation.replace('SelectDestination');
+                }}
+                confirmText="CONTINUER"
+            // Pas de bouton annuler ici
+            >
+                {endModalConfig.content}
+            </CustomModal>
+        </>
     );
 }

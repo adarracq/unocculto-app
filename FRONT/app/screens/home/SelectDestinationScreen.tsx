@@ -68,7 +68,7 @@ export default function SelectDestinationScreen({ navigation }: Props) {
             <View style={{ gap: 20 }}>
                 <View style={styles.logoContainer}>
                     <Image
-                        source={require('../../assets/images/logo_white_filled.png')}
+                        source={require('../../assets/images/logo_white.png')}
                         style={styles.logo}
                     />
                 </View>

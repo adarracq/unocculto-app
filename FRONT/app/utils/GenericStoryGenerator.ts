@@ -23,18 +23,17 @@ function shuffleArray<T>(array: T[]): T[] {
 export const generateGenericSteps = (country: Country): StoryStep[] => {
     const steps: StoryStep[] = [];
 
-    // --- ETAPE 1 : LOCALISATION (Nouveau type 'location') ---
+    // --- ETAPE 1 : LOCALISATION ---
     steps.push({
         id: 'gen_loc',
-        type: 'location', // Nouveau type à gérer dans GameScreen
+        type: 'location',
         title: 'Où sommes-nous ?',
         content: `Avant de commencer, savez-vous situer ${country.name_fr} sur la carte ?`,
-        // On passera les coordonnées via l'objet country dans le composant
-        duration: 0 // Pas de timer auto
+        duration: 0
     });
 
-    // --- ETAPE 2 : DRAPEAU (Random entre Quiz 4 choix ou Vrai/Faux) ---
-    const isTrueFalseFlag = Math.random() > 0.99;
+    // --- ETAPE 2 : DRAPEAU (Random Quiz vs Swipe) ---
+    const isTrueFalseFlag = Math.random() > 0.5;
 
     if (isTrueFalseFlag) {
         const correctCountry = country;
@@ -43,9 +42,7 @@ export const generateGenericSteps = (country: Country): StoryStep[] => {
         const shuffledDeck = shuffleArray(rawDeck);
 
         const swipeDeck = shuffledDeck.map(c => {
-            // La logique reste : Si c'est le pays cible => VRAI
             const isTarget = c.code === correctCountry.code;
-
             return {
                 id: c.code,
                 imageUrl: Image.resolveAssetSource(getFlagImage(c.code)).uri,
@@ -67,43 +64,26 @@ export const generateGenericSteps = (country: Country): StoryStep[] => {
         const options = [country, ...distractors].sort(() => 0.5 - Math.random());
         const correctIndex = options.indexOf(country);
 
-        // On récupère les IMAGES pour les choix
-        // Note : getFlagImage retourne un ID numérique (require), c'est compatible avec <Image source={...} />
-        const imageChoices = options.map(c => Image.resolveAssetSource(getFlagImage(c.code)).uri);
-        // ATTENTION : Pour que le composant Image de React Native accepte le 'require' directement via URI dans certains cas,
-        // le plus simple pour ton composant QuizGameView modifié est de passer directement le 'require result' si tu as adapté le type,
-        // MAIS ton QuizGameView attend des strings (uri).
-
-        // SOLUTION ROBUSTE : 
-        // Modifions légèrement GenericStoryGenerator pour passer les 'assets' IDs si possible, 
-        // ou alors on utilise Image.resolveAssetSource(require(...)).uri pour avoir une string.
-
         steps.push({
             id: 'gen_flag_multi',
             type: 'quiz',
             title: 'Le bon Drapeau',
             content: `Lequel de ces drapeaux est celui de ${country.name_fr} ?`,
-
-            // NOUVEAU : On active le mode Image
             answerType: 'image',
-
-            // On passe les URIs résolues
             choices: options.map(c => {
                 const asset = getFlagImage(c.code);
-                // Astuce Expo pour convertir un require local en URI string exploitable
                 return Image.resolveAssetSource(asset).uri;
             }),
-
             correctAnswerIndex: correctIndex
         });
     }
 
-    // --- ETAPE 3 : CAPITALE (Random entre Quiz ou Order) ---
-    const isOrderGame = Math.random() > 0.99;
+    // --- ETAPE 3 : CAPITALE (Random Quiz vs Order) ---
+    // Note : Ici on garde votre logique > 0.99 (très rare) ou on passe à 0.5 si vous voulez équilibrer aussi l'intro
+    const isOrderGame = Math.random() > 0.5;
 
     if (isOrderGame) {
         // JEU D'ORDRE (Lettres)
-        // On nettoie le nom (pas d'espaces, majuscules)
         const letters = country.capital.toUpperCase().split('').filter(char => char !== ' ');
 
         steps.push({
@@ -111,7 +91,7 @@ export const generateGenericSteps = (country: Country): StoryStep[] => {
             type: 'order',
             title: 'La Capitale',
             content: `Reconstituez le nom de la capitale :`,
-            orderItems: letters, // L'utilisateur doit les remettre dans l'ordre
+            orderItems: letters,
         });
     } else {
         // QUIZ CLASSIQUE
@@ -124,6 +104,7 @@ export const generateGenericSteps = (country: Country): StoryStep[] => {
             type: 'quiz',
             title: 'Capitale',
             content: `Quelle est la capitale de ${country.name_fr} ?`,
+            answerType: 'text', // AJOUT IMPORTANT POUR LE MODELE
             choices: options.map(c => c.capital),
             correctAnswerIndex: correctIndex
         });

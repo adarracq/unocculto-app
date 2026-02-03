@@ -1,17 +1,21 @@
+import BodyText from '@/app/components/atoms/BodyText';
 import MyButton from '@/app/components/atoms/MyButton';
+import Title0 from '@/app/components/atoms/Title0';
+import CustomModal from '@/app/components/molecules/CustomModal';
 import LoadingScreen from '@/app/components/molecules/LoadingScreen';
 import FlightLoader from '@/app/components/organisms/FlightLoader';
 import Colors from '@/app/constants/Colors';
 import { UserContext } from '@/app/contexts/UserContext';
 import { useApi } from '@/app/hooks/useApi';
-import { ALL_COUNTRIES } from '@/app/models/Countries';
+import { ALL_COUNTRIES, getFlagImage } from '@/app/models/Countries';
 import { HomeNavParams } from '@/app/navigations/HomeNav';
 import { storyService } from '@/app/services/story.service';
 import { userService } from '@/app/services/user.service';
+import { functions } from '@/app/utils/Functions';
 import { useIsFocused } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useContext, useEffect, useState } from 'react';
-import { Alert, ScrollView, StyleSheet, Vibration, View } from 'react-native';
+import { Image, ScrollView, StyleSheet, Vibration, View } from 'react-native';
 import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack/types';
 import BoardingPass from './components/BoardingPass';
 import ProfileHeader from './components/ProfileHeader';
@@ -22,6 +26,7 @@ export default function HomeScreen({ navigation }: Props) {
     const [userContext, setUserContext] = useContext(UserContext);
     const isFocused = useIsFocused();
     const [isTakingOff, setIsTakingOff] = useState(false);
+    const [showBoardingModal, setShowBoardingModal] = useState(false);
 
     // --- API 1: USER DATA ---
     const userApi = useApi(
@@ -67,21 +72,11 @@ export default function HomeScreen({ navigation }: Props) {
         const destinationCountry = ALL_COUNTRIES.find(c => c.code === storyApi.data!.countryCode);
         const city = storyApi.data.city;
 
-        Alert.alert(
-            "Embarquement immédiat",
-            `Confirmez-vous le départ pour ${city} (${destinationCountry?.name_fr}) ?\n\nCoût : 1 Énergie ⚡`,
-            [
-                { text: "Annuler", style: "cancel" },
-                {
-                    text: "DÉCOLLER ✈️",
-                    onPress: launchFlightSequence,
-                    style: 'default'
-                }
-            ]
-        );
+        setShowBoardingModal(true);
     };
 
-    const launchFlightSequence = () => {
+    const confirmLaunch = () => {
+        setShowBoardingModal(false);
         Vibration.vibrate([0, 50, 100, 50]);
         setIsTakingOff(true);
     };
@@ -178,7 +173,54 @@ export default function HomeScreen({ navigation }: Props) {
                 </View>
             </ScrollView>
 
-            <FlightLoader visible={isTakingOff} onAnimationFinish={onTransitionFinished} />
+            {/* --- MODAL D'EMBARQUEMENT --- */}
+            {storyApi.data && (
+                <CustomModal
+                    visible={showBoardingModal}
+                    title="EMBARQUEMENT"
+                    confirmText="Décoller"
+                    color={destinationCountry?.mainColor || Colors.main}
+                    onConfirm={confirmLaunch}
+                    cancelText="Attendre"
+                    onCancel={() => setShowBoardingModal(false)}
+                >
+                    {/* CONTENU RICHE */}
+                    <View style={{ gap: 8 }}>
+                        <BodyText text="Destination :" style={{ color: Colors.lightGrey }} />
+
+                        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 20, marginLeft: 20 }}>
+                            <Title0
+                                title={storyApi.data.city.toUpperCase()}
+                                color={Colors.white}
+                            />
+                            {/* Petit drapeau à côté du nom */}
+                            <Image
+                                source={getFlagImage(destinationCountry?.code || '')}
+                                style={{ width: 40, height: 25, borderRadius: 4 }}
+                                resizeMode="cover"
+                            />
+                        </View>
+                        <BodyText text="Coût du billet :" style={{ color: Colors.lightGrey }} />
+                        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginLeft: 20 }}>
+
+                            <Image
+                                source={functions.getIconSource('lightning')}
+                                style={{ width: 26, height: 26, }}
+                            />
+                            <Title0 title="10" style={{ color: '#FFD700' }} />
+                        </View>
+                    </View>
+                </CustomModal>
+            )}
+            <FlightLoader
+                visible={isTakingOff}
+                onAnimationFinish={onTransitionFinished}
+                color={destinationCountry?.mainColor || Colors.main}
+                // INFOS DYNAMIQUES
+                originCity={lastTrip?.city || "Maison"} // D'où on vient
+                destinationCity={storyApi.data?.city || "Destination"} // Où on va
+                destinationCode={destinationCountry?.code || "??"} // Code pays (ex: JP)
+            />
         </LinearGradient>
     );
 }

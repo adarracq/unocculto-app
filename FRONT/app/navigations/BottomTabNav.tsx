@@ -8,6 +8,7 @@ import { useNotifications } from '../contexts/NotificationContext';
 import { UserContext } from '../contexts/UserContext';
 import HomeNav from './HomeNav';
 import ProfileNav from './ProfileNav';
+import RevisionsNav from './RevisionsNav';
 
 export type BottomNavParams = {
     Home: undefined;
@@ -64,7 +65,7 @@ export default function BottomTabNav() {
             />
             <Tab.Screen
                 name={"Revision"}
-                component={ProfileNav}
+                component={RevisionsNav}
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <TabBarElement

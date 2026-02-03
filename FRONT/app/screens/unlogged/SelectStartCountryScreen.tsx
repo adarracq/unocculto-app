@@ -55,7 +55,7 @@ export default function SelectStartCountryScreen({ navigation }: Props) {
             <View style={styles.topSection}>
                 <View style={styles.logoContainer}>
                     <Image
-                        source={require('../../assets/images/logo_white_filled.png')}
+                        source={require('../../assets/images/logo_white.png')}
                         style={styles.logo}
                     />
                 </View>
