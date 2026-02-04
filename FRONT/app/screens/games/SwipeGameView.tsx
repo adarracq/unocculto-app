@@ -29,32 +29,26 @@ export default function SwipeGameView({ step, onValid }: Props) {
     const [isGameOver, setIsGameOver] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
 
+    // Sécurité : si deck est vide
     const deck = step.deck || [];
     const currentCard = deck[currentIndex];
     const nextCard = deck[currentIndex + 1];
 
-    // Animation Values
     const position = useRef(new Animated.ValueXY()).current;
 
+    // Interpolation pour la rotation pendant le swipe
     const rotate = position.x.interpolate({
         inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
         outputRange: ['-10deg', '0deg', '10deg'],
         extrapolate: 'clamp'
     });
 
-    const likeOpacity = position.x.interpolate({
-        inputRange: [0, SCREEN_WIDTH / 4],
-        outputRange: [0, 1],
-        extrapolate: 'clamp'
-    });
+    // Opacité des labels (CHECK / TRASH)
+    const keepOpacity = position.x.interpolate({ inputRange: [0, SCREEN_WIDTH / 4], outputRange: [0, 1] });
+    const discardOpacity = position.x.interpolate({ inputRange: [-SCREEN_WIDTH / 4, 0], outputRange: [1, 0] });
 
-    const nopeOpacity = position.x.interpolate({
-        inputRange: [-SCREEN_WIDTH / 4, 0],
-        outputRange: [1, 0],
-        extrapolate: 'clamp'
-    });
+    // --- MOTEUR DE JEU ---
 
-    // --- LOGIQUE SWIPE ---
     const forceSwipe = (direction: 'right' | 'left') => {
         const x = direction === 'right' ? SCREEN_WIDTH + 100 : -SCREEN_WIDTH - 100;
         Animated.timing(position, {
@@ -66,32 +60,40 @@ export default function SwipeGameView({ step, onValid }: Props) {
 
     const onSwipeComplete = (direction: 'right' | 'left') => {
         const card = deck[currentIndex];
-        const userSaidYes = direction === 'right';
 
-        // Logique stricte : User doit avoir raison
-        const isActionCorrect = (userSaidYes === card.isCorrect);
-
-        if (isActionCorrect) {
-            // Si c'était le bon pays ET qu'on a swipé à Droite -> VICTOIRE
-            if (userSaidYes && card.isCorrect) {
+        if (direction === 'right') {
+            // ACTION : "JE LE GARDE / C'EST LUI"
+            if (card.isCorrect) {
+                // C'est le bon drapeau -> VICTOIRE
                 setIsSuccess(true);
                 Vibration.vibrate([0, 50, 50, 50]);
             } else {
-                // Sinon c'était un intrus correctement rejeté, on passe au suivant
-                goToNextCard();
+                // C'était un intrus -> ERREUR (Mauvais choix)
+                handleError();
             }
         } else {
-            // ERREUR (Mauvais choix)
-            handleError();
+            // ACTION : "POUBELLE / SUIVANT"
+            if (card.isCorrect) {
+                // C'était le bon drapeau et je l'ai jeté -> ERREUR
+                handleError();
+            } else {
+                // C'était un intrus et je l'ai jeté -> CORRECT, AU SUIVANT
+                goToNextCard();
+            }
         }
     };
 
     const goToNextCard = () => {
+        // Reset visuel instantané
         position.setValue({ x: 0, y: 0 });
+
         if (currentIndex < deck.length - 1) {
+            // On passe à la carte suivante
             setCurrentIndex(prev => prev + 1);
         } else {
-            // Fin du deck sans trouver le bon (Cas rare si généré correctement)
+            // Fin du deck : On a jeté toutes les cartes sans sélectionner la bonne
+            // (Théoriquement impossible si le générateur inclut toujours la bonne réponse, 
+            // mais on gère le cas comme une défaite)
             handleError();
         }
     };
@@ -101,17 +103,14 @@ export default function SwipeGameView({ step, onValid }: Props) {
         setIsGameOver(true);
     };
 
-    const resetPosition = () => {
-        Animated.spring(position, {
-            toValue: { x: 0, y: 0 },
-            friction: 4,
-            useNativeDriver: false
-        }).start();
+    const handleRetry = () => {
+        setIsGameOver(false);
+        setIsSuccess(false);
+        setCurrentIndex(0);
+        position.setValue({ x: 0, y: 0 });
     };
 
-    // --- CORRECTION MAJEURE : USEMEMO ---
-    // On recrée le PanResponder quand currentIndex change pour éviter 
-    // d'utiliser l'index "0" en mémoire cache (Stale Closure).
+    // IMPORTANT : On recrée le PanResponder si currentIndex change pour pointer sur la bonne carte
     const panResponder = useMemo(() => PanResponder.create({
         onStartShouldSetPanResponder: () => true,
         onPanResponderMove: (_, gesture) => {
@@ -126,26 +125,26 @@ export default function SwipeGameView({ step, onValid }: Props) {
             } else if (gesture.dx < -SWIPE_THRESHOLD) {
                 forceSwipe('left');
             } else {
-                resetPosition();
+                // Retour au centre si swipe pas assez fort
+                Animated.spring(position, {
+                    toValue: { x: 0, y: 0 },
+                    friction: 4,
+                    useNativeDriver: false
+                }).start();
             }
         }
-    }), [currentIndex, isGameOver, isSuccess]); // Dépendances critiques
+    }), [currentIndex, isGameOver, isSuccess]);
 
-    const handleRetry = () => {
-        setIsGameOver(false);
-        setIsSuccess(false);
-        setCurrentIndex(0);
-        position.setValue({ x: 0, y: 0 });
-    };
+    // --- RENDER ---
 
-    // RENDERERS
     const renderCard = (card: SwipeCard, isTop: boolean) => {
         if (!card) return null;
 
+        // Style animé seulement pour la carte du dessus
         const animatedStyle = isTop ? {
             transform: [...position.getTranslateTransform(), { rotate }]
         } : {
-            transform: [{ scale: 0.95 }],
+            transform: [{ scale: 0.95 }], // Effet de profondeur pour la carte suivante
             opacity: 0.5
         };
 
@@ -154,19 +153,16 @@ export default function SwipeGameView({ step, onValid }: Props) {
                 style={[styles.card, animatedStyle, isTop && { zIndex: 10 }]}
                 {...(isTop ? panResponder.panHandlers : {})}
             >
-                <Image
-                    source={{ uri: card.imageUrl }}
-                    style={styles.flagImage}
-                    resizeMode="cover"
-                />
+                {/* On suppose ici que SwipeGameView ne sert QUE pour les images (Drapeaux) */}
+                <Image source={{ uri: card.imageUrl }} style={styles.cardImage} resizeMode="cover" />
 
                 {isTop && (
                     <>
-                        <Animated.View style={[styles.choiceLabel, styles.nopeLabel, { opacity: nopeOpacity }]}>
-                            <Ionicons name="close" size={50} color={Colors.red} />
+                        <Animated.View style={[styles.choiceLabel, styles.discardLabel, { opacity: discardOpacity }]}>
+                            <Ionicons name="trash-outline" size={40} color={Colors.red} />
                         </Animated.View>
-                        <Animated.View style={[styles.choiceLabel, styles.likeLabel, { opacity: likeOpacity }]}>
-                            <Ionicons name="checkmark" size={50} color={Colors.green} />
+                        <Animated.View style={[styles.choiceLabel, styles.keepLabel, { opacity: keepOpacity }]}>
+                            <Ionicons name="checkmark-circle-outline" size={40} color={Colors.green} />
                         </Animated.View>
                     </>
                 )}
@@ -174,36 +170,22 @@ export default function SwipeGameView({ step, onValid }: Props) {
         );
     };
 
-    // --- VUE VICTOIRE ---
     if (isSuccess) {
         return (
             <View style={styles.container}>
-                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', gap: 30 }}>
-                    <Title1 title="Identifié !" color={Colors.green} />
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', gap: 20 }}>
+                    <Ionicons name="trophy" size={80} color={Colors.gold} />
+                    <Title1 title="Trouvé !" color={Colors.white} />
 
-                    {/* Carte statique du vainqueur */}
-                    <View style={[styles.card, { transform: [{ rotate: '0deg' }], position: 'relative' }]}>
-                        <Image
-                            source={{ uri: deck[currentIndex].imageUrl }}
-                            style={styles.flagImage}
-                            resizeMode="cover"
-                        />
-                        <View style={styles.successBadge}>
-                            <Ionicons name="checkmark-circle" size={40} color={Colors.green} />
-                        </View>
+                    {/* Carte gagnante statique */}
+                    <View style={[styles.card, { position: 'relative', transform: [{ rotate: '0deg' }], height: 200 }]}>
+                        <Image source={{ uri: deck[currentIndex].imageUrl }} style={styles.cardImage} resizeMode="cover" />
                     </View>
 
-                    <BodyText text={`C'est bien le drapeau recherché.`} style={{ textAlign: 'center' }} />
+                    <BodyText text={"C'était bien le drapeau recherché."} style={{ textAlign: 'center' }} />
                 </View>
-
-                <View style={{ paddingHorizontal: 20 }}>
-                    <MyButton
-                        title="Continuer"
-                        onPress={onValid}
-                        variant="glass"
-                        rightIcon="arrow-right"
-                        bump
-                    />
+                <View style={{ paddingHorizontal: 20, paddingBottom: 40 }}>
+                    <MyButton title="Continuer" onPress={onValid} variant="glass" rightIcon="arrow-right" bump />
                 </View>
             </View>
         );
@@ -213,108 +195,66 @@ export default function SwipeGameView({ step, onValid }: Props) {
         <View style={styles.container}>
             <View style={styles.header}>
                 <Title0 title={step.title} color={Colors.white} isLeft />
-                <BodyText
-                    text={step.content}
-                    size="M"
-                    color={Colors.white}
-                    style={{ textAlign: 'center', opacity: 0.8 }}
-                />
+                <BodyText text={step.content} size="M" color={Colors.white} style={{ opacity: 0.8 }} />
             </View>
 
             <View style={styles.deckContainer}>
                 {isGameOver ? (
                     <View style={styles.gameOverContainer}>
-                        <Ionicons name="alert-circle-outline" size={80} color={Colors.red} />
-                        <Title1 title="Perdu !" color={Colors.white} />
-                        <BodyText
-                            text="Mauvaise réponse. Recommencez la série."
-                            style={{ textAlign: 'center', marginBottom: 20 }}
-                        />
+                        <Ionicons name="close-circle-outline" size={80} color={Colors.red} />
+                        <Title1 title="Perdu" color={Colors.white} />
+                        <BodyText text="Mauvaise carte choisie ou bonne carte jetée." style={{ textAlign: 'center', marginBottom: 20 }} />
                         <MyButton title="Réessayer" onPress={handleRetry} variant="glass" />
                     </View>
                 ) : (
                     <>
+                        {/* On rend d'abord la carte suivante (en dessous) */}
                         {nextCard && renderCard(nextCard, false)}
+                        {/* Puis la carte actuelle (au dessus) */}
                         {currentCard ? renderCard(currentCard, true) : null}
                     </>
                 )}
             </View>
-
+            {/* Guide visuel */}
             {!isGameOver && (
-                <BodyText
-                    text="Recherche en cours..."
-                    size="S"
-                    style={{ textAlign: 'center', opacity: 0.5, marginTop: 20 }}
-                />
+                <View style={styles.controlsHint}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
+                        <Ionicons name="arrow-back" color={Colors.red} size={20} />
+                        <BodyText text="FAUX" size="S" color={Colors.red} />
+                    </View>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
+                        <BodyText text="VRAI" size="S" color={Colors.green} />
+                        <Ionicons name="arrow-forward" color={Colors.green} size={20} />
+                    </View>
+                </View>
             )}
         </View>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        paddingTop: 10,
-        paddingBottom: 40,
-        justifyContent: 'space-between'
-    },
-    header: { alignItems: 'center', gap: 10, marginBottom: 10, paddingHorizontal: 20 },
-    deckContainer: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    // CORRECTION TAILLE : Ratio 3:2 (Drapeau)
+    container: { flex: 1, paddingVertical: 40, justifyContent: 'space-between' },
+    header: { paddingHorizontal: 20, marginBottom: 10 },
+    deckContainer: { flex: 1, alignItems: 'center', justifyContent: 'center' },
     card: {
         width: SCREEN_WIDTH * 0.85,
-        height: (SCREEN_WIDTH * 0.85) * 0.66,
+        aspectRatio: 1.5, // Ratio Drapeau standard
         backgroundColor: '#1E1E1E',
-        borderRadius: 16,
-        position: 'absolute',
+        borderRadius: 20,
         overflow: 'hidden',
         borderWidth: 1,
         borderColor: 'rgba(255,255,255,0.1)',
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 10 },
-        shadowOpacity: 0.3,
-        shadowRadius: 20,
         elevation: 5,
+        position: 'absolute'
     },
-    flagImage: { width: '100%', height: '100%' },
+    cardImage: { width: '100%', height: '100%' },
     choiceLabel: {
-        position: 'absolute',
-        top: 20,
-        padding: 10,
-        borderRadius: 50,
-        borderWidth: 4,
-        zIndex: 20,
-        backgroundColor: 'rgba(0,0,0,0.5)'
+        position: 'absolute', top: 20, padding: 15, borderRadius: 50, borderWidth: 4, zIndex: 20, backgroundColor: 'rgba(0,0,0,0.6)'
     },
-    likeLabel: {
-        left: 20,
-        borderColor: Colors.green,
-        transform: [{ rotate: '-30deg' }]
-    },
-    nopeLabel: {
-        right: 20,
-        borderColor: Colors.red,
-        transform: [{ rotate: '30deg' }]
-    },
+    keepLabel: { right: 20, borderColor: Colors.green, transform: [{ rotate: '-15deg' }] },
+    discardLabel: { left: 20, borderColor: Colors.red, transform: [{ rotate: '15deg' }] },
     gameOverContainer: {
-        width: '90%',
-        alignItems: 'center',
-        gap: 10,
-        padding: 30,
-        backgroundColor: 'rgba(255,255,255,0.05)',
-        borderRadius: 20,
-        borderWidth: 1,
-        borderColor: Colors.red
+        width: '90%', alignItems: 'center', padding: 30, backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: 20, borderWidth: 1, borderColor: Colors.red
     },
-    successBadge: {
-        position: 'absolute',
-        bottom: 10,
-        right: 10,
-        backgroundColor: Colors.white,
-        borderRadius: 30
-    }
+    controlsHint: { flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 50, opacity: 0.6 }
 });

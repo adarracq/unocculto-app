@@ -1,6 +1,7 @@
+import { Collectible } from '@/app/models/Collectible';
 import { ALL_COUNTRIES, Country, getFlagImage } from '@/app/models/Countries';
+import { RewardStep, StoryStep } from '@/app/models/Story';
 import { Image } from 'react-native';
-import { StoryStep } from '../models/Story';
 
 /**
  * Pioche N éléments aléatoires dans un tableau (excluant un élément précis)
@@ -47,7 +48,8 @@ export const generateGenericSteps = (country: Country): StoryStep[] => {
                 id: c.code,
                 imageUrl: Image.resolveAssetSource(getFlagImage(c.code)).uri,
                 text: "???",
-                isCorrect: isTarget
+                isCorrect: isTarget,
+                isText: false
             };
         });
 
@@ -55,7 +57,7 @@ export const generateGenericSteps = (country: Country): StoryStep[] => {
             id: 'gen_flag_swipe',
             type: 'swipe',
             title: 'Contrôle Visuel',
-            content: `Mission : Identifiez le drapeau de : ${country.name_fr}.\n\n👉 Swipe DROITE si c'est lui.\n👈 Swipe GAUCHE si c'est un intrus.`,
+            content: `Mission : Identifiez le drapeau de : ${country.name_fr}`,
             deck: swipeDeck
         });
     } else {
@@ -79,7 +81,6 @@ export const generateGenericSteps = (country: Country): StoryStep[] => {
     }
 
     // --- ETAPE 3 : CAPITALE (Random Quiz vs Order) ---
-    // Note : Ici on garde votre logique > 0.99 (très rare) ou on passe à 0.5 si vous voulez équilibrer aussi l'intro
     const isOrderGame = Math.random() > 0.5;
 
     if (isOrderGame) {
@@ -116,8 +117,44 @@ export const generateGenericSteps = (country: Country): StoryStep[] => {
         type: 'dialogue',
         title: 'Excellent !',
         content: "Vous avez les bases. Maintenant, explorons ce que ce pays a d'unique...",
-        duration: 4000
+        duration: 8000
     });
 
     return steps;
 };
+
+/* Génère les étapes de FIN (Outro).
+ * Ajoute un reward "Drapeau" si l'utilisateur ne l'a pas encore.
+ */
+export const generateOutroSteps = (country: Country, userHasFlag: boolean): StoryStep[] => {
+    const steps: StoryStep[] = [];
+
+    // Si l'utilisateur n'a pas le drapeau, on ajoute l'étape de récompense
+    if (!userHasFlag) {
+
+        // On récupère l'URI de l'image du drapeau local
+        const flagAsset = getFlagImage(country.code);
+        const flagUri = Image.resolveAssetSource(flagAsset).uri;
+
+        steps.push({
+            id: 'gen_reward_flag',
+            type: 'reward',
+            title: 'Nouveau Visa !',
+            content: `Félicitations ! Vous avez débloqué le drapeau de : ${country.name_fr}.`,
+            rewardImage: flagUri, // On passe l'URI ici
+            duration: 0
+        } as RewardStep);
+    }
+
+    return steps;
+};
+
+export const generateRewardStep = (collectible: Collectible): RewardStep => {
+    return {
+        id: `reward_${Date.now()}`,
+        type: 'reward',
+        title: collectible.name + ' débloqué' || "Récompense Débloquée",
+        content: collectible.description || "Vous avez obtenu une nouvelle récompense.",
+        rewardImage: collectible.imageUrl
+    };
+}

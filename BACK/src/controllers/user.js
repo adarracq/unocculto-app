@@ -4,6 +4,7 @@ const Story = require('../models/Story');
 const sendEmail = require("../scripts/email");
 const mongoose = require('mongoose');
 const UserMemory = require('../models/UserMemory');
+const Collectible = require('../models/Collectible');
 
 exports.loginOrSignup = (req, res, next) => {
 
@@ -188,6 +189,11 @@ exports.completeStory = async (req, res, next) => {
         const user = await User.findById(userId);
         const story = await Story.findOne({ storyId: storyId });
 
+        // Filtrer uniquement les anecdotes de la timeline
+        const anecdotesInStory = story.timeline
+            .filter(item => item.type === 'anecdote')
+            .map(item => item.data);
+
         if (!user || !story) {
             return res.status(404).json({ error: 'User or Story not found' });
         }
@@ -250,12 +256,19 @@ exports.completeStory = async (req, res, next) => {
         // --- 6. GESTION DES SOUVENIRS UTILISATEUR (SRS) ---
         // C'est ici qu'on initialise les cartes de révision pour ce pays
         if (!alreadyPlayed) {
+            // 1. Sauvegarder les classiques (Drapeau, Capital, Geo)
             const memoriesToCreate = [
                 { userId, countryCode, factType: 'flag' },
                 { userId, countryCode, factType: 'capital' },
                 { userId, countryCode, factType: 'location' },
-                // ✅ AJOUT : On crée aussi la mémoire "Anecdote" pour le filtre Culture
-                { userId, countryCode, factType: 'anecdote' }
+                // ✅ AJOUT : Les anecdotes spécifiques de la story
+                ...anecdotesInStory.map(anecdote => ({
+                    userId,
+                    countryCode,
+                    factType: 'anecdote',
+                    specificDataId: String(anecdote.id || anecdote._id || anecdote.title),
+                    specificData: anecdote
+                }))
             ];
 
             // insertMany avec ordered:false permet de continuer même si certaines entrées existent déjà (doublons ignorés)
@@ -469,4 +482,190 @@ exports.reviewMemory = (req, res) => {
                 .catch(err => res.status(500).json({ error: err }));
         })
         .catch(err => res.status(500).json({ error: err }));
+};
+
+// --- API: DASHBOARD COMPLET (Radar + Counts) ---
+exports.getRevisionDashboardData = async (req, res) => {
+    try {
+        const userId = req.auth.userId;
+        const now = new Date();
+
+        // 1. Récupérer TOUTES les mémoires de l'utilisateur
+        // (C'est plus performant de tout récupérer (max ~800 items) et traiter en JS que de faire 15 agrégations complexes)
+        const memories = await UserMemory.find({ userId: userId });
+
+        // --- A. CALCUL DES COMPTEURS (Ce qui est dû MAINTENANT) ---
+        const counts = {
+            flag: 0,
+            capital: 0,
+            location: 0,
+            anecdote: 0
+        };
+
+        // --- B. PRÉPARATION DES DONNÉES RADAR (Par Pays) ---
+        // On regroupe les mémoires par code pays
+        const countriesMap = {};
+
+        memories.forEach(mem => {
+            // 1. Mise à jour des compteurs "DUE"
+            if (mem.dueDate <= now) {
+                if (counts[mem.factType] !== undefined) {
+                    counts[mem.factType]++;
+                }
+            }
+
+            // 2. Agrégation par Pays pour le Radar
+            if (!countriesMap[mem.countryCode]) {
+                countriesMap[mem.countryCode] = {
+                    totalInterval: 0,
+                    itemCount: 0,
+                    hasDueItems: false,
+                    lastReviewed: mem.lastReviewedAt
+                };
+            }
+
+            const cData = countriesMap[mem.countryCode];
+
+            // On accumule les intervalles (Jours)
+            cData.totalInterval += mem.interval;
+            cData.itemCount++;
+
+            // Est-ce qu'il y a urgence sur ce pays ?
+            if (mem.dueDate <= now) {
+                cData.hasDueItems = true;
+            }
+
+            // On garde la date la plus récente d'activité
+            if (mem.lastReviewedAt > cData.lastReviewed) {
+                cData.lastReviewed = mem.lastReviewedAt;
+            }
+        });
+
+        // --- C. TRANSFORMATION EN LISTE RADAR ---
+        let radarItems = Object.keys(countriesMap).map(code => {
+            const data = countriesMap[code];
+
+            // Calcul de la Moyenne d'intervalle pour ce pays
+            const avgInterval = data.totalInterval / data.itemCount;
+
+            // --- FORMULE DE MAÎTRISE ---
+            // On considère qu'un intervalle moyen de 60 jours = 100% de maîtrise (Ancré)
+            // On plafonne à 100.
+            let mastery = Math.min(100, (avgInterval / 60) * 100);
+
+            // Bonus : Si c'est tout nouveau (intervalle 0), on met 5% pour qu'il apparaisse au bord
+            if (mastery < 5) mastery = 5;
+
+            return {
+                countryCode: code,
+                masteryLevel: Math.round(mastery),
+                isDue: data.hasDueItems,
+                lastReviewed: data.lastReviewed
+            };
+        });
+
+        // --- D. FILTRAGE ET TRI ---
+        // On ne peut pas afficher 200 drapeaux sur le radar. On prend les 15 plus pertinents.
+        // Critères : 
+        // 1. Ceux qui sont "DUE" (Urgent)
+        // 2. Ceux récemment révisés (Actifs)
+        radarItems.sort((a, b) => {
+            if (a.isDue && !b.isDue) return -1; // Priorité au rouge
+            if (!a.isDue && b.isDue) return 1;
+            return new Date(b.lastReviewed) - new Date(a.lastReviewed); // Puis les récents
+        });
+
+        // On garde le Top 15 pour le Radar
+        const topRadarItems = radarItems.slice(0, 15);
+
+        res.status(200).json({
+            counts: counts,
+            radarItems: topRadarItems
+        });
+
+    } catch (error) {
+        console.error("Dashboard Error:", error);
+        res.status(500).json({ error: 'Impossible de charger le tableau de bord' });
+    }
+};
+
+exports.getMuseumInventory = async (req, res) => {
+    try {
+        const userId = req.auth.userId;
+
+        // 1. Récupérer l'utilisateur pour avoir sa liste d'IDs
+        const user = await User.findById(userId).select('inventory');
+        if (!user) return res.status(404).json({ error: 'User not found' });
+
+        // 2. Récupérer TOUS les collectibles du jeu (La "Reference")
+        // On trie par rareté ou par type si besoin
+        const allCollectibles = await Collectible.find().lean();
+
+        // 3. Fusionner : On ajoute un flag "isOwned" pour le front
+        const museumData = allCollectibles.map(item => {
+            const isOwned = user.inventory.includes(item.id);
+            return {
+                id: item.id,
+                name: item.name,
+                description: isOwned ? item.description : "???", // Mystère si pas possédé
+                imageUrl: item.imageUrl,
+                rarity: item.rarity,
+                type: item.type,
+                isOwned: isOwned
+            };
+        });
+
+        // 4. On renvoie tout
+        res.status(200).json(museumData);
+
+    } catch (error) {
+        console.error('Error fetching museum:', error);
+        res.status(500).json({ error: 'Server Error' });
+    }
+};
+
+
+exports.getPilotLogbook = async (req, res) => {
+    try {
+        const userId = req.auth.userId;
+        const user = await User.findById(userId);
+        if (!user) return res.status(404).json({ error: 'User not found' });
+
+        // On récupère toutes les stories pour mapper les ID vers des Noms de Villes/Titres
+        // Optimisation : On ne prend que les champs nécessaires
+        const allStories = await Story.find().select('storyId city title countryCode isCapital');
+
+        const logbook = [];
+
+        // On itère sur le passeport (Map Mongoose)
+        // user.passport est une Map : clé = countryCode ("FR"), valeur = objet entry
+        for (const [code, entry] of user.passport) {
+
+            // Trouver les détails des stories complétées par ce user dans ce pays
+            const completedStoriesDetails = allStories.filter(s =>
+                entry.storiesDone.includes(s.storyId)
+            );
+
+            // Extraire les villes uniques visitées
+            const cities = [...new Set(completedStoriesDetails.map(s => s.city))];
+
+            logbook.push({
+                countryCode: code,
+                visitDate: entry.lastVisitedAt,
+                isCompleted: entry.isCompleted,
+                storiesCount: entry.storiesDone.length,
+                cities: cities, // Liste des villes explorées (ex: ["Paris", "Lyon"])
+                hasFlag: entry.hasFlag
+            });
+        }
+
+        // Tri : Les plus récents d'abord
+        logbook.sort((a, b) => new Date(b.visitDate) - new Date(a.visitDate));
+
+        res.status(200).json(logbook);
+
+    } catch (error) {
+        console.error('Logbook Error:', error);
+        res.status(500).json({ error: 'Server Error' });
+    }
 };

@@ -10,9 +10,8 @@ const userMemorySchema = mongoose.Schema({
         enum: ['flag', 'capital', 'location', 'anecdote'],
         required: true
     },
-
-    // Pour les anecdotes, on peut stocker l'ID du step ou du fait précis
-    specificDataId: { type: String, default: null },
+    specificDataId: { type: String },
+    specificData: { type: mongoose.Schema.Types.Mixed },
 
     easeFactor: { type: Number, default: 2.5 },
     interval: { type: Number, default: 0 },

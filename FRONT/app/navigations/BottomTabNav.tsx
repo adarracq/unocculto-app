@@ -1,13 +1,13 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import React, { useContext } from 'react';
-import { StyleSheet } from 'react-native';
+import { Platform } from 'react-native';
 import TabBarElement from '../components/molecules/TabBarElement';
-import Colors from '../constants/Colors';
 import { useNotifications } from '../contexts/NotificationContext';
 import { UserContext } from '../contexts/UserContext';
+import ArenaNav from './ArenaNav';
 import HomeNav from './HomeNav';
-import ProfileNav from './ProfileNav';
+import MuseumNav from './MuseumNav';
 import RevisionsNav from './RevisionsNav';
 
 export type BottomNavParams = {
@@ -21,25 +21,55 @@ const Tab = createBottomTabNavigator<BottomNavParams>();
 
 export default function BottomTabNav() {
     const [user, setUser] = useContext(UserContext);
-    const { notifications, updateNotification, resetNotification } = useNotifications();
+    const { notifications, resetNotification } = useNotifications();
 
     const noTabBarScreens = [
         'StoryGame',
-        'SelectDestination'
+        'SelectDestination',
+        'ReviewSession',
     ];
+
     return (
         <Tab.Navigator
             initialRouteName={"Home"}
             screenOptions={(props) => {
+                const routeName = getFocusedRouteNameFromRoute(props.route) ?? '';
+                const isHidden = noTabBarScreens.includes(routeName);
+
                 return {
                     headerShown: false,
                     tabBarShowLabel: false,
+
+                    // FORCE LE CENTRAGE DES ITEMS
+                    tabBarItemStyle: {
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        height: 70, // Doit matcher la hauteur de la barre
+                    },
+                    tabBarIconStyle: {
+                        width: '100%',
+                        height: '100%',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    },
+
                     tabBarStyle: {
-                        ...styles.tabBarStyle,
-                        display:
-                            noTabBarScreens.includes(getFocusedRouteNameFromRoute(props.route) ?? '')
-                                ? "none"
-                                : "flex",
+                        position: 'absolute',
+                        bottom: isHidden ? -100 : Platform.OS === 'ios' ? 30 : 20,
+                        left: 20,
+                        right: 20,
+                        borderRadius: 35, // Capsule parfaite
+                        height: 70,
+                        backgroundColor: 'rgba(15, 15, 15, 0.95)', // Noir profond
+                        borderTopWidth: 0,
+                        borderWidth: 1,
+                        borderColor: 'rgba(255,255,255,0.1)',
+                        shadowColor: '#000',
+                        shadowOffset: { width: 0, height: 10 },
+                        shadowOpacity: 0.5,
+                        shadowRadius: 10,
+                        elevation: 10,
+                        display: isHidden ? 'none' : 'flex',
                     },
                 };
             }}
@@ -50,18 +80,13 @@ export default function BottomTabNav() {
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <TabBarElement
-                            title='Voyage'
                             focused={focused}
                             name='compass'
                             nbNotifications={notifications.courses}
                         />
                     ),
                 }}
-                listeners={{
-                    focus: () => {
-                        resetNotification('courses');
-                    }
-                }}
+                listeners={{ focus: () => resetNotification('courses') }}
             />
             <Tab.Screen
                 name={"Revision"}
@@ -69,66 +94,42 @@ export default function BottomTabNav() {
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <TabBarElement
-                            title='Révisions'
                             focused={focused}
                             name='student'
                             nbNotifications={notifications.revisions}
                         />
                     ),
                 }}
-                listeners={{
-                    focus: () => {
-                        resetNotification('revisions');
-                    }
-                }}
+                listeners={{ focus: () => resetNotification('revisions') }}
             />
             <Tab.Screen
                 name="Quiz"
-                component={ProfileNav}
+                component={ArenaNav}
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <TabBarElement
-                            title='Quiz'
                             focused={focused}
                             name='duel'
                             nbNotifications={notifications.quiz}
                         />
                     ),
                 }}
-                listeners={{
-                    focus: () => {
-                        resetNotification('quiz');
-                    }
-                }}
+                listeners={{ focus: () => resetNotification('quiz') }}
             />
             <Tab.Screen
                 name="Museum"
-                component={ProfileNav}
+                component={MuseumNav}
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <TabBarElement
-                            title='Museum'
                             focused={focused}
                             name='museum'
                             nbNotifications={notifications.museum}
                         />
                     ),
                 }}
-                listeners={{
-                    focus: () => {
-                        resetNotification('quiz');
-                    }
-                }}
+                listeners={{ focus: () => resetNotification('museum') }}
             />
         </Tab.Navigator>
     );
 }
-
-const styles = StyleSheet.create({
-    tabBarStyle: {
-        height: 70,
-        backgroundColor: Colors.black,
-        borderTopWidth: 0,
-        borderTopColor: Colors.black,
-    },
-})

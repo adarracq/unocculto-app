@@ -5,8 +5,6 @@ function setTutorialStory(id: string, storyId: string, countryCode: string, city
         _id: id,
         storyId: storyId,
         countryCode: countryCode,
-
-        // --- NOUVEAUX CHAMPS OBLIGATOIRES ---
         city: city,
         isCapital: true, // Les tutos sont toujours les capitales
         rarity: 'common',

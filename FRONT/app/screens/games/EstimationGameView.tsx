@@ -36,12 +36,6 @@ export default function EstimationGameView({ step, onValid }: Props) {
         }
     };
 
-    const getPriceColor = () => {
-        if (status === 'playing') return Colors.white;
-        if (status === 'success') return Colors.green;
-        return Colors.red;
-    };
-
     return (
         <View style={styles.container}>
             {/* 1. HEADER (Titre + Question) */}
@@ -64,33 +58,53 @@ export default function EstimationGameView({ step, onValid }: Props) {
 
                 {/* A. Affichage du Prix */}
                 <View style={styles.priceDisplay}>
-                    {status === 'fail' ? (
-                        // Mode Correction : On montre l'erreur barrée et la bonne réponse
-                        <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-                            <BodyText
-                                text={`${functions.addSpacesInNumber(currentValue)} ${step.currency}`}
-                                size="XL"
-                                color={Colors.red}
-                                style={{ textDecorationLine: 'line-through', opacity: 0.7 }}
-                            />
-                            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 5 }}>
-                                <Ionicons name="arrow-down" size={24} color={Colors.white} />
-                                <BodyText
-                                    text={`${functions.addSpacesInNumber(step.targetValue)} ${step.currency}`}
-                                    size="XXL"
-                                    color={Colors.green}
-                                    style={{ fontWeight: 'bold' }}
-                                />
-                            </View>
-                        </View>
-                    ) : (
-                        // Mode Jeu ou Succès
+                    {status === 'playing' ? (
+                        // --- MODE JEU ---
+                        // On affiche seulement la valeur actuelle du slider
                         <BodyText
                             text={`${functions.addSpacesInNumber(currentValue)} ${step.currency}`}
                             size="XXL"
-                            color={getPriceColor()}
+                            color={Colors.white}
                             style={{ fontWeight: 'bold' }}
                         />
+                    ) : (
+                        // --- MODE RÉSULTAT (Succès OU Échec) ---
+                        // On affiche l'estimation ET le vrai résultat
+                        <View style={{ flexDirection: 'column', alignItems: 'center' }}>
+
+                            {/* 1. L'estimation du joueur */}
+                            <BodyText
+                                text={`${functions.addSpacesInNumber(currentValue)} ${step.currency}`}
+                                size="XL" // Un peu plus petit pour mettre l'emphase sur le vrai prix
+                                color={status === 'success' ? Colors.green : Colors.red}
+                                style={{
+                                    // Barré si échec, normal si succès
+                                    textDecorationLine: status === 'fail' ? 'line-through' : 'none',
+                                    opacity: 0.8,
+                                    marginBottom: 2
+                                }}
+                            />
+
+                            {/* 2. Indicateur visuel */}
+                            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+                                <Ionicons
+                                    name="arrow-down"
+                                    size={24}
+                                    color={Colors.white}
+                                />
+
+                                {/* 3. Le VRAI prix (Target) */}
+                                <BodyText
+                                    text={`${functions.addSpacesInNumber(step.targetValue)} ${step.currency}`}
+                                    size="XXL"
+                                    color={Colors.white} // ou Colors.green pour dire "c'est la bonne réponse"
+                                    style={{ fontWeight: 'bold' }}
+                                />
+                            </View>
+
+                            {/* Petit texte optionnel pour dire "Prix exact" (facultatif) */}
+                            {/* <BodyText text="Prix exact" size="S" color="#666" /> */}
+                        </View>
                     )}
                 </View>
 
@@ -165,7 +179,7 @@ const styles = StyleSheet.create({
     priceDisplay: {
         alignItems: 'center',
         marginBottom: 10,
-        minHeight: 60,
+        minHeight: 80, // Légèrement augmenté pour accommoder les deux lignes
         justifyContent: 'center',
     },
     minMaxRow: {

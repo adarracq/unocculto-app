@@ -1,5 +1,8 @@
 // app/models/Story.ts
+import { Anecdote } from './Anecdote';
+import { Collectible } from './Collectible';
 
+// --- TYPES DE JEUX ---
 export type StepType =
     | 'dialogue'
     | 'quiz'
@@ -7,35 +10,51 @@ export type StepType =
     | 'reward'
     | 'location'
     | 'swipe'
+    | 'true_false'
     | 'estimation';
 
 export type Rarity = 'common' | 'uncommon' | 'rare' | 'legendary';
 
-// --- SOUS-STRUCTURES ---
+// --- SOUS-STRUCTURES JEUX ---
 
 export interface SwipeCard {
     id: string;
-    imageUrl: string;   // URI du drapeau
-    text: string;       // Nom du pays (ou vide pour corser)
-    isCorrect: boolean; // TRUE si c'est le pays visité
+    imageUrl?: string;
+    text: string;
+    isText: boolean;
+    isCorrect: boolean;
+    lesson?: string;
 }
 
-// --- BASE STEP (Champs communs) ---
+
+// --- STRUCTURE TIMELINE (Venant du Backend) ---
+// C'est ce qui remplace la liste statique de steps dans la DB
+export interface TimelineItem {
+    type: 'dialogue' | 'anecdote';
+
+    // Si type = 'dialogue'
+    content?: string;
+    characterId?: string;
+
+    // Si type = 'anecdote'
+    data?: Anecdote;
+}
+
+// --- BASE STEP (Champs communs pour l'affichage) ---
 
 interface StoryStepBase {
     id: string;
     title: string;
-    content: string;    // La consigne ou le texte du dialogue
-    duration?: number;  // En ms (pour l'autoplay ou le timer)
-    imageUrl?: string;  // Image de fond ou d'illustration générique
+    content: string;
+    duration?: number;
+    imageUrl?: string;
     nextStepId?: string;
 }
 
-// --- VARIATIONS DE STEPS ---
+// --- VARIATIONS DE STEPS (Jouables) ---
 
 export interface DialogueStep extends StoryStepBase {
     type: 'dialogue';
-    // Pas de champs spécifiques obligatoires pour l'instant
 }
 
 export interface QuizStep extends StoryStepBase {
@@ -43,18 +62,16 @@ export interface QuizStep extends StoryStepBase {
     choices: string[];
     correctAnswerIndex: number;
     answerType: 'text' | 'image';
-    explanation?: string; // Affiché après la réponse
+    explanation?: string;
 }
 
 export interface OrderStep extends StoryStepBase {
     type: 'order';
-    orderItems: string[]; // Liste des items dans le BON ordre
+    orderItems: string[];
 }
 
 export interface LocationStep extends StoryStepBase {
     type: 'location';
-    // Pour l'instant, Location utilise les données du 'Country' parent.
-    // On pourra ajouter ici des coordonnées spécifiques (lat/lng) plus tard si besoin.
 }
 
 export interface SwipeStep extends StoryStepBase {
@@ -62,38 +79,47 @@ export interface SwipeStep extends StoryStepBase {
     deck: SwipeCard[];
 }
 
+export interface TrueFalseStep extends StoryStepBase {
+    type: 'true_false';
+    statement: string;    // L'affirmation
+    isTrue: boolean;      // La vérité
+    imageUri?: string;    // L'image d'illustration
+    explanation?: string; // L'explication post-jeu
+}
+
 export interface RewardStep extends StoryStepBase {
     type: 'reward';
-    rewardImage?: string; // Image spécifique du collectible
+    rewardImage?: string;
 }
 
 export interface EstimationStep extends StoryStepBase {
     type: 'estimation';
-    targetValue: number;      // La vraie réponse (ex: 1200)
-    currency: string;         // Le symbole (ex: "¥" ou "€")
-    min: number;              // Borne min du slider
-    max: number;              // Borne max du slider
-    imageUri: string;         // L'image de l'objet à estimer (Attention: imageUri vs imageUrl)
-    tolerance?: number;       // Marge d'erreur acceptée
-    step?: number;            // Incrément du slider
+    label: string;
+    targetValue: number;
+    currency: string;
+    min: number;
+    max: number;
+    imageUri: string;
+    tolerance?: number;
+    step?: number;
 }
 
-// --- L'UNION TYPE (Le coeur du polymorphisme) ---
-
+// L'Union des Steps Jouables
 export type StoryStep =
     | DialogueStep
     | QuizStep
     | OrderStep
     | LocationStep
     | SwipeStep
+    | TrueFalseStep
     | RewardStep
     | EstimationStep;
 
 // --- OBJET PRINCIPAL STORY ---
 
 export interface Story {
-    _id: string; // ID technique (Mongo/Firebase)
-    storyId: string; // ID métier (ex: "fr-paris-1")
+    _id: string;
+    storyId: string;
     countryCode: string;
 
     // Metadonnées
@@ -102,9 +128,16 @@ export interface Story {
     rarity: Rarity;
     title: string;
 
-    // Contenu
+    // DATA BACKEND (Source)
+    // Optionnel car une story générée localement (tuto) pourrait ne pas en avoir
+    timeline?: TimelineItem[];
+
+    // DATA FRONTEND (Résultat jouable)
+    // C'est ce que le GameScreen consomme
     steps: StoryStep[];
 
-    // Récompense finale
+    // Récompense
     rewardCollectibleId?: string;
+    collectible?: Collectible;
+    xpReward?: number;
 }

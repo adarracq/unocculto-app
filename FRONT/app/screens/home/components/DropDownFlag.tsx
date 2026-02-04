@@ -2,27 +2,32 @@ import BodyText from '@/app/components/atoms/BodyText';
 import Title2 from '@/app/components/atoms/Title2';
 import Colors from '@/app/constants/Colors';
 import { ALL_COUNTRIES, getFlagImage } from '@/app/models/Countries';
-import { functions } from '@/app/utils/Functions';
 import React, { useRef } from 'react';
 import { FlatList, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import ActionSheet, { ActionSheetRef } from "react-native-actions-sheet";
 
-type DropDownProps = {
-    unlockedFlags: string[]; // Codes pays ex: ['FR', 'US']
+type SelectorProps = {
+    unlockedFlags: string[];
     selectedFlag: string | null;
-    color: string;
     onChangeFlag: (code: string) => void;
+    passport?: Record<string, { isCompleted: boolean }>;
+    children: React.ReactNode;
 }
 
-export default function DropDownFlag({ unlockedFlags, selectedFlag, color, onChangeFlag }: DropDownProps) {
+export default function DropDownFlag({ unlockedFlags, selectedFlag, onChangeFlag, passport = {}, children }: SelectorProps) {
     const actionSheetRef = useRef<ActionSheetRef>(null);
-
-    // On récupère les objets pays complets correspondant aux codes débloqués
-    // On ajoute un tri éventuel (alphabétique ou par ordre de déblocage)
     const myFlags = ALL_COUNTRIES.filter(c => unlockedFlags.includes(c.code));
 
     const renderFlagItem = ({ item }: { item: typeof ALL_COUNTRIES[0] }) => {
         const isSelected = selectedFlag === item.code;
+        const isCompleted = passport[item.code]?.isCompleted || false;
+
+        // Logique visuelle (identique à ton code, très bien faite)
+        const opacity = isSelected ? 1 : (isCompleted ? 0.6 : 0.3);
+        const borderColor = isSelected ? Colors.mainLight : 'transparent';
+        const backgroundColor = isSelected
+            ? (isCompleted ? 'rgba(255, 215, 0, 0.1)' : 'rgba(255,255,255,0.05)')
+            : 'transparent';
 
         return (
             <TouchableOpacity
@@ -30,134 +35,124 @@ export default function DropDownFlag({ unlockedFlags, selectedFlag, color, onCha
                     onChangeFlag(item.code);
                     actionSheetRef.current?.hide();
                 }}
-                style={[
-                    styles.flagCard,
-                    isSelected && styles.flagCardSelected
-                ]}
+                style={styles.stampSlot}
+                activeOpacity={0.7}
             >
-                <Image
-                    source={getFlagImage(item.code)}
-                    style={{ width: 40, height: 25, borderRadius: 4 }}
-                    resizeMode="cover"
-                />
-                <BodyText text={item.code} style={{ fontSize: 12, color: Colors.white, marginTop: 4 }} isBold />
+                <View style={[styles.stampFrame, { borderColor, backgroundColor }, isSelected && styles.activeShadow]}>
+                    <Image source={getFlagImage(item.code)} style={[styles.flagImage, { opacity }]} resizeMode="cover" />
 
-                {isSelected && (
-                    <View style={styles.checkBadge}>
-                        <Image
-                            source={functions.getIconSource('check')}
-                            style={{ width: 10, height: 10, tintColor: Colors.white }}
-                        />
-                    </View>
-                )}
+                    {/* Indicateur TAMPONNÉ si fini */}
+                    {isCompleted && (
+                        <View style={[styles.inkStampContainer, { opacity: isSelected ? 1 : 0.5 }]}>
+                            <View style={[styles.inkStampBorder, !isSelected && { borderColor: 'rgba(255, 215, 0, 0.4)' }]}>
+                                <BodyText text='100%' color={isSelected ? Colors.gold : 'rgba(255, 215, 0, 0.6)'} isBold size='S' />
+                            </View>
+                        </View>
+                    )}
+                </View>
+
+                <BodyText
+                    text={item.code}
+                    style={{
+                        fontSize: 10,
+                        color: isSelected ? Colors.white : 'rgba(255,255,255,0.3)',
+                        marginTop: 6,
+                        fontWeight: isSelected ? 'bold' : 'normal',
+                    }}
+                />
             </TouchableOpacity>
         );
     };
 
     return (
         <>
-            {/* BOUTON DECLENCHEUR (Petit crayon/change) */}
             <TouchableOpacity
                 onPress={() => actionSheetRef.current?.show()}
-                style={[styles.triggerButton, { backgroundColor: color }]}
-                activeOpacity={0.8}
+                activeOpacity={0.7}
             >
-                <Image
-                    source={functions.getIconSource('change')}
-                    style={{ width: 16, height: 16, tintColor: Colors.white }}
-                />
+                {children}
             </TouchableOpacity>
 
-            {/* ACTION SHEET */}
+            {/* ACTION SHEET (Inchangé car il fonctionne bien) */}
             <ActionSheet
                 ref={actionSheetRef}
                 containerStyle={styles.sheetContainer}
-                indicatorStyle={{ backgroundColor: Colors.darkGrey }}
+                indicatorStyle={{ backgroundColor: Colors.lightGrey }}
                 gestureEnabled={true}
             >
                 <View style={styles.sheetHeader}>
-                    <Title2 title="Choisir mon Emblème" color={Colors.white} />
-                    <BodyText
-                        text={`Vous avez débloqué ${myFlags.length} drapeaux`}
-                        style={{ color: Colors.darkGrey, fontSize: 12 }}
-                    />
+                    <Title2 title="PAGES VISAS" color={Colors.white} style={{ letterSpacing: 2 }} />
+                    <BodyText text={`${myFlags.length} DESTINATIONS DISPONIBLES`} style={{ color: Colors.lightGrey, fontSize: 10, marginTop: 4 }} />
                 </View>
 
-                {myFlags.length > 0 ? (
-                    <FlatList
-                        data={myFlags}
-                        keyExtractor={(item) => item.code}
-                        numColumns={4}
-                        renderItem={renderFlagItem}
-                        contentContainerStyle={styles.listContent}
-                        columnWrapperStyle={styles.listRow}
-                    />
-                ) : (
-                    <View style={{ padding: 40, alignItems: 'center' }}>
-                        <BodyText text="Terminez un pays pour gagner son drapeau !" style={{ color: Colors.darkGrey, textAlign: 'center' }} />
-                    </View>
-                )}
+                <FlatList
+                    data={myFlags}
+                    keyExtractor={(item) => item.code}
+                    numColumns={4}
+                    renderItem={renderFlagItem}
+                    contentContainerStyle={styles.listContent}
+                    columnWrapperStyle={styles.listRow}
+                />
             </ActionSheet>
         </>
     )
 }
 
 const styles = StyleSheet.create({
-    triggerButton: {
-        width: 32,
-        height: 32,
-        borderRadius: 16,
-        justifyContent: 'center',
-        alignItems: 'center',
-        elevation: 4,
+    triggerContainer: {
+        position: 'relative',
+        // Pas de dimensions fixes ici, on s'adapte au contenu
     },
+    // --- LE STYLE DU BOUTON MODERNE ---
+    editBadge: {
+        position: 'absolute',
+        bottom: 6, // Flotte en bas du drapeau
+        alignSelf: 'center', // Centré horizontalement
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 6,
+        paddingVertical: 4,
+        paddingHorizontal: 10,
+        borderRadius: 12,
+        // Effet Glassmorphism sombre
+        backgroundColor: 'rgba(0,0,0,0.65)',
+        borderWidth: 1,
+        borderColor: 'rgba(255,255,255,0.15)',
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.4,
+        shadowRadius: 2,
+    },
+
+    // ... Le reste de tes styles ActionSheet (inchangés ou nettoyés) ...
     sheetContainer: {
-        backgroundColor: '#1A1A1A',
-        borderTopLeftRadius: 32,
-        borderTopRightRadius: 32,
-        paddingBottom: 40,
-        maxHeight: '70%',
+        backgroundColor: '#121212',
+        borderTopLeftRadius: 24, borderTopRightRadius: 24,
+        paddingBottom: 40, maxHeight: '70%',
     },
     sheetHeader: {
-        padding: 20,
-        alignItems: 'center',
-        borderBottomWidth: 1,
-        borderBottomColor: 'rgba(255,255,255,0.1)',
+        padding: 20, alignItems: 'center',
+        borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.1)',
         marginBottom: 10,
     },
-    listContent: {
-        paddingHorizontal: 20,
-        paddingBottom: 40,
+    listContent: { paddingHorizontal: 20, paddingTop: 10 },
+    listRow: { justifyContent: 'space-between', marginBottom: 20 },
+    stampSlot: { width: '22%', alignItems: 'center' },
+    stampFrame: {
+        width: '100%', aspectRatio: 1.4, borderRadius: 6, borderWidth: 1.5,
+        justifyContent: 'center', alignItems: 'center', overflow: 'hidden', padding: 2,
     },
-    listRow: {
-        gap: 15,
-        paddingVertical: 10,
-        justifyContent: 'flex-start' // Ou space-between selon préférence
+    activeShadow: {
+        shadowColor: Colors.white, shadowOffset: { width: 0, height: 0 },
+        shadowOpacity: 0.3, shadowRadius: 5, elevation: 3
     },
-    flagCard: {
-        width: '22%', // Pour 4 colonnes environ
-        aspectRatio: 1,
-        backgroundColor: 'rgba(255,255,255,0.05)',
-        borderRadius: 16,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderWidth: 2,
-        borderColor: 'transparent',
+    flagImage: { width: '105%', height: '105%', borderRadius: 4 },
+    inkStampContainer: {
+        ...StyleSheet.absoluteFillObject, justifyContent: 'center', alignItems: 'center', zIndex: 5,
     },
-    flagCardSelected: {
-        borderColor: Colors.main,
-        backgroundColor: 'rgba(255,255,255,0.1)',
-    },
-    flagEmoji: {
-        fontSize: 32,
-    },
-    checkBadge: {
-        position: 'absolute',
-        top: -6, right: -6,
-        backgroundColor: Colors.main,
-        width: 20, height: 20,
-        borderRadius: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
+    inkStampBorder: {
+        borderWidth: 1, borderColor: 'rgba(255, 215, 0, 0.8)', borderRadius: 4,
+        paddingHorizontal: 4, paddingVertical: 1, transform: [{ rotate: '-15deg' }],
+        backgroundColor: 'rgba(0,0,0,0.4)',
     }
 });

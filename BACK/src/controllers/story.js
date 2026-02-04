@@ -1,10 +1,19 @@
 const Story = require('../models/Story');
 const User = require('../models/User');
+const Collectible = require('../models/Collectible');
 
 exports.getByID = async (req, res, next) => {
     console.log("Fetching story by ID: " + req.params.id);
     try {
         const story = await Story.findOne({ storyId: req.params.id });
+        if (story && story.rewardCollectibleId) {
+            const collectible = await Collectible.findOne({ id: story.rewardCollectibleId });
+            if (collectible) {
+                story._doc.collectible = collectible;
+            }
+        }
+        console.log("Next story selected: " + story.storyId);
+        console.log("Next story selected: " + story.rewardCollectibleId);
         res.status(200).json(story);
     } catch (error) {
         res.status(500).json({ error: 'Erreur serveur' });
@@ -53,6 +62,14 @@ exports.getNextByCountryCode = async (req, res, next) => {
             // (Tu pourras ajouter de la logique de rareté ici plus tard)
             const randomIndex = Math.floor(Math.random() * availableStories.length);
             const nextStory = availableStories[randomIndex];
+
+            // on recupere le collectible associé s'il y en a un
+            if (nextStory.rewardCollectibleId) {
+                const collectible = await Collectible.findOne({ id: nextStory.rewardCollectibleId });
+                if (collectible) {
+                    nextStory._doc.collectible = collectible; // Ajouter le collectible à la réponse
+                }
+            }
 
             return res.status(200).json(nextStory);
         }

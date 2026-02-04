@@ -14,6 +14,7 @@ import LocationGameView from './LocationGameView';
 import OrderGameView from './OrderGameView';
 import QuizGameView from './QuizGameView';
 import SwipeGameView from './SwipeGameView';
+import TrueFalseGameView from './TrueFalseGameView';
 
 const { width } = Dimensions.get('window');
 
@@ -176,14 +177,10 @@ export default function GameScreen({ story, country, onFinish, headerTitle }: Pr
                 return <StoryReward step={currentStep} onNext={handleNext} />;
             case 'estimation':
                 return <EstimationGameView step={currentStep} onValid={handleNext} />;
+            case 'true_false':
+                return <TrueFalseGameView step={currentStep} onValid={handleNext} />;
             case 'location':
-                return (
-                    <LocationGameView
-                        step={currentStep}
-                        country={country}
-                        onValid={handleNext}
-                    />
-                );
+                return <LocationGameView step={currentStep} country={country} onValid={handleNext} />;
             default:
                 return <SmallText text={`Type inconnu`} />;
         }

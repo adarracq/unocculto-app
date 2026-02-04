@@ -128,7 +128,9 @@ export default function HomeScreen({ navigation }: Props) {
     // --- RENDER ---
 
     if (!userApi.data || userApi.loading) {
-        return <LoadingScreen />;
+        return <LinearGradient colors={[Colors.black, '#121212']} style={styles.container}>
+            <LoadingScreen />
+        </LinearGradient>;
     }
 
     const lastTrip = getLastTripInfo();
@@ -177,7 +179,7 @@ export default function HomeScreen({ navigation }: Props) {
             {storyApi.data && (
                 <CustomModal
                     visible={showBoardingModal}
-                    title="EMBARQUEMENT"
+                    title="EMBARQUEMENT PORTE A21"
                     confirmText="Décoller"
                     color={destinationCountry?.mainColor || Colors.main}
                     onConfirm={confirmLaunch}
@@ -207,7 +209,7 @@ export default function HomeScreen({ navigation }: Props) {
                                 source={functions.getIconSource('lightning')}
                                 style={{ width: 26, height: 26, }}
                             />
-                            <Title0 title="10" style={{ color: '#FFD700' }} />
+                            <Title0 title="10" style={{ color: Colors.gold }} />
                         </View>
                     </View>
                 </CustomModal>

@@ -1,75 +1,111 @@
+import SmallText from '@/app/components/atoms/SmallText';
+import Colors from '@/app/constants/Colors';
 import { functions } from '@/app/utils/Functions';
-import React from 'react';
-import { Image, View } from 'react-native';
-import Colors from '../../constants/Colors';
-import SmallText from '../atoms/SmallText';
+import React, { useEffect, useRef } from 'react';
+import { Animated, StyleSheet, View } from 'react-native';
 
 type TabBarElementProps = {
-    title: string;
     focused: boolean;
     name: string;
     nbNotifications?: number;
 }
 
-export default function TabBarElement(props: TabBarElementProps) {
+export default function TabBarElement({ focused, name, nbNotifications }: TabBarElementProps) {
+    const animValue = useRef(new Animated.Value(focused ? 1 : 0)).current;
+
+    useEffect(() => {
+        Animated.spring(animValue, {
+            toValue: focused ? 1 : 0,
+            useNativeDriver: true,
+            friction: 8,
+            tension: 60
+        }).start();
+    }, [focused]);
+
+    // Interpolations
+    // On bouge un peu l'icône vers le haut quand c'est actif pour laisser place au point
+    const translateY = animValue.interpolate({
+        inputRange: [0, 1],
+        outputRange: [0, -4]
+    });
+
+    // Léger zoom
+    const scale = animValue.interpolate({
+        inputRange: [0, 1],
+        outputRange: [1, 1.1]
+    });
 
     return (
-        <View style={{
-            justifyContent: 'center',
-            alignItems: 'center',
-            width: 60,
-            height: 60,
-            marginTop: 30,
-        }}>
-            {/* Cercle gris extérieur */}
-            <View style={{
-                width: 55,
-                height: 55,
-                borderRadius: 27.5,
-                backgroundColor: props.focused ? Colors.lightGrey : 'transparent',
-                justifyContent: 'center',
-                alignItems: 'center',
-            }}>
-                {/* Cercle blanc intérieur */}
-                <View style={{
-                    width: 50,
-                    height: 50,
-                    borderRadius: 25,
-                    backgroundColor: props.focused ? Colors.white : 'transparent',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}>
-                    <Image
-                        source={functions.getIconSource(props.name)}
-                        style={{
-                            width: props.focused ? 40 : 32,
-                            height: props.focused ? 40 : 32,
-                            tintColor: props.focused ? Colors.main : Colors.lightGrey
-                        }}
+        <View style={styles.container}>
+
+            {/* ICÔNE */}
+            <Animated.Image
+                source={functions.getIconSource(name)}
+                style={{
+                    width: 28, // Taille raisonnable
+                    height: 28,
+                    // Si actif: Orange (Main), Sinon: Gris clair (pas blanc pur pour contraste)
+                    tintColor: focused ? Colors.main : '#888',
+                    transform: [{ translateY }, { scale }]
+                }}
+                resizeMode="contain"
+            />
+
+            {/* POINT LUMINEUX (Juste en dessous) */}
+            <Animated.View style={[
+                styles.dot,
+                {
+                    opacity: animValue, // Invisible si pas focus
+                    transform: [{ scale: animValue }] // Grossit en apparaissant
+                }
+            ]} />
+
+            {/* BADGE NOTIF */}
+            {nbNotifications && nbNotifications > 0 ? (
+                <View style={styles.badge}>
+                    <SmallText
+                        text={nbNotifications > 9 ? '9+' : nbNotifications.toString()}
+                        color={Colors.white}
+                        style={{ fontSize: 9, fontWeight: 'bold' }}
                     />
                 </View>
-            </View>
-
-            {props.nbNotifications && props.nbNotifications > 0 ?
-                <View style={{
-                    position: 'absolute',
-                    right: 5,
-                    top: 0,
-                    backgroundColor: Colors.red,
-                    borderColor: Colors.white,
-                    borderWidth: 2,
-                    width: 20,
-                    height: 20,
-                    borderRadius: 10,
-                    borderCurve: 'continuous',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}>
-                    <SmallText text={props.nbNotifications.toString()} color={Colors.white} />
-                </View>
-                : null
-            }
+            ) : null}
         </View>
-
-    )
+    );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: 60,
+        width: 60,
+    },
+    dot: {
+        position: 'absolute',
+        bottom: 8, // Calé en bas du conteneur
+        width: 5,
+        height: 5,
+        borderRadius: 2.5,
+        backgroundColor: Colors.main,
+        // Petit effet néon
+        shadowColor: Colors.main,
+        shadowOffset: { width: 0, height: 0 },
+        shadowOpacity: 0.8,
+        shadowRadius: 4,
+        elevation: 5,
+    },
+    badge: {
+        position: 'absolute',
+        top: 8,
+        right: 8,
+        backgroundColor: Colors.red,
+        minWidth: 16,
+        height: 16,
+        borderRadius: 8,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderWidth: 1.5,
+        borderColor: '#111', // Match le fond noir de la barre
+    }
+});

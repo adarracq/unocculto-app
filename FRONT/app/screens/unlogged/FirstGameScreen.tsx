@@ -23,6 +23,7 @@ export default function FirstGameScreen({ navigation, route }: Props) {
     // 4. Rendu de l'organisme générique
     return (
         <GameScreen
+            country={country}
             story={story}
             onFinish={handleGameFinish}
             headerTitle={`${countryFlag} • ${story.title}`}

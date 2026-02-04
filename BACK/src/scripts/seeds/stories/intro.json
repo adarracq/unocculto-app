@@ -3,609 +3,433 @@
         "storyId": "FR00",
         "countryCode": "FR",
         "city": "Paris",
-        "title": "Lumières de Paris",
+        "title": "Lumières sur la Seine",
         "isCapital": true,
         "rarity": "common",
-        "xpReward": 100,
-        "rewardCollectibleId": "badge_paris",
-        "steps": [
+        "xpReward": 150,
+        "rewardCollectibleId": "badge_croissant_dore",
+        "timeline": [
             {
-                "id": "step_1",
                 "type": "dialogue",
-                "title": "Bienvenue !",
-                "content": "Bonjour ! Vous voilà à Paris. L'air sent le café et les croissants chauds, mais attention à la circulation !",
-                "imageUrl": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=800&q=80",
-                "nextStepId": "step_2",
-                "duration": 4000
+                "content": "Bienvenue à bord, passager. Nous approchons de Paris. La température au sol est idéale pour une flânerie culturelle. Commençons par une icône indémodable.",
+                "characterId": "navigant_principal"
             },
             {
-                "id": "step_2",
-                "type": "estimation",
-                "title": "Dame de Fer",
-                "content": "La Tour Eiffel domine la ville. À votre avis, quelle est sa hauteur totale (antennes comprises) ?",
-                "imageUri": "https://images.unsplash.com/photo-1511739001486-6bfe10ce7859?auto=format&fit=crop&w=800&q=80",
-                "targetValue": 330,
-                "currency": "m",
-                "min": 100,
-                "max": 500,
-                "step": 10,
-                "tolerance": 20,
-                "nextStepId": "step_3"
+                "type": "anecdote",
+                "data": {
+                    "id": "fr_eiffel_height",
+                    "type": "numeric",
+                    "label": "Hauteur actuelle de la Tour Eiffel (avec antennes)",
+                    "numericValue": 330,
+                    "unit": "mètres",
+                    "lesson": "Inaugurée en 1889, elle mesurait 312m. Elle a grandi grâce à l'ajout successif d'antennes radio et télé au sommet !",
+                    "imageUri": "https://images.unsplash.com/photo-1511739001486-6bfe10ce7859"
+                }
             },
             {
-                "id": "step_3",
                 "type": "dialogue",
-                "title": "Gastronomie",
-                "content": "Pas mal ! Maintenant, passons aux choses sérieuses : la cuisine. Attention aux pièges touristiques.",
-                "nextStepId": "step_4",
-                "duration": 3000
+                "content": "Impressionnant, n'est-ce pas ? Après cette ascension, une petite pause gourmande s'impose. Mais attention aux idées reçues.",
+                "characterId": "navigant_principal"
             },
             {
-                "id": "step_4",
-                "type": "order",
-                "title": "Le Vrai Croissant",
-                "content": "Pour faire un croissant parfait, l'ordre est crucial. Aidez le boulanger :",
-                "orderItems": [
-                    "Pétrir la pâte",
-                    "Ajouter le beurre",
-                    "Plier (Tourage)",
-                    "Cuire au four"
-                ],
-                "nextStepId": "step_5"
-            },
-            {
-                "id": "step_5",
-                "type": "reward",
-                "title": "Explorateur Parisien",
-                "content": "Bravo ! Vous avez survécu à votre première journée parisienne.",
-                "rewardImage": "https://cdn-icons-png.flaticon.com/512/940/940562.png"
+                "type": "anecdote",
+                "data": {
+                    "id": "fr_croissant_origin",
+                    "type": "true_false",
+                    "statement": "Le croissant est une invention 100% française.",
+                    "isTrue": false,
+                    "isText": true,
+                    "lesson": "C'est faux ! L'ancêtre du croissant est le 'Kipferl' autrichien. Il a été importé à Paris vers 1839 par August Zang, un officier autrichien.",
+                    "imageUri": "https://images.unsplash.com/photo-1555507036-ab1f40388085"
+                }
             }
         ]
     },
     {
-        "storyId": "JP00",
+        "storyId": "JP-TOKYO-01",
         "countryCode": "JP",
         "city": "Tokyo",
-        "title": "Néons de Tokyo",
+        "title": "Néon et Tradition",
         "isCapital": true,
-        "rarity": "common",
-        "xpReward": 100,
-        "rewardCollectibleId": "cat_lucky",
-        "steps": [
+        "rarity": "rare",
+        "xpReward": 200,
+        "rewardCollectibleId": "badge_shibuya",
+        "timeline": [
             {
-                "id": "step_1",
                 "type": "dialogue",
-                "title": "Shinjuku",
-                "content": "Irasshaimase ! Vous êtes au cœur de Tokyo. C'est bruyant, lumineux et incroyablement organisé.",
-                "imageUrl": "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=800&q=80",
-                "nextStepId": "step_2",
-                "duration": 4000
+                "content": "Konnichiwa. Atterrissage à Tokyo, la plus grande mégalopole du monde. Ici, le calme des temples côtoie la frénésie urbaine.",
+                "characterId": "guide_local"
             },
             {
-                "id": "step_2",
-                "type": "estimation",
-                "title": "Foule immense",
-                "content": "La gare de Shinjuku est la plus fréquentée du monde. Combien de passagers y passent CHAQUE JOUR ?",
-                "imageUri": "https://images.unsplash.com/photo-1554797589-7241bb691973?auto=format&fit=crop&w=800&q=80",
-                "targetValue": 3500000,
-                "currency": "pers",
-                "min": 500000,
-                "max": 5000000,
-                "step": 100000,
-                "tolerance": 500000,
-                "nextStepId": "step_3"
+                "type": "anecdote",
+                "data": {
+                    "id": "jp_shibuya_crossing",
+                    "type": "choice",
+                    "question": "Quel record détient le carrefour de Shibuya ?",
+                    "correctAnswer": "Le carrefour le plus fréquenté au monde",
+                    "distractors": [
+                        "Le carrefour le plus large",
+                        "Le premier carrefour à LED",
+                        "Le carrefour le plus dangereux"
+                    ],
+                    "lesson": "Aux heures de pointe, jusqu'à 3 000 personnes traversent ce carrefour simultanément à chaque feu vert.",
+                    "imageUri": "https://images.unsplash.com/photo-1542051841857-5f90071e7989"
+                }
             },
             {
-                "id": "step_3",
-                "type": "swipe",
-                "title": "Etiquette",
-                "content": "Au Japon, les bonnes manières sont vitales. Swipez à DROITE ce qui est poli, à GAUCHE ce qui est impoli.",
-                "deck": [
-                    {
-                        "id": "bow",
-                        "imageUrl": "https://cdn-icons-png.flaticon.com/512/1666/1666687.png",
-                        "text": "S'incliner pour saluer",
-                        "isCorrect": true
-                    },
-                    {
-                        "id": "shoes",
-                        "imageUrl": "https://cdn-icons-png.flaticon.com/512/2821/2821768.png",
-                        "text": "Garder ses chaussures à l'intérieur",
-                        "isCorrect": false
-                    },
-                    {
-                        "id": "slurp",
-                        "imageUrl": "https://cdn-icons-png.flaticon.com/512/3063/3063822.png",
-                        "text": "Faire du bruit en mangeant des nouilles",
-                        "isCorrect": true
-                    }
-                ],
-                "nextStepId": "step_4"
-            },
-            {
-                "id": "step_4",
-                "type": "reward",
-                "title": "Respect Absolu",
-                "content": "Vous commencez à comprendre l'âme du Japon.",
-                "rewardImage": "https://cdn-icons-png.flaticon.com/512/864/864694.png"
+                "type": "anecdote",
+                "data": {
+                    "id": "jp_vending_machines",
+                    "type": "numeric",
+                    "label": "Estimation du nombre de distributeurs automatiques au Japon",
+                    "numericValue": 4000000,
+                    "unit": "machines",
+                    "lesson": "On compte environ 1 distributeur pour 30 habitants. On y trouve de tout : boissons, plats chauds, et même des parapluies !",
+                    "imageUri": "https://images.unsplash.com/photo-1605218457297-3c586119af24"
+                }
             }
         ]
     },
     {
-        "storyId": "IT00",
+        "storyId": "IT-ROME-01",
         "countryCode": "IT",
         "city": "Rome",
-        "title": "Rome Éternelle",
+        "title": "L'Éternelle",
         "isCapital": true,
         "rarity": "common",
-        "xpReward": 100,
-        "rewardCollectibleId": "badge_gladiator",
-        "steps": [
+        "xpReward": 150,
+        "rewardCollectibleId": "badge_colosseum",
+        "timeline": [
             {
-                "id": "step_1",
                 "type": "dialogue",
-                "title": "Ciao !",
-                "content": "Toutes les routes mènent ici. Attention aux scooters Vespa qui surgissent de nulle part !",
-                "imageUrl": "https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=800&q=80",
-                "nextStepId": "step_2",
-                "duration": 4000
+                "content": "Benvenuti a Roma. Chaque pierre ici raconte une histoire millénaire. Parlons un peu de l'arène la plus célèbre du monde.",
+                "characterId": "guide_historique"
             },
             {
-                "id": "step_2",
-                "type": "estimation",
-                "title": "Le Colisée",
-                "content": "Les gladiateurs s'y battaient jadis. Combien de spectateurs pouvaient s'asseoir dans le Colisée ?",
-                "imageUri": "https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=800&q=80",
-                "targetValue": 50000,
-                "currency": "p.",
-                "min": 10000,
-                "max": 100000,
-                "step": 5000,
-                "tolerance": 10000,
-                "nextStepId": "step_3"
+                "type": "anecdote",
+                "data": {
+                    "id": "it_colosseum_capacity",
+                    "type": "numeric",
+                    "label": "Capacité maximale estimée du Colisée antique",
+                    "numericValue": 50000,
+                    "unit": "spectateurs",
+                    "lesson": "Il pouvait accueillir entre 50 000 et 80 000 spectateurs selon les configurations, soit l'équivalent d'un grand stade de football moderne.",
+                    "imageUri": "https://images.unsplash.com/photo-1552832230-c0197dd311b5"
+                }
             },
             {
-                "id": "step_3",
-                "type": "order",
-                "title": "La Carbonara",
-                "content": "Sacrebleu ! Ne mettez jamais de crème ! Quel est l'ordre des ingrédients pour la vraie recette ?",
-                "orderItems": [
-                    "Pâtes al dente",
-                    "Guanciale (Porc)",
-                    "Oeufs battus & Pecorino",
-                    "Poivre noir"
-                ],
-                "nextStepId": "step_4"
-            },
-            {
-                "id": "step_4",
-                "type": "reward",
-                "title": "Chef Romain",
-                "content": "Delizioso ! Vous avez gagné le respect des mamas italiennes.",
-                "rewardImage": "https://cdn-icons-png.flaticon.com/512/4080/4080887.png"
+                "type": "anecdote",
+                "data": {
+                    "id": "it_flag_pizza",
+                    "type": "order",
+                    "task": "Remettez dans l'ordre les couleurs du drapeau italien (et de la Pizza Margherita !)",
+                    "items": [
+                        "Vert (Basilic)",
+                        "Blanc (Mozzarella)",
+                        "Rouge (Tomate)"
+                    ],
+                    "lesson": "La légende dit que la pizza Margherita a été créée en 1889 pour honorer la reine Marguerite de Savoie avec les couleurs de l'Italie unifiée.",
+                    "imageUri": "https://images.unsplash.com/photo-1574071318508-1cdbab80d002"
+                }
             }
         ]
     },
     {
-        "storyId": "EG00",
-        "countryCode": "EG",
-        "city": "Le Caire",
-        "title": "Sables du Caire",
-        "isCapital": true,
-        "rarity": "common",
-        "xpReward": 100,
-        "rewardCollectibleId": "badge_pharaon",
-        "steps": [
-            {
-                "id": "step_1",
-                "type": "dialogue",
-                "title": "Chaleur",
-                "content": "Le soleil est brûlant. Au loin, les silhouettes triangulaires des pyramides se dessinent.",
-                "imageUrl": "https://images.unsplash.com/photo-1539650116455-251d9a04a9f4?auto=format&fit=crop&w=800&q=80",
-                "nextStepId": "step_2",
-                "duration": 4000
-            },
-            {
-                "id": "step_2",
-                "type": "estimation",
-                "title": "Construction titanesque",
-                "content": "La Grande Pyramide de Gizeh est un mystère. Combien de blocs de pierre la composent environ ?",
-                "imageUri": "https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?auto=format&fit=crop&w=800&q=80",
-                "targetValue": 2300000,
-                "currency": "blocs",
-                "min": 500000,
-                "max": 5000000,
-                "step": 100000,
-                "tolerance": 500000,
-                "nextStepId": "step_3"
-            },
-            {
-                "id": "step_3",
-                "type": "quiz",
-                "title": "Le Gardien",
-                "content": "Quelle créature mythologique garde les pyramides ?",
-                "answerType": "text",
-                "choices": [
-                    "Le Griffon",
-                    "Le Sphinx",
-                    "Le Minotaure",
-                    "Anubis"
-                ],
-                "correctAnswerIndex": 1,
-                "explanation": "Le Sphinx a une tête d'homme (le pharaon) et un corps de lion.",
-                "nextStepId": "step_4"
-            },
-            {
-                "id": "step_4",
-                "type": "reward",
-                "title": "Archéologue",
-                "content": "Un bon début d'exploration. Gardez les yeux ouverts.",
-                "rewardImage": "https://cdn-icons-png.flaticon.com/512/3220/3220722.png"
-            }
-        ]
-    },
-    {
-        "storyId": "TH00",
-        "countryCode": "TH",
-        "city": "Bangkok",
-        "title": "Tuk-tuks de Bangkok",
-        "isCapital": true,
-        "rarity": "common",
-        "xpReward": 100,
-        "rewardCollectibleId": "badge_elephant",
-        "steps": [
-            {
-                "id": "step_1",
-                "type": "dialogue",
-                "title": "Sawasdee !",
-                "content": "Bangkok ne dort jamais. Les odeurs de street food sont partout.",
-                "imageUrl": "https://images.unsplash.com/photo-1563492065599-3520f775eeed?auto=format&fit=crop&w=800&q=80",
-                "nextStepId": "step_2",
-                "duration": 4000
-            },
-            {
-                "id": "step_2",
-                "type": "estimation",
-                "title": "Le vrai nom",
-                "content": "Bangkok a le nom de ville le plus long du monde (Krung Thep...). Combien de lettres compte son nom complet en alphabet latin ?",
-                "imageUri": "https://images.unsplash.com/photo-1596423199857-463d12ed1957?auto=format&fit=crop&w=800&q=80",
-                "targetValue": 168,
-                "currency": "lett.",
-                "min": 10,
-                "max": 200,
-                "step": 1,
-                "tolerance": 10,
-                "nextStepId": "step_3"
-            },
-            {
-                "id": "step_3",
-                "type": "quiz",
-                "title": "Transport local",
-                "content": "Pourquoi le célèbre tricycle motorisé s'appelle-t-il 'Tuk-Tuk' ?",
-                "answerType": "text",
-                "choices": [
-                    "Le nom de l'inventeur",
-                    "C'est un mot porte-bonheur",
-                    "Le bruit de son moteur",
-                    "Le quartier d'origine"
-                ],
-                "correctAnswerIndex": 2,
-                "explanation": "C'est une onomatopée imitant le bruit de leurs vieux moteurs 2 temps !",
-                "nextStepId": "step_4"
-            },
-            {
-                "id": "step_4",
-                "type": "reward",
-                "title": "Aventurier Urbain",
-                "content": "Vous savez vous débrouiller dans la jungle urbaine.",
-                "rewardImage": "https://cdn-icons-png.flaticon.com/512/3069/3069172.png"
-            }
-        ]
-    },
-    {
-        "storyId": "US00",
-        "countryCode": "US",
-        "city": "Washington D.C.",
-        "title": "Pouvoir Américain",
-        "isCapital": true,
-        "rarity": "common",
-        "xpReward": 100,
-        "rewardCollectibleId": "badge_eagle",
-        "steps": [
-            {
-                "id": "step_1",
-                "type": "dialogue",
-                "title": "Le Mall",
-                "content": "Bienvenue au cœur de la démocratie américaine. Tout est grand ici.",
-                "imageUrl": "https://images.unsplash.com/photo-1617581629397-a72507c3de9e?auto=format&fit=crop&w=800&q=80",
-                "nextStepId": "step_2",
-                "duration": 4000
-            },
-            {
-                "id": "step_2",
-                "type": "swipe",
-                "title": "Symboles",
-                "content": "Identifiez les symboles officiels des USA.",
-                "deck": [
-                    {
-                        "id": "eagle",
-                        "imageUrl": "https://cdn-icons-png.flaticon.com/512/3135/3135790.png",
-                        "text": "Pygargue à tête blanche",
-                        "isCorrect": true
-                    },
-                    {
-                        "id": "bear",
-                        "imageUrl": "https://cdn-icons-png.flaticon.com/512/616/616430.png",
-                        "text": "Ours Brun",
-                        "isCorrect": false
-                    },
-                    {
-                        "id": "rose",
-                        "imageUrl": "https://cdn-icons-png.flaticon.com/512/189/189657.png",
-                        "text": "La Rose",
-                        "isCorrect": true
-                    }
-                ],
-                "nextStepId": "step_3"
-            },
-            {
-                "id": "step_3",
-                "type": "estimation",
-                "title": "Maison Blanche",
-                "content": "Combien de pièces compte la Maison Blanche ?",
-                "imageUri": "https://images.unsplash.com/photo-1541963463532-d68292c34b19?auto=format&fit=crop&w=800&q=80",
-                "targetValue": 132,
-                "currency": "pcs",
-                "min": 50,
-                "max": 300,
-                "step": 1,
-                "tolerance": 20,
-                "nextStepId": "step_4"
-            },
-            {
-                "id": "step_4",
-                "type": "reward",
-                "title": "Diplomate",
-                "content": "Une visite présidentielle réussie.",
-                "rewardImage": "https://cdn-icons-png.flaticon.com/512/6366/6366371.png"
-            }
-        ]
-    },
-    {
-        "storyId": "ES00",
-        "countryCode": "ES",
-        "city": "Madrid",
-        "title": "Rythme de Madrid",
-        "isCapital": true,
-        "rarity": "common",
-        "xpReward": 100,
-        "rewardCollectibleId": "badge_fan",
-        "steps": [
-            {
-                "id": "step_1",
-                "type": "dialogue",
-                "title": "Hola !",
-                "content": "Madrid est une ville qui vit la nuit. Ne prévoyez pas de dîner tôt !",
-                "imageUrl": "https://images.unsplash.com/photo-1543783207-ec64e4d95325?auto=format&fit=crop&w=800&q=80",
-                "nextStepId": "step_2",
-                "duration": 4000
-            },
-            {
-                "id": "step_2",
-                "type": "estimation",
-                "title": "L'heure du dîner",
-                "content": "Si vous voulez manger avec les locaux, à quelle heure devez-vous réserver votre table ?",
-                "imageUri": "https://images.unsplash.com/photo-1515443961218-a51367888e4b?auto=format&fit=crop&w=800&q=80",
-                "targetValue": 22,
-                "currency": "h",
-                "min": 18,
-                "max": 24,
-                "step": 1,
-                "tolerance": 1,
-                "nextStepId": "step_3"
-            },
-            {
-                "id": "step_3",
-                "type": "quiz",
-                "title": "Art Royal",
-                "content": "Quel célèbre tableau de Picasso dénonce la guerre civile espagnole ?",
-                "answerType": "text",
-                "choices": [
-                    "Les Ménines",
-                    "Guernica",
-                    "La Persistance de la mémoire",
-                    "Le Cri"
-                ],
-                "correctAnswerIndex": 1,
-                "nextStepId": "step_4"
-            },
-            {
-                "id": "step_4",
-                "type": "reward",
-                "title": "Noctambule",
-                "content": "Vous avez le rythme espagnol dans la peau.",
-                "rewardImage": "https://cdn-icons-png.flaticon.com/512/7594/7594783.png"
-            }
-        ]
-    },
-    {
-        "storyId": "IN00",
-        "countryCode": "IN",
-        "city": "New Delhi",
-        "title": "Couleurs de l'Inde",
-        "isCapital": true,
-        "rarity": "common",
-        "xpReward": 100,
-        "rewardCollectibleId": "badge_lotus",
-        "steps": [
-            {
-                "id": "step_1",
-                "type": "dialogue",
-                "title": "Namaste",
-                "content": "Un tourbillon de couleurs et d'épices vous accueille. Delhi est intense !",
-                "imageUrl": "https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&w=800&q=80",
-                "nextStepId": "step_2",
-                "duration": 4000
-            },
-            {
-                "id": "step_2",
-                "type": "order",
-                "title": "Masala Chai",
-                "content": "Le thé ici est un art. Dans quel ordre prépare-t-on le Chai ?",
-                "orderItems": [
-                    "Bouillir l'eau",
-                    "Ajouter thé et épices",
-                    "Verser le lait",
-                    "Filtrer et servir"
-                ],
-                "nextStepId": "step_3"
-            },
-            {
-                "id": "step_3",
-                "type": "estimation",
-                "title": "Population",
-                "content": "New Delhi est immense. Combien d'habitants compte l'agglomération environ ?",
-                "imageUri": "https://images.unsplash.com/photo-1519955266818-0231b63402bc?auto=format&fit=crop&w=800&q=80",
-                "targetValue": 32000000,
-                "currency": "hab.",
-                "min": 10000000,
-                "max": 40000000,
-                "step": 1000000,
-                "tolerance": 3000000,
-                "nextStepId": "step_4"
-            },
-            {
-                "id": "step_4",
-                "type": "reward",
-                "title": "Yogi Urbain",
-                "content": "Vous avez trouvé la sérénité dans le chaos.",
-                "rewardImage": "https://cdn-icons-png.flaticon.com/512/2664/2664627.png"
-            }
-        ]
-    },
-    {
-        "storyId": "MX00",
-        "countryCode": "MX",
-        "city": "Mexico",
-        "title": "Cœur Aztèque",
-        "isCapital": true,
-        "rarity": "common",
-        "xpReward": 100,
-        "rewardCollectibleId": "badge_cactus",
-        "steps": [
-            {
-                "id": "step_1",
-                "type": "dialogue",
-                "title": "Hola Amigos",
-                "content": "Mexico City est bâtie sur un ancien lac. C'est une ville vibrante d'histoire.",
-                "imageUrl": "https://images.unsplash.com/photo-1585464231875-d9cae9f0d82b?auto=format&fit=crop&w=800&q=80",
-                "nextStepId": "step_2",
-                "duration": 4000
-            },
-            {
-                "id": "step_2",
-                "type": "estimation",
-                "title": "Altitude",
-                "content": "Attention au souffle ! Mexico est très haute. À quelle altitude sommes-nous ?",
-                "imageUri": "https://images.unsplash.com/photo-1518105779142-d975f22f1b0a?auto=format&fit=crop&w=800&q=80",
-                "targetValue": 2240,
-                "currency": "m",
-                "min": 0,
-                "max": 4000,
-                "step": 50,
-                "tolerance": 200,
-                "nextStepId": "step_3"
-            },
-            {
-                "id": "step_3",
-                "type": "swipe",
-                "title": "Vrai Tacos ?",
-                "content": "Ne confondez pas Tex-Mex et Mexicain. Swipez DROITE pour les vrais ingrédients, GAUCHE pour les intrus.",
-                "deck": [
-                    {
-                        "id": "corn",
-                        "imageUrl": "https://cdn-icons-png.flaticon.com/512/6249/6249925.png",
-                        "text": "Tortilla de Maïs molle",
-                        "isCorrect": true
-                    },
-                    {
-                        "id": "shell",
-                        "imageUrl": "https://cdn-icons-png.flaticon.com/512/6863/6863032.png",
-                        "text": "Coquille dure (Hard shell)",
-                        "isCorrect": false
-                    },
-                    {
-                        "id": "cilantro",
-                        "imageUrl": "https://cdn-icons-png.flaticon.com/512/7394/7394236.png",
-                        "text": "Coriandre fraîche",
-                        "isCorrect": true
-                    }
-                ],
-                "nextStepId": "step_4"
-            },
-            {
-                "id": "step_4",
-                "type": "reward",
-                "title": "Mariachi",
-                "content": "Ay caramba ! Quelle culture !",
-                "rewardImage": "https://cdn-icons-png.flaticon.com/512/3571/3571694.png"
-            }
-        ]
-    },
-    {
-        "storyId": "GB00",
+        "storyId": "GB-LONDON-01",
         "countryCode": "GB",
         "city": "Londres",
-        "title": "Couronne Royale",
+        "title": "Royal & Rock",
         "isCapital": true,
         "rarity": "common",
-        "xpReward": 100,
-        "rewardCollectibleId": "badge_crown",
-        "steps": [
+        "xpReward": 150,
+        "rewardCollectibleId": "badge_tea_cup",
+        "timeline": [
             {
-                "id": "step_1",
                 "type": "dialogue",
-                "title": "Hello !",
-                "content": "Le brouillard se lève sur la Tamise. Attention en traversant, on roule à gauche !",
-                "imageUrl": "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=800&q=80",
-                "nextStepId": "step_2",
-                "duration": 4000
+                "content": "Mind the gap ! Nous voici à Londres. Une ville où la monarchie côtoie l'avant-garde. Regardez cette célèbre tour horloge...",
+                "characterId": "navigant_principal"
             },
             {
-                "id": "step_2",
-                "type": "quiz",
-                "title": "Le Roi",
-                "content": "Où réside officiellement le monarque britannique à Londres ?",
-                "answerType": "text",
-                "choices": [
-                    "Tower of London",
-                    "Westminster Abbey",
-                    "Buckingham Palace",
-                    "Kensington Palace"
-                ],
-                "correctAnswerIndex": 2,
-                "nextStepId": "step_3"
+                "type": "anecdote",
+                "data": {
+                    "id": "gb_big_ben_name",
+                    "type": "true_false",
+                    "statement": "'Big Ben' est le nom de la tour qui abrite l'horloge.",
+                    "isTrue": false,
+                    "isText": true,
+                    "lesson": "C'est une erreur commune ! 'Big Ben' est le surnom de la cloche de 13,5 tonnes. La tour s'appelle la 'Tour Elizabeth'.",
+                    "imageUri": "https://images.unsplash.com/photo-1529655683826-aba9b3e77383"
+                }
             },
             {
-                "id": "step_3",
-                "type": "estimation",
-                "title": "Big Ben",
-                "content": "Big Ben n'est pas la tour, mais la cloche ! Quel est son poids ?",
-                "imageUri": "https://images.unsplash.com/photo-1529655683826-ece72505751f?auto=format&fit=crop&w=800&q=80",
-                "targetValue": 13700,
-                "currency": "kg",
-                "min": 1000,
-                "max": 20000,
-                "step": 100,
-                "tolerance": 1000,
-                "nextStepId": "step_4"
+                "type": "anecdote",
+                "data": {
+                    "id": "gb_great_fire",
+                    "type": "numeric",
+                    "label": "Année du Grand Incendie de Londres",
+                    "numericValue": 1666,
+                    "unit": "année",
+                    "lesson": "L'incendie a détruit 13 200 maisons et 87 églises, mais il a permis de reconstruire un Londres plus moderne et sain.",
+                    "imageUri": "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad"
+                }
+            }
+        ]
+    },
+    {
+        "storyId": "US-WASHINGTON-01",
+        "countryCode": "US",
+        "city": "Washington D.C.",
+        "title": "Le Siège du Pouvoir",
+        "isCapital": true,
+        "rarity": "uncommon",
+        "xpReward": 175,
+        "rewardCollectibleId": "badge_eagle",
+        "timeline": [
+            {
+                "type": "dialogue",
+                "content": "Bienvenue au cœur de la démocratie américaine. Ici, pas de gratte-ciels, c'est interdit par la loi. Tout est blanc, imposant et symétrique.",
+                "characterId": "agent_federal"
             },
             {
-                "id": "step_4",
-                "type": "reward",
-                "title": "Garde Royal",
-                "content": "God Save the King ! Vous voilà un vrai Londonien.",
-                "rewardImage": "https://cdn-icons-png.flaticon.com/512/2056/2056488.png"
+                "type": "anecdote",
+                "data": {
+                    "id": "us_white_house_rooms",
+                    "type": "numeric",
+                    "label": "Nombre de pièces dans la Maison Blanche",
+                    "numericValue": 132,
+                    "unit": "pièces",
+                    "lesson": "La résidence présidentielle compte 132 pièces, 35 salles de bain, et... un bowling !",
+                    "imageUri": "https://images.unsplash.com/photo-1541963463532-d68292c34b19"
+                }
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "us_library_congress",
+                    "type": "choice",
+                    "question": "Quelle particularité possède la Bibliothèque du Congrès ?",
+                    "correctAnswer": "C'est la plus grande bibliothèque du monde",
+                    "distractors": [
+                        "Elle n'a que des livres numériques",
+                        "Elle est interdite au public",
+                        "Elle est souterraine"
+                    ],
+                    "lesson": "Elle conserve plus de 170 millions de documents, dont des livres, enregistrements, cartes et manuscrits.",
+                    "imageUri": "https://images.unsplash.com/photo-1569083321385-2e06c28cb20c"
+                }
+            }
+        ]
+    },
+    {
+        "storyId": "DE-BERLIN-01",
+        "countryCode": "DE",
+        "city": "Berlin",
+        "title": "Phénix de Béton",
+        "isCapital": true,
+        "rarity": "uncommon",
+        "xpReward": 175,
+        "rewardCollectibleId": "badge_bear",
+        "timeline": [
+            {
+                "type": "dialogue",
+                "content": "Guten Tag. Berlin est une ville cicatrisée mais vibrante. L'histoire ici ne s'est pas écrite dans les livres, mais sur les murs.",
+                "characterId": "navigant_principal"
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "de_wall_fall",
+                    "type": "numeric",
+                    "label": "Année de la chute du Mur de Berlin",
+                    "numericValue": 1989,
+                    "unit": "année",
+                    "lesson": "Le 9 novembre 1989, après des semaines de manifestations, les frontières s'ouvrent, marquant la fin symbolique de la Guerre Froide.",
+                    "imageUri": "https://images.unsplash.com/photo-1566450007270-b8c7b642646c"
+                }
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "de_bridges_count",
+                    "type": "true_false",
+                    "statement": "Berlin possède plus de ponts que Venise.",
+                    "isTrue": true,
+                    "isText": true,
+                    "lesson": "Surprenant mais vrai ! Avec ses rivières Spree et Havel et ses canaux, Berlin compte environ 1700 ponts, contre 400 pour Venise.",
+                    "imageUri": "https://images.unsplash.com/photo-1560930950-5cc20e80e392"
+                }
+            }
+        ]
+    },
+    {
+        "storyId": "BR-BRASILIA-01",
+        "countryCode": "BR",
+        "city": "Brasilia",
+        "title": "Utopie Futuriste",
+        "isCapital": true,
+        "rarity": "legendary",
+        "xpReward": 250,
+        "rewardCollectibleId": "badge_architect",
+        "timeline": [
+            {
+                "type": "dialogue",
+                "content": "Approche finale sur Brasilia. Regardez par le hublot... Cette ville n'a pas grandi au fil des siècles, elle a été dessinée d'un trait.",
+                "characterId": "pilote"
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "br_city_shape",
+                    "type": "true_false",
+                    "statement": "Vue du ciel, la ville de Brasilia a la forme d'un avion.",
+                    "isTrue": true,
+                    "isText": true,
+                    "lesson": "Conçue par Lucio Costa et Oscar Niemeyer, la ville a la forme d'un avion (ou d'un oiseau), symbolisant l'essor du Brésil vers le futur.",
+                    "imageUri": "https://images.unsplash.com/photo-1589828983625-f15598d9e685"
+                }
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "br_construction_time",
+                    "type": "numeric",
+                    "label": "Durée de la construction de Brasilia",
+                    "numericValue": 41,
+                    "unit": "mois",
+                    "lesson": "Un exploit titanesque ! La ville a été bâtie en seulement 41 mois (environ 3 ans et demi) au milieu de la savane, avant son inauguration en 1960.",
+                    "imageUri": "https://images.unsplash.com/photo-1572973809214-7c30d2269a84"
+                }
+            }
+        ]
+    },
+    {
+        "storyId": "EG-CAIRO-01",
+        "countryCode": "EG",
+        "city": "Le Caire",
+        "title": "Sables du Temps",
+        "isCapital": true,
+        "rarity": "rare",
+        "xpReward": 200,
+        "rewardCollectibleId": "badge_pyramid",
+        "timeline": [
+            {
+                "type": "dialogue",
+                "content": "Nous survolons la vallée du Nil. Le Caire est un chaos fascinant où les klaxons couvrent parfois l'appel à la prière. Et à l'horizon...",
+                "characterId": "navigant_principal"
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "eg_giza_stones",
+                    "type": "numeric",
+                    "label": "Poids moyen d'un bloc de pierre de la Pyramide de Khéops",
+                    "numericValue": 2500,
+                    "unit": "kg",
+                    "lesson": "Chaque bloc pèse environ 2,5 tonnes. La pyramide en contient plus de 2,3 millions !",
+                    "imageUri": "https://images.unsplash.com/photo-1539650116455-29cb5563cc41"
+                }
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "eg_capital_move",
+                    "type": "true_false",
+                    "statement": "Le Caire va bientôt perdre son statut de capitale.",
+                    "isTrue": true,
+                    "isText": true,
+                    "lesson": "L'Égypte construit actuellement une 'Nouvelle Capitale Administrative' en plein désert, à 45km du Caire, pour désengorger la ville historique.",
+                    "imageUri": "https://images.unsplash.com/photo-1569408092497-8c3ce4463372"
+                }
+            }
+        ]
+    },
+    {
+        "storyId": "CA-OTTAWA-01",
+        "countryCode": "CA",
+        "city": "Ottawa",
+        "title": "Capitale du Nord",
+        "isCapital": true,
+        "rarity": "uncommon",
+        "xpReward": 175,
+        "rewardCollectibleId": "coin_edo",
+        "timeline": [
+            {
+                "type": "dialogue",
+                "content": "Habillez-vous chaudement. Ottawa est l'une des capitales les plus froides au monde, mais la chaleur de ses habitants compense largement.",
+                "characterId": "navigant_principal"
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "ca_rideau_canal",
+                    "type": "choice",
+                    "question": "En quoi se transforme le Canal Rideau en hiver ?",
+                    "correctAnswer": "La plus grande patinoire du monde",
+                    "distractors": [
+                        "Une piste de ski de fond",
+                        "Un marché de Noël géant",
+                        "Un circuit de course sur glace"
+                    ],
+                    "lesson": "Sur 7,8 km, le canal gelé devient une voie de transport pour les patineurs qui vont au travail ou à l'école !",
+                    "imageUri": "https://images.unsplash.com/photo-1614267317524-2c09802d2c16"
+                }
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "ca_tulip_festival",
+                    "type": "numeric",
+                    "label": "Nombre de tulipes offertes par les Pays-Bas chaque année",
+                    "numericValue": 20000,
+                    "unit": "bulbes",
+                    "lesson": "C'est un cadeau royal ! La famille royale néerlandaise remercie ainsi le Canada pour l'avoir abritée pendant la Seconde Guerre mondiale.",
+                    "imageUri": "https://images.unsplash.com/photo-1590625686026-62b80424560a"
+                }
+            }
+        ]
+    },
+    {
+        "storyId": "AU-CANBERRA-01",
+        "countryCode": "AU",
+        "city": "Canberra",
+        "title": "La Ville du Bush",
+        "isCapital": true,
+        "rarity": "rare",
+        "xpReward": 200,
+        "rewardCollectibleId": "badge_kangaroo",
+        "timeline": [
+            {
+                "type": "dialogue",
+                "content": "G'day mate ! Bienvenue en Australie. Non, Sydney n'est pas la capitale. C'est ici, à Canberra, une ville sortie de terre pour apaiser les rivalités.",
+                "characterId": "ranger_australien"
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "au_capital_compromise",
+                    "type": "true_false",
+                    "statement": "Canberra a été choisie car il fait trop chaud à Sydney.",
+                    "isTrue": false,
+                    "isText": true,
+                    "lesson": "C'est faux. Canberra a été choisie en 1908 comme compromis géographique, à mi-chemin (ou presque) entre les deux rivales : Sydney et Melbourne.",
+                    "imageUri": "https://images.unsplash.com/photo-1533038590840-1cde6e668a91"
+                }
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "au_coat_of_arms",
+                    "type": "choice",
+                    "question": "Pourquoi le Kangourou et l'Émeu sont-ils sur le blason australien ?",
+                    "correctAnswer": "Ils ne peuvent pas reculer",
+                    "distractors": [
+                        "Ce sont les animaux les plus nombreux",
+                        "Ils sont les seuls animaux endémiques",
+                        "Ils représentent le jour et la nuit"
+                    ],
+                    "lesson": "Leur incapacité physique à marcher facilement à reculons symbolise une nation qui va toujours de l'avant.",
+                    "imageUri": "https://images.unsplash.com/photo-1529124896264-7c37894a4087"
+                }
             }
         ]
     }

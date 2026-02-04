@@ -5,6 +5,8 @@ export default {
     mainDark: '#B38000',
     mainVeryDark: '#614500',
 
+    gold: '#FFD700',
+
     purple: '#9D00DB',
     green: '#00DB9D',
 

@@ -3,15 +3,17 @@ import BodyText from '@/app/components/atoms/BodyText';
 import MyButton from '@/app/components/atoms/MyButton';
 import Title0 from '@/app/components/atoms/Title0';
 import CustomModal from '@/app/components/molecules/CustomModal';
+import GlowTopGradient from '@/app/components/molecules/GlowTopGradient';
 import LoadingScreen from '@/app/components/molecules/LoadingScreen';
 import Colors from '@/app/constants/Colors';
 import { useApi } from '@/app/hooks/useApi'; //
-import { MemoryCount, userService } from '@/app/services/user.service'; //
+import { RevisionDashboardData, userService } from '@/app/services/user.service'; //
 import { useIsFocused } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import CockpitSwitch from './components/CockpitSwitch';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import KnowledgeRadar from './components/KnowledgeRadar';
+import RevisionCockpit from './components/RevisionCockpit';
 
 export default function RevisionsHomeScreen({ navigation }: any) {
     const isFocused = useIsFocused();
@@ -22,12 +24,6 @@ export default function RevisionsHomeScreen({ navigation }: any) {
     const [filterCapital, setFilterCapital] = useState(true);
     const [filterAnecdote, setFilterAnecdote] = useState(true); // Nouveau switch
 
-    // --- 2. ÉTAT DES DONNÉES ---
-    // On stocke le détail pour recalculer instantanément le total sans rappel API
-    const [count, setCount] = useState<MemoryCount>({
-        flag: 0, capital: 0, location: 0, anecdote: 0
-    });
-
     const [modalConfig, setModalConfig] = useState({
         visible: false,
         title: "",
@@ -37,112 +33,111 @@ export default function RevisionsHomeScreen({ navigation }: any) {
     // Le total affiché (calculé localement)
     const [displayCount, setDisplayCount] = useState(0);
 
-    // --- 3. API FETCH (Une seule fois au focus) ---
-    const countApi = useApi(
-        () => userService.getDueMemoriesCount(),
-        'RevisionsHome - GetCount'
+
+    // --- 4. CALCUL REACTIF DU TOTAL ---
+    // Modification du State pour accepter la structure complexe
+    const [dashboardData, setDashboardData] = useState<RevisionDashboardData>({
+        counts: { flag: 0, capital: 0, location: 0, anecdote: 0 },
+        radarItems: []
+    });
+
+
+    // --- API CALL (Nouvelle méthode à créer dans le service) ---
+    const dashboardApi = useApi(
+        () => userService.getRevisionDashboardData(),
+        'RevisionsHome - GetDashboard'
     );
 
-    // Chargement initial des données
     useEffect(() => {
-        if (isFocused) {
-            countApi.execute();
-        }
+        if (isFocused) dashboardApi.execute();
     }, [isFocused]);
 
-    // Mise à jour du state local quand l'API répond
     useEffect(() => {
-        if (countApi.data) {
-            setCount(countApi.data);
+        if (dashboardApi.data) {
+            setDashboardData(dashboardApi.data);
         }
-    }, [countApi.data]);
-    // --- 4. CALCUL REACTIF DU TOTAL ---
-    // Se déclenche dès qu'un switch change OU que les données arrivent
+    }, [dashboardApi.data]);
+
+    // Calcul du total basé sur les filtres (comme avant)
     useEffect(() => {
         let total = 0;
-        if (filterGeo) total += count.location;
-        if (filterFlag) total += count.flag;
-        if (filterCapital) total += count.capital;
-        if (filterAnecdote) total += count.anecdote;
-
+        const counts = dashboardData.counts;
+        if (filterGeo) total += counts.location;
+        if (filterFlag) total += counts.flag;
+        if (filterCapital) total += counts.capital;
+        if (filterAnecdote) total += counts.anecdote;
         setDisplayCount(total);
-    }, [count, filterGeo, filterFlag, filterCapital, filterAnecdote]);
+    }, [dashboardData, filterGeo, filterFlag, filterCapital, filterAnecdote]);
 
-    // --- 5. ACTIONS ---
     const handleStartMission = () => {
         if (displayCount === 0) {
             setModalConfig({
                 visible: true,
                 title: "Systèmes à jour",
-                message: "Aucune révision nécessaire pour le moment, vous êtes à jour."
+                message: "Aucune révision nécessaire pour le moment."
             });
             return;
         }
-
         navigation.navigate('ReviewSession', {
-            filters: {
-                geo: filterGeo,
-                flag: filterFlag,
-                capital: filterCapital,
-                anecdote: filterAnecdote
-            }
+            filters: { geo: filterGeo, flag: filterFlag, capital: filterCapital, anecdote: filterAnecdote }
         });
     };
 
-    if (countApi.loading && !countApi.data) {
-        return <LoadingScreen />;
-    }
 
     return (
-        <LinearGradient colors={[Colors.darkGrey, '#000']} style={styles.container}>
-            {/* Header style "Top Secret" */}
+        <LinearGradient colors={[Colors.black, Colors.realBlack]} style={styles.container}>
+            <GlowTopGradient />
+            {/* Header */}
             <View style={styles.header}>
-                <Title0 title="PRÉPARATION VOL" color={Colors.white} isLeft />
-                <BodyText text="MAINTENANCE DES CONNAISSANCES" size="S" color="#666" style={{ letterSpacing: 2 }} />
+                <Title0 title="Centre de Révision" color={Colors.white} isLeft />
+                <BodyText text="MAINTENANCE DES CONNAISSANCES" size="S" color={Colors.main} style={{ letterSpacing: 2 }} />
             </View>
 
-            {/* LE PANNEAU DE CONTRÔLE (Overhead Panel) */}
-            <View style={styles.panelContainer}>
-                <View style={styles.panelHeader}>
-                    <BodyText text="SYSTÈMES DE NAVIGATION" size="S" color={Colors.white} style={{ fontWeight: 'bold' }} />
-                </View>
+            {
+                dashboardApi.loading && !dashboardApi.data ?
+                    <LoadingScreen />
+                    :
 
-                {/* Les Switchs (2 rangées pour accueillir Anecdote) */}
-                <View style={styles.switchGrid}>
-                    <CockpitSwitch label="GÉOGRAPHIE" value={filterGeo} onToggle={setFilterGeo} />
-                    <CockpitSwitch label="DRAPEAUX" value={filterFlag} onToggle={setFilterFlag} />
-                    <CockpitSwitch label="CAPITALES" value={filterCapital} onToggle={setFilterCapital} />
-                    <CockpitSwitch label="CULTURE" value={filterAnecdote} onToggle={setFilterAnecdote} />
-                </View>
+                    <ScrollView contentContainerStyle={{ paddingBottom: 100, paddingTop: 30 }}>
 
-                {/* Jauge de pression */}
-                <View style={styles.gaugeContainer}>
-                    <BodyText text="PRESSION (ITEMS)" size="S" color="#888" />
-                    <Title0
-                        title={displayCount.toString()}
-                        color={displayCount > 10 ? Colors.red : Colors.green}
-                        style={{ fontSize: 40 }}
-                    />
-                </View>
-            </View>
+                        {/* 1. LE RADAR (Visuel) */}
 
-            {/* Bouton d'allumage */}
+                        <RevisionCockpit
+                            totalDue={displayCount}
+                            filterGeo={filterGeo} setFilterGeo={setFilterGeo}
+                            filterFlag={filterFlag} setFilterFlag={setFilterFlag}
+                            filterCapital={filterCapital} setFilterCapital={setFilterCapital}
+                            filterAnecdote={filterAnecdote} setFilterAnecdote={setFilterAnecdote}
+                        />
+
+                        <View style={{ height: 30 }} />
+
+                        {/* 2. LE RADAR (Visuel) */}
+                        <KnowledgeRadar
+                            items={dashboardData.radarItems}
+                            isLoading={dashboardApi.loading}
+                        />
+
+
+                    </ScrollView>
+            }
+
+            {/* Bouton Flottant ou Fixe en bas */}
             <View style={styles.footer}>
                 <MyButton
-                    title="DÉCOLLAGE IMMÉDIAT"
+                    title="Décollage immédiat"
                     onPress={handleStartMission}
                     variant="glass"
                     rightIcon="airplane-takeoff"
                     bump
                 />
             </View>
-            {/* --- NOUVEAU : Intégration de la Modale --- */}
+
             <CustomModal
                 visible={modalConfig.visible}
                 title={modalConfig.title}
                 onConfirm={() => setModalConfig({ ...modalConfig, visible: false })}
                 confirmText="OK"
-            // Pas de bouton Annuler nécessaire ici car c'est une info
             >
                 <BodyText text={modalConfig.message} color={Colors.white} />
             </CustomModal>
@@ -151,27 +146,10 @@ export default function RevisionsHomeScreen({ navigation }: any) {
 }
 
 const styles = StyleSheet.create({
-    container: { flex: 1, paddingTop: 60, paddingHorizontal: 20 },
-    header: { marginBottom: 30 },
-    panelContainer: {
-        backgroundColor: '#1E1E1E',
-        borderRadius: 12,
-        borderWidth: 2,
-        borderColor: '#333',
-        padding: 20,
-        shadowColor: "#000", shadowOffset: { width: 0, height: 10 }, shadowOpacity: 0.5, shadowRadius: 10
-    },
-    panelHeader: { borderBottomWidth: 1, borderBottomColor: '#333', paddingBottom: 10, marginBottom: 20, alignItems: 'center' },
-
-    // Modification pour grille 2x2 ou ligne responsive
-    switchGrid: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'space-around',
-        rowGap: 20,
-        marginBottom: 30
-    },
-
-    gaugeContainer: { alignItems: 'center', backgroundColor: '#000', padding: 15, borderRadius: 8, borderWidth: 1, borderColor: '#444' },
-    footer: { flex: 1, justifyContent: 'flex-end', marginBottom: 40 }
+    container: { flex: 1, paddingVertical: 60, paddingHorizontal: 20 },
+    header: { marginBottom: 20, gap: 10 },
+    footer: {
+        position: 'absolute',
+        bottom: 30, left: 20, right: 20
+    }
 });

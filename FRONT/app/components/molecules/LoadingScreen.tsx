@@ -15,7 +15,7 @@ export default function LoadingScreen() {
             bottom: 0,
             justifyContent: 'center',
             alignItems: 'center',
-            backgroundColor: 'rgba(0,0,0,0.8)',
+            backgroundColor: 'rgba(0,0,0,0.5)',
             zIndex: 999
         }}>
             <LottieView

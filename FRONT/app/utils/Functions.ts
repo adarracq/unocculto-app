@@ -8,6 +8,7 @@ export const functions = {
     addSpacesInNumber,
     convertImageToBase64,
     dateToString,
+    stringDateToString,
     simpleDateToString,
 }
 
@@ -19,6 +20,14 @@ function getIconSource(name: string) {
             return require('@/app/assets/icons/airplane-takeoff.png');
         case 'logo_white':
             return require('@/app/assets/images/logo_white.png');
+        case 'chevron-down':
+            return require('@/app/assets/icons/chevron-down.png');
+        case 'book':
+            return require('@/app/assets/icons/book.png');
+        case 'palette':
+            return require('@/app/assets/icons/palette.png');
+        case 'flask':
+            return require('@/app/assets/icons/flask.png');
         case 'gamepad':
             return require('@/app/assets/icons/gamepad.png');
         case 'profile':
@@ -123,6 +132,22 @@ async function convertImageToBase64(imageSource: any) {
         return '';
     }
 };
+
+function stringDateToString(dateStr: string) {
+    // input : 2026-02-03T07:00:00.000Z
+    // output : 3 Février 2026
+    const date = new Date(dateStr);
+    const day = date.getUTCDate();
+    const month = date.getUTCMonth(); // 0-11
+    const year = date.getUTCFullYear();
+    const monthNames = [
+        'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
+        'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'
+    ];
+    const dateFormatted = `${day} ${monthNames[month]} ${year}`;
+
+    return dateFormatted;
+}
 
 function dateToString(date: number) {
     // exemple : -13800000000 -> Il y a 13,8 milliards d'années

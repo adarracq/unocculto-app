@@ -39,4 +39,4 @@ const seedStories = async () => {
 };
 
 seedStories();
-//node scripts/seeds/index.js
+//node scripts/seeds/stories.js

@@ -51,7 +51,7 @@ export default function DestinationGridItem({ story, isSelected }: Props) {
             {story.rarity !== 'common' && (
                 <View style={[
                     styles.rarityBadge,
-                    { backgroundColor: story.rarity === 'legendary' ? '#FFD700' : '#A020F0' }
+                    { backgroundColor: story.rarity === 'legendary' ? Colors.gold : '#A020F0' }
                 ]} />
             )}
         </View>

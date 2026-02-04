@@ -9,6 +9,41 @@ const swipeCardSchema = new mongoose.Schema({
     isCorrect: { type: Boolean, required: true }
 }, { _id: false }); // On évite de générer un _id mongo pour chaque carte, c'est inutile ici
 
+const anecdoteSchema = new mongoose.Schema({
+    id: { type: String, required: true }, // ex: "fr_eiffel_height"
+    type: {
+        type: String,
+        enum: ['numeric', 'true_false', 'order', 'choice', 'visual'],
+        required: true
+    },
+
+    // Le savoir à transmettre (affiché en dialogue avant le jeu ou en explication après)
+    lesson: { type: String, required: true },
+
+    // --- DONNÉES POLYMORPHIQUES ---
+
+    // Pour 'numeric' (Estimation / Quiz)
+    label: { type: String, required: false },       // Ce qu'on estime (hauteur, population...)
+    numericValue: { type: Number },
+    unit: { type: String }, // 'm', 'km', 'hab'...
+
+    // Pour 'true_false' (Swipe)
+    statement: { type: String }, // "La Tour Eiffel a été construite en 1900"
+    isTrue: { type: Boolean },
+    isText: { type: Boolean }, // true = texte, false = image
+
+    // Pour 'order' (OrderGame)
+    items: [{ type: String }], // ["Pétrir", "Cuire", "Manger"] (Dans l'ordre)
+
+    // Pour 'choice' (Quiz classique)
+    question: { type: String },
+    correctAnswer: { type: String },
+    distractors: [{ type: String }],
+
+    // Image contextuelle (optionnelle)
+    imageUri: { type: String }
+}, { _id: false });
+
 const storyStepSchema = mongoose.Schema({
     id: { type: String, required: true },
     type: {
@@ -66,6 +101,19 @@ const storySchema = mongoose.Schema({
     // Contenu
     title: { type: String, required: true },
     steps: [storyStepSchema],
+
+    timeline: [
+        {
+            type: { type: String, enum: ['dialogue', 'anecdote'], required: true },
+
+            // Si type === 'dialogue'
+            content: { type: String },
+            characterId: { type: String }, // Qui parle ?
+
+            // Si type === 'anecdote'
+            data: anecdoteSchema
+        }
+    ],
 
     // Récompense liée
     rewardCollectibleId: { type: String, required: false },

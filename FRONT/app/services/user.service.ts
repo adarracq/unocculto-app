@@ -27,6 +27,19 @@ export interface MemoryCount {
     anecdote: number;
 }
 
+// NOUVELLE Interface pour le Radar
+export interface RadarItem {
+    countryCode: string;
+    masteryLevel: number; // 0 (Oublié/Nouveau) à 100 (Maîtrisé/Ancré)
+    isDue: boolean;       // Si vrai, le drapeau clignote ou est rouge
+}
+
+// On combine pour le Dashboard complet
+export interface RevisionDashboardData {
+    counts: MemoryCount;
+    radarItems: RadarItem[]; // Top 10-15 pays les plus pertinents à afficher
+}
+
 export const userService = {
     loginOrSignup,
     verifyEmailCode,
@@ -42,7 +55,10 @@ export const userService = {
     deleteAccountAndData,
     getDueMemories,
     getDueMemoriesCount,
-    reviewMemory
+    getRevisionDashboardData,
+    reviewMemory,
+    getMuseumInventory,
+    getPilotLogbook
 };
 
 function loginOrSignup(params: LoginOrSignupParams) {
@@ -104,4 +120,17 @@ function getDueMemories(filters?: any) {
 
 function reviewMemory(memoryId: string, isSuccess: boolean) {
     return fetchWrapper.post(baseUrl + '/memories/review', { memoryId, isSuccess });
+}
+
+function getRevisionDashboardData() {
+    // On appelle un endpoint unifié pour éviter de faire 2 appels
+    return fetchWrapper.get(baseUrl + '/revisions/dashboard');
+}
+
+function getMuseumInventory() {
+    return fetchWrapper.get(baseUrl + '/inventory/museum');
+}
+
+function getPilotLogbook() {
+    return fetchWrapper.get(baseUrl + '/museum/logbook');
 }

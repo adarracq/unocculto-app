@@ -101,7 +101,7 @@ export default function BoardingPass({
                 <View style={styles.footerRow}>
                     <View >
                         <BodyText text="PORTE" style={styles.label} />
-                        <BodyText text="A01" style={styles.value} isBold />
+                        <BodyText text="A21" style={styles.value} isBold />
                     </View>
                     <View style={{ alignItems: 'center' }}>
                         <BodyText text="EMBARQUEMENT" style={styles.label} />

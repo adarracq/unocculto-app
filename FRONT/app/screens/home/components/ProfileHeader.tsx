@@ -1,14 +1,13 @@
 import BodyText from '@/app/components/atoms/BodyText';
 import SmallText from '@/app/components/atoms/SmallText';
 import Title1 from '@/app/components/atoms/Title1';
-import Title2 from '@/app/components/atoms/Title2';
 import ProgressBarStats from '@/app/components/molecules/ProgressBarStats';
 import Colors from '@/app/constants/Colors';
 import { ALL_COUNTRIES, getFlagImage } from '@/app/models/Countries';
 import User from '@/app/models/User';
 import { functions } from '@/app/utils/Functions';
 import { LinearGradient } from 'expo-linear-gradient';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dimensions, Image, StyleSheet, View } from 'react-native';
 import DropDownFlag from './DropDownFlag';
 
@@ -19,16 +18,28 @@ type Props = {
 
 export default function ProfileHeader(props: Props) {
     const [selectedFlagCode, setSelectedFlagCode] = useState<string | null>(props.user.selectedFlag);
-    const [selectedFlagColor, setSelectedFlagColor] = useState<string>(
-        ALL_COUNTRIES.find(c => c.code === selectedFlagCode)?.mainColor || Colors.main
-    );
+
+    // On calcule si le pays sélectionné est COMPLÉTÉ (100%)
+    const isSelectedFlagCompleted = selectedFlagCode && props.user.passport[selectedFlagCode]?.isCompleted;
+
+    // Couleur principale (Or si complété, sinon couleur du pays, sinon Main)
+    const [selectedFlagColor, setSelectedFlagColor] = useState<string>(Colors.main);
+
+    const currentCountryName = ALL_COUNTRIES.find(c => c.code === selectedFlagCode)?.name_fr || "INCONNU";
+
+    useEffect(() => {
+        if (isSelectedFlagCompleted) {
+            setSelectedFlagColor(Colors.gold); // GOLD
+        } else {
+            const countryColor = ALL_COUNTRIES.find(c => c.code === selectedFlagCode)?.mainColor;
+            setSelectedFlagColor(countryColor || Colors.main);
+        }
+    }, [selectedFlagCode, isSelectedFlagCompleted]);
 
     // Stats
     const unlockedFlagsCount = Object.keys(props.user.passport).length;
-    const completedCount = Object.values(props.user.passport).filter(p => p.isCompleted).length;
     const totalCountries = ALL_COUNTRIES.length;
 
-    // Calcul du Rang (Logique simple pour l'exemple)
     const getRankTitle = () => {
         if (unlockedFlagsCount < 5) return "TOURISTE";
         if (unlockedFlagsCount < 20) return "VOYAGEUR";
@@ -37,27 +48,19 @@ export default function ProfileHeader(props: Props) {
 
     return (
         <View style={styles.container}>
-            {/* Background Glow subtil */}
+            {/* Background Glow */}
             <LinearGradient
                 colors={[selectedFlagColor + '40', 'transparent']}
                 style={styles.glowBackground}
             />
+
             {/* --- STATS ROW --- */}
             <View style={styles.statsRow}>
-                {/* Streak */}
                 <View style={styles.statPill}>
                     <Image source={functions.getIconSource('fire')} style={styles.iconSmall} />
                     <BodyText text={props.user.dayStreak + ''} isBold style={{ color: Colors.main }} />
                 </View>
 
-                {/* INDICATEUR SECONDAIRE : PAYS 100% (Badge Or) */}
-                {/*completedCount > 0 &&
-                    <View style={[styles.statPill, { borderColor: '#FFD700', backgroundColor: 'rgba(255, 215, 0, 0.1)' }]}>
-                        <Title1 title="👑" style={{ fontSize: 14 }} />
-                        <BodyText text={`${completedCount}`} isBold style={{ color: '#FFD700' }} />
-                    </View>*/}
-
-                {/* Energie */}
                 <View style={styles.statPill}>
                     <Image source={functions.getIconSource('lightning')} style={styles.iconSmall} />
                     <BodyText text={props.user.energy?.toString() || '0'} isBold style={{ color: Colors.main }} />
@@ -65,57 +68,91 @@ export default function ProfileHeader(props: Props) {
             </View>
 
             {/* --- CARTE PASSEPORT --- */}
-            <View style={[styles.passportCard, { borderColor: selectedFlagColor + '30' }]}>
+            {/* --- CARTE PASSEPORT --- */}
+            <View style={[
+                styles.passportCard,
+                {
+                    borderColor: isSelectedFlagCompleted ? Colors.gold : selectedFlagColor + '30',
+                    backgroundColor: isSelectedFlagCompleted ? 'rgba(255, 215, 0, 0.05)' : 'rgba(255, 255, 255, 0.05)'
+                }
+            ]}>
 
-                {/* 1. SECTION GAUCHE : PHOTO/DRAPEAU */}
+                {/* 1. PHOTO/DRAPEAU (Visuellement pur) */}
                 <View style={styles.photoSection}>
-                    <View style={[styles.flagFrame, { borderColor: selectedFlagColor }]}>
-                        <Image
-                            source={getFlagImage(selectedFlagCode || 'XX')}
-                            style={styles.flagImage}
-                            resizeMode="cover"
+                    {/* On rend le drapeau cliquable aussi, car c'est intuitif, mais SANS icône par dessus */}
+                    <DropDownFlag
+                        unlockedFlags={Object.keys(props.user.passport)}
+                        selectedFlag={selectedFlagCode}
+                        passport={props.user.passport}
+                        onChangeFlag={(code) => { setSelectedFlagCode(code); props.onChangeFlag(code); }}
+                    >
+                        <View style={[styles.flagFrame, { borderColor: selectedFlagColor }]}>
+                            <Image
+                                source={getFlagImage(selectedFlagCode || 'XX')}
+                                style={styles.flagImage}
+                                resizeMode="cover"
+                            />
+                            {/* Optionnel : Un léger effet brillant par dessus pour faire "plastifié" */}
+                            <View style={styles.plasticShine} />
+                        </View>
+                    </DropDownFlag>
+                </View>
+
+                {/* 2. INFO IDENTITÉ (Avec le nouveau champ modifiable) */}
+                <View style={styles.infoSection}>
+
+                    {/* Header : Type de passeport */}
+                    <View style={styles.headerRow}>
+                        <Image source={require('@/app/assets/images/logo_white.png')} style={styles.logoWatermark} />
+                        <SmallText
+                            text={isSelectedFlagCompleted ? 'PASSEPORT DIPLOMATIQUE' : 'PASSEPORT STANDARD'}
+                            color={isSelectedFlagCompleted ? Colors.gold : 'rgba(255,255,255,0.3)'}
                         />
-                        {/* Overlay sombre léger pour l'effet photo */}
-                        <View style={styles.photoOverlay} />
                     </View>
 
-                    {/* Bouton Edit (Petit crayon discret en bas de la photo) */}
-                    <View style={styles.editBtnPosition}>
+                    {/* Champ 1 : Nom */}
+                    <View style={styles.fieldGroup}>
+                        <SmallText text="NOM / SURNAME" style={styles.fieldLabel} isLeft />
+                        <Title1 title={props.user.pseudo?.toUpperCase() || 'INCONNU'} color={Colors.white} isLeft style={{ fontSize: 18 }} />
+                    </View>
+
+                    {/* Champ 2 : Rang */}
+                    <View style={styles.fieldGroup}>
+                        <SmallText text="RANG / RANK" style={styles.fieldLabel} isLeft />
+                        <BodyText text={getRankTitle()} color={Colors.lightGrey} />
+                    </View>
+
+                    {/* --- NOUVEAU CHAMP "INTERACTIF" --- */}
+                    {/* C'est ici que se trouve le bouton subtil */}
+                    <View style={[styles.fieldGroup, { marginTop: 4 }]}>
+                        <SmallText text="VISA / ISSUED AT" style={styles.fieldLabel} isLeft />
+
                         <DropDownFlag
                             unlockedFlags={Object.keys(props.user.passport)}
                             selectedFlag={selectedFlagCode}
-                            color={selectedFlagColor}
-                            onChangeFlag={(code) => {
-                                setSelectedFlagCode(code);
-                                setSelectedFlagColor(ALL_COUNTRIES.find(c => c.code === code)?.mainColor || Colors.main);
-                                props.onChangeFlag(code);
-                            }}
-                        />
-                    </View>
-                </View>
+                            passport={props.user.passport}
+                            onChangeFlag={(code) => { setSelectedFlagCode(code); props.onChangeFlag(code); }}
+                        >
+                            <View style={styles.interactiveField}>
+                                {/* Code Pays (Style Machine à écrire) */}
+                                <BodyText
+                                    text={`${selectedFlagCode} - ${currentCountryName.toUpperCase()}`}
+                                    color={selectedFlagColor}
+                                    isBold
+                                    style={{ letterSpacing: 1 }}
+                                />
 
-                {/* 2. SECTION DROITE : INFO IDENTITÉ */}
-                <View style={styles.infoSection}>
-                    <View style={styles.headerRow}>
-                        <Image
-                            source={require('@/app/assets/images/logo_white.png')}
-                            style={{ width: 20, height: 20, opacity: 0.5, tintColor: Colors.white }}
-                            resizeMode='contain'
-                        />
-                        <SmallText text='PASSEPORT UNOCCULTO' color={Colors.lightGrey} />
-                    </View>
-
-                    {/* Nom */}
-                    <View style={styles.fieldGroup}>
-                        <SmallText text="NOM / SURNAME" style={styles.fieldLabel} isLeft />
-                        <Title1 title={props.user.pseudo?.toUpperCase() || 'EXPLORATEUR'} color={Colors.white} isLeft style={{ marginLeft: 20 }} />
+                                {/* Petite icône discrète "Modifier" ou Chevron */}
+                                <Image
+                                    source={functions.getIconSource('chevron-down')} // ou 'edit'
+                                    style={{ width: 16, height: 16, tintColor: selectedFlagColor, opacity: 0.7, marginLeft: 6, marginTop: 2 }}
+                                />
+                            </View>
+                            {/* Ligne pointillée décorative sous le champ */}
+                            <View style={[styles.dottedLine, { backgroundColor: selectedFlagColor }]} />
+                        </DropDownFlag>
                     </View>
 
-                    {/* Rang */}
-                    <View style={styles.fieldGroup}>
-                        <SmallText text="RANG / RANK" style={styles.fieldLabel} isLeft />
-                        <Title2 title={getRankTitle()} color={selectedFlagColor} isLeft style={{ marginLeft: 20 }} />
-                    </View>
                 </View>
             </View>
 
@@ -124,7 +161,7 @@ export default function ProfileHeader(props: Props) {
                 <ProgressBarStats
                     current={unlockedFlagsCount}
                     total={totalCountries}
-                    label="VISAS DÉBLOQUÉS" // Terme plus "Passeport"
+                    label="VISAS DÉBLOQUÉS"
                     width={Dimensions.get('window').width - 40}
                 />
             </View>
@@ -134,13 +171,12 @@ export default function ProfileHeader(props: Props) {
 
 const styles = StyleSheet.create({
     container: {
-        paddingTop: 40, // Plus d'espace pour la status bar
+        paddingTop: 40,
         paddingBottom: 25,
         paddingHorizontal: 20,
         backgroundColor: Colors.black,
         borderBottomLeftRadius: 32,
         borderBottomRightRadius: 32,
-        // Shadow
         shadowColor: "#000",
         shadowOffset: { width: 0, height: 10 },
         shadowOpacity: 0.6,
@@ -152,75 +188,32 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 0, left: 0, right: 0, height: 250, opacity: 0.6
     },
-
-    // --- PASSPORT CARD ---
     passportCard: {
         flexDirection: 'row',
-        backgroundColor: 'rgba(255, 255, 255, 0.05)', // Effet carte plastique sombre
         borderRadius: 16,
         padding: 16,
         borderWidth: 1,
-        borderColor: 'rgba(255,255,255,0.1)',
         marginBottom: 20,
     },
-
-    // Section Photo
     photoSection: {
         marginRight: 16,
         justifyContent: 'center',
         alignItems: 'center',
     },
-    flagFrame: {
-        width: 120,
-        height: 80,
-        borderRadius: 8,
-        borderWidth: 2,
-        overflow: 'hidden',
-        backgroundColor: Colors.black,
-    },
+
     flagImage: {
         width: '100%',
         height: '100%',
     },
     photoOverlay: {
         ...StyleSheet.absoluteFillObject,
-        backgroundColor: 'rgba(0,0,0,0.1)', // Légère teinte pour uniformiser
+        backgroundColor: 'rgba(0,0,0,0.1)',
     },
     editBtnPosition: {
         position: 'absolute',
         bottom: 15,
         right: 0,
     },
-
-    // Section Infos
-    infoSection: {
-        flex: 1,
-        justifyContent: 'space-between',
-        paddingVertical: 2,
-    },
-    headerRow: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'flex-end',
-        gap: 6,
-        opacity: 0.7,
-        marginBottom: 20,
-    },
-    fieldGroup: {
-        marginBottom: 6,
-    },
-    fieldLabel: {
-        color: 'rgba(255,255,255,0.4)',
-        fontSize: 9,
-        fontWeight: 'bold',
-        marginBottom: 2,
-    },
-    rankText: {
-        fontSize: 14,
-        fontWeight: 'bold',
-        letterSpacing: 1,
-    },
-    // Progress
     progressContainer: {
         alignItems: 'center',
     },
@@ -242,5 +235,73 @@ const styles = StyleSheet.create({
         borderColor: 'rgba(255,255,255,0.05)',
     },
     iconSmall: { width: 18, height: 18 },
-});
 
+    // --- Styles du tampon "100%" (Ajoutés) ---
+    inkStampContainer: {
+        ...StyleSheet.absoluteFillObject, // Prend toute la place du flagFrame
+        justifyContent: 'center',
+        alignItems: 'center',
+        opacity: 0.5,
+        zIndex: 10,
+    },
+    inkStampBorder: {
+        borderWidth: 2, // Un peu plus épais pour le header
+        borderColor: 'rgba(255, 215, 0, 0.8)',
+        borderRadius: 4,
+        paddingHorizontal: 6,
+        paddingVertical: 2,
+        transform: [{ rotate: '-15deg' }],
+        backgroundColor: 'rgba(0,0,0,0.3)', // Fond sombre pour lisibilité
+    },
+    flagFrame: {
+        width: 100, // Un peu plus petit pour laisser place au texte
+        aspectRatio: 1.5, // Format photo identité (4:5)
+        borderRadius: 4,
+        borderWidth: 2,
+        overflow: 'hidden',
+        backgroundColor: Colors.black,
+    },
+    plasticShine: {
+        ...StyleSheet.absoluteFillObject,
+        backgroundColor: 'rgba(255,255,255,0.05)',
+        borderTopWidth: 1,
+        borderTopColor: 'rgba(255,255,255,0.2)',
+    },
+    // Styles pour les champs textes
+    infoSection: {
+        flex: 1,
+        paddingLeft: 16,
+        paddingVertical: 4,
+        justifyContent: 'space-around'
+    },
+    headerRow: {
+        flexDirection: 'row', alignItems: 'center', marginBottom: 10, opacity: 0.7
+    },
+    logoWatermark: {
+        width: 12, height: 12, marginRight: 6, tintColor: Colors.lightGrey
+    },
+    fieldGroup: {
+        marginBottom: 8,
+    },
+    fieldLabel: {
+        color: 'rgba(255,255,255,0.3)',
+        fontSize: 8,
+        fontWeight: 'bold',
+        marginBottom: 1,
+    },
+
+    // NOUVEAUX STYLES INTERACTIFS
+    interactiveField: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    dottedLine: {
+        height: 1,
+        width: '100%',
+        marginTop: 2,
+        opacity: 0.3,
+        // Astuce pour faire des pointillés CSS simple :
+        // Sur mobile, une ligne continue semi-transparente est souvent plus propre qu'un vrai 'dotted' qui bave
+        // Si tu veux vraiment des pointillés, utilise borderStyle: 'dotted', borderWidth: 1, borderColor... sur une View vide
+    }
+});

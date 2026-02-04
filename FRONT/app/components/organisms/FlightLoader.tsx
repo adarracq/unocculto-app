@@ -34,7 +34,7 @@ const LOADING_TIPS = [
 
 export default function FlightLoader({
     visible,
-    originCity = "Maison",
+    originCity = "HOME",
     color,
     destinationCity = "Inconnu",
     destinationCode = "??",

@@ -20,5 +20,8 @@ router.delete('/:id', auth, userCtrl.deleteUser);
 router.get('/memories/due', auth, userCtrl.getDueMemories);
 router.get('/memories/count', auth, userCtrl.getDueMemoriesCount);
 router.post('/memories/review', auth, userCtrl.reviewMemory);
+router.get('/revisions/dashboard', auth, userCtrl.getRevisionDashboardData);
+router.get('/inventory/museum', auth, userCtrl.getMuseumInventory);
+router.get('/museum/logbook', auth, userCtrl.getPilotLogbook);
 
 module.exports = router;
