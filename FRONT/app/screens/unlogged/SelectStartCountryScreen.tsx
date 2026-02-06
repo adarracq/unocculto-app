@@ -7,10 +7,10 @@ import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/nati
 import BodyText from '@/app/components/atoms/BodyText';
 import MyButton from '@/app/components/atoms/MyButton';
 import Title0 from '@/app/components/atoms/Title0';
-import GlowTopGradient from '@/app/components/molecules/GlowTopGradient';
 import SelectionGrid from '@/app/components/molecules/SelectionGrid';
 
 // Imports Data & Models
+import GlowTopGradient from '@/app/components/molecules/GlowTopGradient';
 import Colors from '@/app/constants/Colors';
 import { TUTORIAL_STORIES } from '@/app/constants/TutorialStories';
 import { ALL_COUNTRIES } from '@/app/models/Countries';
@@ -47,10 +47,8 @@ export default function SelectStartCountryScreen({ navigation }: Props) {
     return (
         <LinearGradient
             colors={[Colors.darkGrey, Colors.black]}
-            style={styles.container}
-        >
+            style={styles.container}>
             <GlowTopGradient />
-
             {/* --- HEADER --- */}
             <View style={styles.topSection}>
                 <View style={styles.logoContainer}>

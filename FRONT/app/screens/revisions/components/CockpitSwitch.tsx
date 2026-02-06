@@ -8,7 +8,6 @@ interface Props {
     label: string;
     value: boolean;
     onToggle: (val: boolean) => void;
-    compact?: boolean;
 }
 
 export default function CockpitSwitch({ label, value, onToggle }: Props) {

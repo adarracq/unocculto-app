@@ -1,10 +1,10 @@
 import Colors from '@/app/constants/Colors';
 import MapLibreGL from '@maplibre/maplibre-react-native';
 import React, { useEffect, useMemo, useRef } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Dimensions, StyleSheet, View } from 'react-native';
 
 // @ts-ignore
-import WorldGeoJSON from '@/app/constants/world-countriesS.json';
+import WorldGeoJSON from '@/app/constants/world-countriesM.json';
 
 // Pour éviter les warnings
 MapLibreGL.setAccessToken(null);
@@ -30,13 +30,13 @@ interface Props {
     onCountryPress?: (countryCode: string) => void;
     selectedCountry?: string | null;
     focusCoordinates?: [number, number] | null;
+    isFullHeight?: boolean; // Option pour forcer la hauteur à 100% du parent
 }
 
-export default function InteractiveMap({ countryColors = {}, onCountryPress, selectedCountry, focusCoordinates }: Props) {
+export default function InteractiveMap({ countryColors = {}, onCountryPress, selectedCountry, focusCoordinates, isFullHeight }: Props) {
     const cameraRef = useRef<MapLibreGL.Camera>(null);
 
     useEffect(() => {
-        console.log('Focus coordinates changed:', focusCoordinates);
         if (focusCoordinates && cameraRef.current) {
             // Si on reçoit des coordonnées, on vole vers elles
             cameraRef.current.setCamera({
@@ -82,7 +82,10 @@ export default function InteractiveMap({ countryColors = {}, onCountryPress, sel
     };
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container,
+        {
+            height: isFullHeight ? Dimensions.get('window').height + 100 : 450
+        }]}>
             <MapLibreGL.MapView
                 key="map-void" // Force un render unique propre
                 style={styles.map}
@@ -132,9 +135,7 @@ export default function InteractiveMap({ countryColors = {}, onCountryPress, sel
 
 const styles = StyleSheet.create({
     container: {
-        height: 450,
         width: '120%',
-        borderRadius: 20,
         overflow: 'hidden',
         borderWidth: 1,
         borderColor: 'rgba(255,255,255,0.1)',

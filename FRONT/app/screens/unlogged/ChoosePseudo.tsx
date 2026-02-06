@@ -83,7 +83,8 @@ export default function ChoosePseudoScreen({ navigation, route }: Props) {
             if (validity.available) {
                 const updatedUser = { ...route.params.user };
                 updatedUser.pseudo = pseudo;
-                updatedUser.currentCountryCode = route.params.country!.code;
+                updatedUser.selectedFlag = route.params.country!.code;
+                //updatedUser.currentStoryId = route.params.country!.code;
 
                 const result = await updateUser({ user: updatedUser });
                 if (result) {
@@ -105,7 +106,7 @@ export default function ChoosePseudoScreen({ navigation, route }: Props) {
 
     return (
         <LinearGradient
-            colors={[Colors.black, Colors.darkGrey]}
+            colors={[Colors.darkGrey, Colors.black]}
             style={styles.container}>
             <GlowTopGradient />
             <BackArrow onPress={() => navigation.goBack()} />

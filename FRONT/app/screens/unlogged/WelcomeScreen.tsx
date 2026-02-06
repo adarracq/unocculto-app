@@ -60,7 +60,8 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingVertical: 50,
+        paddingTop: 110,
+        paddingBottom: 50,
         paddingHorizontal: 20
     },
     topContainer: {

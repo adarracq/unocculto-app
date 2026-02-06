@@ -121,7 +121,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'space-between',
-        paddingVertical: 40,
     },
     mapWrapper: {
         width: '100%',
@@ -129,7 +128,7 @@ const styles = StyleSheet.create({
         marginVertical: 10
     },
     feedbackBar: {
-        marginTop: 15,
+        marginTop: 25,
         height: 30,
         justifyContent: 'center',
         alignItems: 'center'

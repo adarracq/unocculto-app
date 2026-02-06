@@ -112,26 +112,24 @@ export default function QuizGameView({ step, onValid }: Props) {
     return (
         <View style={styles.container}>
             {/* Contenu Principal (Scrollable si besoin, ou centré) */}
-            <View style={{ width: '100%' }}>
-                {/* Header Question */}
-                <View style={{ gap: 20, marginBottom: 40 }}>
-                    <Title0 title={step.title} color={Colors.white} isLeft />
-                    <BodyText text={step.content} size='XL' color={Colors.white} style={{ marginBottom: 20 }} />
-                </View>
 
-                {/* Container des Choix */}
-                <View style={[
-                    styles.choicesContainer,
-                    isImageMode ? styles.gridContainer : styles.listContainer
-                ]}>
-                    {step.choices?.map((choice, index) =>
-                        isImageMode
-                            ? renderImageChoice(choice, index)
-                            : renderTextChoice(choice, index)
-                    )}
-                </View>
+            {/* Header Question */}
+            <View style={{ gap: 20 }}>
+                <Title0 title={step.title} color={Colors.white} isLeft />
+                <BodyText text={step.content} size='XL' color={Colors.lightGrey} style={{ marginBottom: 20 }} />
             </View>
 
+            {/* Container des Choix */}
+            <View style={[
+                styles.choicesContainer,
+                isImageMode ? styles.gridContainer : styles.listContainer
+            ]}>
+                {step.choices?.map((choice, index) =>
+                    isImageMode
+                        ? renderImageChoice(choice, index)
+                        : renderTextChoice(choice, index)
+                )}
+            </View>
             {/* Footer : Bouton Continuer (Visible seulement si Succès) */}
             <View style={styles.footer}>
                 {isSuccess && (
@@ -151,10 +149,7 @@ export default function QuizGameView({ step, onValid }: Props) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'space-between', // Centre verticalement le contenu
-        paddingHorizontal: 20,
-        paddingBottom: 40,
-        paddingTop: 60
+        justifyContent: 'space-between',
     },
     choicesContainer: {
         width: '100%',

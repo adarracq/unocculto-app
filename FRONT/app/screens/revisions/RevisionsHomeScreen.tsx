@@ -22,7 +22,7 @@ export default function RevisionsHomeScreen({ navigation }: any) {
     const [filterGeo, setFilterGeo] = useState(true);
     const [filterFlag, setFilterFlag] = useState(true);
     const [filterCapital, setFilterCapital] = useState(true);
-    const [filterAnecdote, setFilterAnecdote] = useState(true); // Nouveau switch
+    const [filterAnecdote, setFilterAnecdote] = useState(false);
 
     const [modalConfig, setModalConfig] = useState({
         visible: false,
@@ -85,7 +85,7 @@ export default function RevisionsHomeScreen({ navigation }: any) {
 
 
     return (
-        <LinearGradient colors={[Colors.black, Colors.realBlack]} style={styles.container}>
+        <LinearGradient colors={[Colors.darkGrey, Colors.black]} style={styles.container}>
             <GlowTopGradient />
             {/* Header */}
             <View style={styles.header}>
@@ -98,7 +98,7 @@ export default function RevisionsHomeScreen({ navigation }: any) {
                     <LoadingScreen />
                     :
 
-                    <ScrollView contentContainerStyle={{ paddingBottom: 100, paddingTop: 30 }}>
+                    <ScrollView contentContainerStyle={{ paddingHorizontal: 20 }} showsVerticalScrollIndicator={false}>
 
                         {/* 1. LE RADAR (Visuel) */}
 
@@ -128,7 +128,7 @@ export default function RevisionsHomeScreen({ navigation }: any) {
                     title="Décollage immédiat"
                     onPress={handleStartMission}
                     variant="glass"
-                    rightIcon="airplane-takeoff"
+                    rightIcon="arrow-right"
                     bump
                 />
             </View>
@@ -141,15 +141,15 @@ export default function RevisionsHomeScreen({ navigation }: any) {
             >
                 <BodyText text={modalConfig.message} color={Colors.white} />
             </CustomModal>
-        </LinearGradient>
+        </LinearGradient >
     );
 }
 
 const styles = StyleSheet.create({
-    container: { flex: 1, paddingVertical: 60, paddingHorizontal: 20 },
-    header: { marginBottom: 20, gap: 10 },
+    container: { flex: 1, paddingVertical: 60 },
+    header: { marginBottom: 20, gap: 10, paddingHorizontal: 20 },
     footer: {
         position: 'absolute',
-        bottom: 30, left: 20, right: 20
+        bottom: 20, left: 20, right: 20
     }
 });

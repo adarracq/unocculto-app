@@ -11,7 +11,6 @@ import { ALL_COUNTRIES, getFlagImage } from '@/app/models/Countries';
 import { HomeNavParams } from '@/app/navigations/HomeNav';
 import { storyService } from '@/app/services/story.service';
 import { userService } from '@/app/services/user.service';
-import { functions } from '@/app/utils/Functions';
 import { useIsFocused } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useContext, useEffect, useState } from 'react';
@@ -88,7 +87,8 @@ export default function HomeScreen({ navigation }: Props) {
             if (destinationCountry) {
                 navigation.navigate('StoryGame', {
                     story: storyApi.data,
-                    country: destinationCountry
+                    country: destinationCountry,
+                    user: userApi.data
                 });
             }
         }
@@ -125,10 +125,40 @@ export default function HomeScreen({ navigation }: Props) {
         };
     };
 
+    // --- LOGIQUE DE VERROUILLAGE ---
+    const getLockedDate = () => {
+        const userData = userApi.data;
+        if (!userData) return null;
+
+        // 1. Si Premium : Jamais bloqué
+        if (userData.isPremium) return null;
+
+        // 2. Si moins de 3 histoires jouées : Gratuit (Jamais bloqué)
+        if ((userData.storiesPlayedCount || 0) < 3) return null;
+
+        // 3. Sinon : Vérifier la date de la dernière partie
+        if (!userData.lastStoryPlayedAt) return null; // Cas bizarre, mais on laisse passer
+
+        const lastPlayed = new Date(userData.lastStoryPlayedAt);
+        const nextMidnight = new Date(lastPlayed);
+        nextMidnight.setDate(nextMidnight.getDate() + 1); // Lendemain
+        nextMidnight.setHours(0, 0, 0, 0); // Minuit
+
+        const now = new Date();
+
+        // Si minuit est passé, c'est débloqué (return null)
+        if (now >= nextMidnight) return null;
+
+        // Sinon, on retourne la date cible pour le compte à rebours
+        return nextMidnight;
+    };
+
+    const lockedUntil = getLockedDate();
+
     // --- RENDER ---
 
     if (!userApi.data || userApi.loading) {
-        return <LinearGradient colors={[Colors.black, '#121212']} style={styles.container}>
+        return <LinearGradient colors={[Colors.darkGrey, Colors.black]} style={styles.container}>
             <LoadingScreen />
         </LinearGradient>;
     }
@@ -141,7 +171,7 @@ export default function HomeScreen({ navigation }: Props) {
 
 
     return (
-        <LinearGradient colors={[Colors.black, '#121212']} style={styles.container}>
+        <LinearGradient colors={[Colors.darkGrey, Colors.black]} style={styles.container}>
             <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: 40 }} showsVerticalScrollIndicator={false}>
 
                 <ProfileHeader user={userApi.data} onChangeFlag={handleChangeFlag} />
@@ -151,15 +181,13 @@ export default function HomeScreen({ navigation }: Props) {
                     {!storyApi.loading && destinationStory && destinationCountry ? (
                         <BoardingPass
                             pseudo={userApi.data.pseudo}
-                            // DESTINATION
                             color={destinationCountry.mainColor}
                             countryCode={destinationCountry.code}
                             city={destinationStory.city}
-                            // ORIGINE (Calculée via Passport)
                             originCity={lastTrip?.city}
                             originCountryCode={lastTrip?.countryCode}
-
                             onPress={handleBoardingPress}
+                            lockedUntil={lockedUntil}
                         />
                     ) : (
                         // Placeholder si pas de destination choisie
@@ -168,6 +196,8 @@ export default function HomeScreen({ navigation }: Props) {
                                 title="Choisir une destination"
                                 onPress={() => navigation.navigate('SelectDestination')}
                                 variant="glass"
+                                bump
+                                rightIcon='arrow-right'
                             />
                         )
                     )}
@@ -198,18 +228,9 @@ export default function HomeScreen({ navigation }: Props) {
                             {/* Petit drapeau à côté du nom */}
                             <Image
                                 source={getFlagImage(destinationCountry?.code || '')}
-                                style={{ width: 40, height: 25, borderRadius: 4 }}
+                                style={{ width: 40, height: 25, borderRadius: 4, marginTop: 6 }}
                                 resizeMode="cover"
                             />
-                        </View>
-                        <BodyText text="Coût du billet :" style={{ color: Colors.lightGrey }} />
-                        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginLeft: 20 }}>
-
-                            <Image
-                                source={functions.getIconSource('lightning')}
-                                style={{ width: 26, height: 26, }}
-                            />
-                            <Title0 title="10" style={{ color: Colors.gold }} />
                         </View>
                     </View>
                 </CustomModal>

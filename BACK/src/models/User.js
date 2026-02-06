@@ -2,6 +2,7 @@
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 
+// Schéma pour le Passeport (Existant)
 const passportEntrySchema = new mongoose.Schema({
     hasFlag: { type: Boolean, default: false },
     isCompleted: { type: Boolean, default: false },
@@ -13,21 +14,32 @@ const userSchema = mongoose.Schema({
     email: { type: String, required: true, unique: true },
     pseudo: { type: String, required: false },
 
-    // Nettoyage ici : suppression de avatarID et unlockedAvatarIDs
     selectedFlag: { type: String, default: null },
 
-    // Passeport
+    // Passeport (Mode Histoire)
     passport: {
         type: Map,
         of: passportEntrySchema,
         default: {}
     },
 
+    // --- NOUVEAU : PROGRESSION ARCADE ---
+    // Structure: { "AFR": { "flag": { levels: { "1": { unlocked: true... } } } } }
+    // On utilise Map of Mixed pour gérer la flexibilité des clés imbriquées
+    progression: {
+        type: Map,
+        of: mongoose.Schema.Types.Mixed,
+        default: {}
+    },
+
     inventory: { type: [String], default: [] },
 
-    energy: { type: Number, default: 10 },
-    coins: { type: Number, default: 0 },
+    fuel: { type: Number, default: 10 },
+    xp: { type: Number, default: 0 },
     dayStreak: { type: Number, default: 0 },
+    isPremium: { type: Boolean, default: false },
+    storiesPlayedCount: { type: Number, default: 0 },
+    lastStoryPlayedAt: { type: Date, default: null },
 
     currentStoryId: { type: String, default: null },
     expoPushToken: { type: String },

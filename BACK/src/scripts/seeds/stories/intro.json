@@ -7,7 +7,6 @@
         "isCapital": true,
         "rarity": "common",
         "xpReward": 150,
-        "rewardCollectibleId": "badge_croissant_dore",
         "timeline": [
             {
                 "type": "dialogue",
@@ -46,7 +45,7 @@
         ]
     },
     {
-        "storyId": "JP-TOKYO-01",
+        "storyId": "JP00",
         "countryCode": "JP",
         "city": "Tokyo",
         "title": "Néon et Tradition",
@@ -91,7 +90,7 @@
         ]
     },
     {
-        "storyId": "IT-ROME-01",
+        "storyId": "IT00",
         "countryCode": "IT",
         "city": "Rome",
         "title": "L'Éternelle",
@@ -135,7 +134,7 @@
         ]
     },
     {
-        "storyId": "GB-LONDON-01",
+        "storyId": "GB00",
         "countryCode": "GB",
         "city": "Londres",
         "title": "Royal & Rock",
@@ -176,7 +175,7 @@
         ]
     },
     {
-        "storyId": "US-WASHINGTON-01",
+        "storyId": "US00",
         "countryCode": "US",
         "city": "Washington D.C.",
         "title": "Le Siège du Pouvoir",
@@ -221,7 +220,7 @@
         ]
     },
     {
-        "storyId": "DE-BERLIN-01",
+        "storyId": "DE00",
         "countryCode": "DE",
         "city": "Berlin",
         "title": "Phénix de Béton",
@@ -262,7 +261,7 @@
         ]
     },
     {
-        "storyId": "BR-BRASILIA-01",
+        "storyId": "BR00",
         "countryCode": "BR",
         "city": "Brasilia",
         "title": "Utopie Futuriste",
@@ -303,7 +302,7 @@
         ]
     },
     {
-        "storyId": "EG-CAIRO-01",
+        "storyId": "EG00",
         "countryCode": "EG",
         "city": "Le Caire",
         "title": "Sables du Temps",
@@ -344,7 +343,7 @@
         ]
     },
     {
-        "storyId": "CA-OTTAWA-01",
+        "storyId": "CA00",
         "countryCode": "CA",
         "city": "Ottawa",
         "title": "Capitale du Nord",
@@ -389,7 +388,7 @@
         ]
     },
     {
-        "storyId": "AU-CANBERRA-01",
+        "storyId": "AU00",
         "countryCode": "AU",
         "city": "Canberra",
         "title": "La Ville du Bush",

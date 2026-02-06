@@ -11,10 +11,15 @@ interface Props {
     onSelect: (item: Collectible) => void;
 }
 
-// On calcule la largeur pour avoir 3 items par ligne avec un peu d'espace
-const screenWidth = Dimensions.get('window').width;
-// (Largeur écran - padding horizontal total - espaces entre les items) / 3
-const itemSize = (screenWidth - 40 - 20) / 3;
+// --- CALCUL PRÉCIS DE LA GRILLE ---
+const SCREEN_WIDTH = Dimensions.get('window').width;
+const PARENT_PADDING = 20; // Le padding de l'écran parent (HomeMuseumScreen)
+const GAP_SIZE = 10;       // L'espace voulu entre les items
+const COLUMNS = 3;
+
+// Formule : (LargeurEcran - PaddingGaucheDroite - (EspaceEntreItems * (NbColonnes - 1))) / NbColonnes
+// On ajoute Math.floor pour éviter les décimales qui font sauter la ligne
+const ITEM_SIZE = Math.floor((SCREEN_WIDTH - (PARENT_PADDING * 2) - (GAP_SIZE * (COLUMNS - 1))) / COLUMNS) - 1;
 
 export default function MuseumItemGrid({ items, onSelect }: Props) {
 
@@ -28,9 +33,11 @@ export default function MuseumItemGrid({ items, onSelect }: Props) {
         return (
             <TouchableOpacity
                 key={item.id}
-                style={[styles.itemContainer, { width: itemSize, height: itemSize }, !isOwned && styles.lockedContainer]}
-                onPress={() => isOwned && onSelect(item)}
-                activeOpacity={isOwned ? 0.7 : 1} // Pas de feedback tactile si verrouillé
+                // On force la taille calculée ici
+                style={[styles.itemContainer, { width: ITEM_SIZE, height: ITEM_SIZE }, !isOwned && styles.lockedContainer]}
+                // CORRECTION : On autorise le clic même si !isOwned pour afficher la modal cryptée
+                onPress={() => onSelect(item)}
+                activeOpacity={0.7}
             >
                 {/* Image Principale */}
                 <Image
@@ -52,14 +59,11 @@ export default function MuseumItemGrid({ items, onSelect }: Props) {
                 {/* --- ÉLÉMENTS POSSÉDÉS --- */}
                 {isOwned && (
                     <>
-                        {/* Badge Drapeau (Haut Droit) */}
                         {item.countryCode && (
                             <View style={styles.flagBadge}>
                                 <Image source={getFlagImage(item.countryCode)} style={{ width: 16, height: 12, borderRadius: 2 }} />
                             </View>
                         )}
-
-                        {/* Badge Rareté (Bas Droit) */}
                         <View style={[styles.rarityDot, { backgroundColor: getRarityColor(item.rarity) }]} />
                     </>
                 )}
@@ -74,13 +78,12 @@ export default function MuseumItemGrid({ items, onSelect }: Props) {
     );
 }
 
-// Helper couleur rareté (local au composant pour l'instant)
 const getRarityColor = (rarity: string) => {
     switch (rarity) {
-        case 'legendary': return '#FFD700'; // Or
-        case 'rare': return '#9D00FF';      // Violet
-        case 'uncommon': return '#0096FF';  // Bleu
-        default: return '#FFFFFF';          // Blanc (Common)
+        case 'legendary': return '#FFD700';
+        case 'rare': return '#9D00FF';
+        case 'uncommon': return '#0096FF';
+        default: return '#FFFFFF';
     }
 };
 
@@ -88,7 +91,7 @@ const styles = StyleSheet.create({
     gridContainer: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        gap: 10, // Espace entre les lignes et les colonnes
+        gap: GAP_SIZE, // Utilise la constante définie plus haut
         justifyContent: 'flex-start',
     },
     itemContainer: {
@@ -98,13 +101,12 @@ const styles = StyleSheet.create({
         borderColor: 'rgba(255,255,255,0.08)',
         justifyContent: 'center',
         alignItems: 'center',
-        padding: 8, // Padding interne pour que l'image ne touche pas les bords
-        position: 'relative', // Pour positionner les badges en absolu
+        padding: 4,
+        position: 'relative',
         overflow: 'hidden'
     },
-    // Style quand verrouillé
     lockedContainer: {
-        backgroundColor: 'rgba(0,0,0,0.2)',
+        backgroundColor: 'rgba(0,0,0,0.3)',
         borderColor: 'rgba(255,255,255,0.02)',
     },
     itemImage: {
@@ -112,31 +114,18 @@ const styles = StyleSheet.create({
         height: '80%',
     },
     lockedImage: {
-        opacity: 0.2,
-        grayscale: 1 // Si React Native supporte (sinon l'opacité suffit)
+        opacity: 0.1, // Beaucoup plus sombre pour l'effet "inconnu"
+        tintColor: 'white' // Rend la silhouette blanche/grise
     } as any,
-
-    // Overlays et Badges
     lockOverlay: {
         ...StyleSheet.absoluteFillObject,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'rgba(0,0,0,0.1)'
     },
     flagBadge: {
-        position: 'absolute',
-        top: 8,
-        right: 8,
-        opacity: 0.9,
-        shadowColor: "#000", shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.5, shadowRadius: 1,
+        position: 'absolute', top: 6, right: 6, opacity: 0.9,
     },
     rarityDot: {
-        position: 'absolute',
-        bottom: 8,
-        right: 8,
-        width: 8,
-        height: 8,
-        borderRadius: 4,
-        shadowColor: "#000", shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0.8, shadowRadius: 3,
+        position: 'absolute', bottom: 6, right: 6, width: 8, height: 8, borderRadius: 4,
     },
 });

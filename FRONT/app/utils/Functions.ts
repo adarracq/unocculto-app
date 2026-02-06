@@ -4,8 +4,10 @@ import * as FileSystem from 'expo-file-system/legacy';
 export const functions = {
     getIconSource,
     getRewardSource,
+    getImageSource,
     shuffleArray,
     addSpacesInNumber,
+    formatTime,
     convertImageToBase64,
     dateToString,
     stringDateToString,
@@ -28,6 +30,16 @@ function getIconSource(name: string) {
             return require('@/app/assets/icons/palette.png');
         case 'flask':
             return require('@/app/assets/icons/flask.png');
+        case 'flag':
+            return require('@/app/assets/icons/flag.png');
+        case 'capital':
+            return require('@/app/assets/icons/capital.png');
+        case 'fuel':
+            return require('@/app/assets/icons/fuel.png');
+        case 'target':
+            return require('@/app/assets/icons/target.png');
+        case 'clock':
+            return require('@/app/assets/icons/clock.png');
         case 'gamepad':
             return require('@/app/assets/icons/gamepad.png');
         case 'profile':
@@ -83,6 +95,26 @@ function getIconSource(name: string) {
     }
 }
 
+function getImageSource(name: string) {
+    switch (name) {
+        case 'EUR':
+            return require('@/app/assets/continents/europe.png');
+        case 'ASI':
+            return require('@/app/assets/continents/asia.png');
+        case 'AFR':
+            return require('@/app/assets/continents/africa.png');
+        case 'AME':
+            return require('@/app/assets/continents/america.png');
+        case 'OCE':
+            return require('@/app/assets/continents/oceania.png');
+        case 'WLD':
+            return require('@/app/assets/continents/world.png');
+        default:
+            return require('@/app/assets/icons/none.png');
+    }
+}
+
+
 function getRewardSource(name: string) {
     switch (name) {
         case 'passport':
@@ -105,6 +137,14 @@ function addSpacesInNumber(num: number): string {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 }
 
+function formatTime(seconds: number): string {
+    // 600 return 10min
+    // 90 return 1min30
+
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins > 0 ? mins + 'min ' : ''}${secs > 0 ? secs + 's' : ''}`.trim();
+}
 
 
 async function convertImageToBase64(imageSource: any) {

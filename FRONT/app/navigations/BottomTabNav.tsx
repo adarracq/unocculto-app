@@ -1,7 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import React, { useContext } from 'react';
-import { Platform } from 'react-native';
 import TabBarElement from '../components/molecules/TabBarElement';
 import { useNotifications } from '../contexts/NotificationContext';
 import { UserContext } from '../contexts/UserContext';
@@ -27,6 +26,7 @@ export default function BottomTabNav() {
         'StoryGame',
         'SelectDestination',
         'ReviewSession',
+        'GeoGame',
     ];
 
     return (
@@ -54,22 +54,14 @@ export default function BottomTabNav() {
                     },
 
                     tabBarStyle: {
-                        position: 'absolute',
-                        bottom: isHidden ? -100 : Platform.OS === 'ios' ? 30 : 20,
-                        left: 20,
-                        right: 20,
-                        borderRadius: 35, // Capsule parfaite
                         height: 70,
-                        backgroundColor: 'rgba(15, 15, 15, 0.95)', // Noir profond
-                        borderTopWidth: 0,
+                        marginBottom: -1,
+                        display: isHidden ? 'none' : 'flex',
+                        backgroundColor: 'rgba(255,255,255,0.05)',
+                        borderTopLeftRadius: 16,
+                        borderTopRightRadius: 16,
                         borderWidth: 1,
                         borderColor: 'rgba(255,255,255,0.1)',
-                        shadowColor: '#000',
-                        shadowOffset: { width: 0, height: 10 },
-                        shadowOpacity: 0.5,
-                        shadowRadius: 10,
-                        elevation: 10,
-                        display: isHidden ? 'none' : 'flex',
                     },
                 };
             }}

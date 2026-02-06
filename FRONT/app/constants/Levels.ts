@@ -1,66 +1,24 @@
-export default {
-    levels:
-        [
+// app/constants/Levels.ts
 
-            {
-                lvl: 1,
-                labelFR: "Novice 1",
-                coins: 0
-            },
-            {
-                lvl: 2,
-                labelFR: "Novice 2",
-                coins: 5
-            },
-            {
-                lvl: 3,
-                labelFR: "Apprenti 1",
-                coins: 12
-            },
-            {
-                lvl: 4,
-                labelFR: "Apprenti 2",
-                coins: 20
-            },
-            {
-                lvl: 5,
-                labelFR: "Aventurier 1",
-                coins: 35
-            },
-            {
-                lvl: 6,
-                labelFR: "Aventurier 2",
-                coins: 55
-            },
-            {
-                lvl: 7,
-                labelFR: "Explorateur 1",
-                coins: 85
-            },
-            {
-                lvl: 8,
-                labelFR: "Explorateur 2",
-                coins: 120
-            },
-            {
-                lvl: 9,
-                labelFR: "Voyageur 1",
-                coins: 180
-            },
-            {
-                lvl: 10,
-                labelFR: "Voyageur 2",
-                coins: 300
-            },
-            {
-                lvl: 11,
-                labelFR: "Globe-Trotter",
-                coins: 450
-            },
-            {
-                lvl: 12,
-                labelFR: "Citoyen du Monde",
-                coins: 700
-            },
-        ]
+export interface Level {
+    lvl: number;
+    labelFR: string;
+    xpThreshold: number; // XP requis pour atteindre ce niveau
+}
+
+export const XP_LEVELS: Level[] = [
+    { lvl: 1, labelFR: "Touriste", xpThreshold: 0 },
+    { lvl: 2, labelFR: "Routard", xpThreshold: 200 },
+    { lvl: 3, labelFR: "Explorateur", xpThreshold: 500 },
+    { lvl: 4, labelFR: "Voyageur", xpThreshold: 1000 },
+    { lvl: 5, labelFR: "Guide Local", xpThreshold: 2000 },
+    { lvl: 6, labelFR: "Aventurier", xpThreshold: 3500 },
+    { lvl: 7, labelFR: "Capitaine", xpThreshold: 5000 },
+    { lvl: 8, labelFR: "Commandant", xpThreshold: 7500 },
+    { lvl: 9, labelFR: "Légende", xpThreshold: 10000 },
+    { lvl: 10, labelFR: "Mythique", xpThreshold: 15000 },
+];
+
+export default {
+    levels: XP_LEVELS
 };

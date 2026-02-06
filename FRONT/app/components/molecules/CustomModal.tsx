@@ -53,9 +53,9 @@ export default function CustomModal({
 
                 {/* --- LA CARTE --- */}
                 <LinearGradient
-                    colors={[color + '60', Colors.black]} // Dégradé très sombre
+                    colors={[color + '40', Colors.black]} // Dégradé très sombre
                     start={{ x: 0, y: 0 }}
-                    end={{ x: .2, y: .4 }}
+                    end={{ x: .3, y: .3 }}
                     style={[styles.container, { borderColor: accentColor + '30', backgroundColor: Colors.black }]}
                 >
                     {/* Header avec Logo + Titre */}

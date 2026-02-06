@@ -2,13 +2,14 @@ import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import { Country } from '../models/Countries';
 import { Story } from '../models/Story';
+import User from '../models/User';
 import HomeScreen from '../screens/home/HomeScreen';
 import SelectDestinationScreen from '../screens/home/SelectDestinationScreen';
 import StoryGameScreen from '../screens/home/StoryGameScreen';
 
 export type HomeNavParams = {
     Home: undefined;
-    StoryGame: { country: Country, story: Story };
+    StoryGame: { country: Country, story: Story, user: User }
     SelectDestination: undefined;
 };
 

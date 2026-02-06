@@ -30,7 +30,10 @@ export default function MuseumHeader({ mode, setMode }: Props) {
 }
 
 const styles = StyleSheet.create({
-    header: { alignItems: 'center', marginBottom: 20 },
+    header: {
+        alignItems: 'center',
+        marginBottom: 20
+    },
     switchContainer: {
         flexDirection: 'row',
         backgroundColor: 'rgba(255,255,255,0.1)',

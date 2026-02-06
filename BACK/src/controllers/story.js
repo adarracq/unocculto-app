@@ -6,6 +6,7 @@ exports.getByID = async (req, res, next) => {
     console.log("Fetching story by ID: " + req.params.id);
     try {
         const story = await Story.findOne({ storyId: req.params.id });
+        console.log("Story found: " + (story ? story.storyId : "None"));
         if (story && story.rewardCollectibleId) {
             const collectible = await Collectible.findOne({ id: story.rewardCollectibleId });
             if (collectible) {

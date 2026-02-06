@@ -3,22 +3,20 @@
 import BodyText from '@/app/components/atoms/BodyText';
 import Title1 from '@/app/components/atoms/Title1';
 import CustomModal from '@/app/components/molecules/CustomModal';
-// import SelectionGrid from '@/app/components/molecules/SelectionGrid'; <--- ON RETIRE ÇA
 import Colors from '@/app/constants/Colors';
 import { Collectible, CollectibleTheme, DEPARTMENTS } from '@/app/models/Collectible';
 import { getFlagImage } from '@/app/models/Countries';
 import { functions } from '@/app/utils/Functions';
 import React, { useMemo, useState } from 'react';
-import { Image, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Image, ScrollView, StyleSheet, TouchableOpacity, Vibration, View } from 'react-native';
 import DepartmentCard from './DepartmentCard';
-import MuseumItemGrid from './MuseumItemGrid'; // <--- ON IMPORT LE NOUVEAU
+import MuseumItemGrid from './MuseumItemGrid';
 
 interface Props {
     inventory: Collectible[];
 }
 
 export default function CargoView({ inventory }: Props) {
-    // --- STATE NAVIGATION ---
     const [activeDepartmentId, setActiveDepartmentId] = useState<string | null>(null);
     const [selectedThemeFilter, setSelectedThemeFilter] = useState<CollectibleTheme | 'ALL'>('ALL');
 
@@ -26,7 +24,18 @@ export default function CargoView({ inventory }: Props) {
     const [selectedItem, setSelectedItem] = useState<Collectible | null>(null);
     const [itemModalVisible, setItemModalVisible] = useState(false);
 
-    // --- CALCULS (inchangés) ---
+    // --- LOGIQUE TEXTE CRYPTÉ ---
+    // Génère un faux texte type "████ 0x4F ████"
+    const generateEncryptedText = (length: number) => {
+        const chars = "████ 0101 ERROR #X99 CLASSIFIED ";
+        let result = "";
+        for (let i = 0; i < length; i++) {
+            result += chars[Math.floor(Math.random() * chars.length)];
+        }
+        return "ACCÈS REFUSÉ. \n\n" + result.slice(0, 150) + "... [SIGNAL LOST]";
+    };
+
+    // --- CALCULS ---
     const stats = useMemo(() => {
         const res: Record<string, { owned: number, total: number }> = {};
         DEPARTMENTS.forEach(dept => {
@@ -51,11 +60,7 @@ export default function CargoView({ inventory }: Props) {
     }, [inventory, activeDepartment, selectedThemeFilter]);
 
 
-    // --- RENDUS ---
-
-    // ON A SUPPRIMÉ LA FONCTION renderCollectible ICI CAR ELLE EST DANS LE NOUVEAU COMPOSANT
-
-    // --- VUE 1 : DASHBOARD (inchangé) ---
+    // --- VUE 1 : DASHBOARD ---
     if (!activeDepartmentId) {
         return (
             <View style={{ gap: 10, paddingTop: 10 }}>
@@ -77,10 +82,9 @@ export default function CargoView({ inventory }: Props) {
         );
     }
 
-    // --- VUE 2 : LISTE DÉTAILLÉE (mise à jour avec la nouvelle grille) ---
+    // --- VUE 2 : LISTE DÉTAILLÉE ---
     return (
         <View style={{ flex: 1, minHeight: 500 }}>
-            {/* Header de section + Bouton Retour */}
             <View style={styles.sectionHeader}>
                 <TouchableOpacity onPress={() => setActiveDepartmentId(null)} style={styles.backBtn}>
                     <Image source={functions.getIconSource('arrow-left')} style={{ width: 20, height: 20, tintColor: Colors.white }} />
@@ -88,7 +92,6 @@ export default function CargoView({ inventory }: Props) {
                 <Title1 title={activeDepartment?.title || ''} style={{ fontSize: 16 }} />
             </View>
 
-            {/* Barre de Filtres (Chips) */}
             <View style={{ height: 40, marginBottom: 15 }}>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filterScroll}>
                     <TouchableOpacity
@@ -115,7 +118,6 @@ export default function CargoView({ inventory }: Props) {
                 </ScrollView>
             </View>
 
-            {/* LA NOUVELLE GRILLE COMPACTE */}
             <View style={{ flex: 1 }}>
                 {displayedItems.length > 0 ? (
                     <MuseumItemGrid
@@ -123,6 +125,12 @@ export default function CargoView({ inventory }: Props) {
                         onSelect={(item) => {
                             setSelectedItem(item);
                             setItemModalVisible(true);
+                            // Vibration positive si debloqué negative sinon
+                            if (item.isOwned) {
+                                Vibration.vibrate([0, 50, 50, 50]);
+                            } else {
+                                Vibration.vibrate([0, 100, 50, 100]);
+                            }
                         }}
                     />
                 ) : (
@@ -130,29 +138,51 @@ export default function CargoView({ inventory }: Props) {
                 )}
             </View>
 
-            {/* Modal Détail (inchangée, juste le helper getRarityColor remis ici si besoin) */}
+            {/* --- MODALE DYNAMIQUE (CRYPTÉE ou NORMALE) --- */}
             {selectedItem && (
                 <CustomModal
                     visible={itemModalVisible}
-                    title={selectedItem.name}
+                    title={selectedItem.isOwned ? selectedItem.name : "FICHIER CRYPTÉ"}
                     onConfirm={() => setItemModalVisible(false)}
                     confirmText="RETOUR"
-                    color={activeDepartment?.color || Colors.main}
+                    // Couleur rouge si pas possédé, sinon couleur du département
+                    color={selectedItem.isOwned ? (activeDepartment?.color || Colors.main) : '#FF4444'}
                 >
                     <View style={{ alignItems: 'center', gap: 20 }}>
                         <View style={styles.modalImageContainer}>
-                            <Image source={{ uri: selectedItem.imageUrl }} style={{ width: 150, height: 150 }} resizeMode="contain" />
-                            <View style={styles.modalFlagTag}>
-                                <Image source={getFlagImage(selectedItem.countryCode)} style={{ width: 20, height: 15 }} />
-                                <BodyText text={selectedItem.countryCode} size="S" isBold />
-                            </View>
+                            {selectedItem.isOwned ? (
+                                <Image source={{ uri: selectedItem.imageUrl }} style={{ width: 150, height: 150 }} resizeMode="contain" />
+                            ) : (
+                                // Image Cadenas pour item verrouillé
+                                <Image source={functions.getIconSource('lock')} style={{ width: 100, height: 100, tintColor: '#FF4444', opacity: 0.8 }} resizeMode="contain" />
+                            )}
+
+                            {/* On cache le drapeau si pas possédé pour garder le mystère */}
+                            {selectedItem.isOwned && (
+                                <Image source={getFlagImage(selectedItem.countryCode)} style={{ width: 40, height: 30, borderRadius: 4 }} />
+                            )}
                         </View>
-                        <BodyText text={selectedItem.description} style={{ textAlign: 'center', fontStyle: 'italic', lineHeight: 22 }} />
+
+                        <BodyText
+                            text={selectedItem.isOwned ? selectedItem.description : generateEncryptedText(selectedItem.description.length)}
+                            style={{
+                                textAlign: 'center',
+                                fontStyle: selectedItem.isOwned ? 'italic' : 'normal',
+                                lineHeight: 22,
+                                // Style "Code" pour le texte crypté
+                                fontFamily: selectedItem.isOwned ? undefined : 'Courier',
+                                color: selectedItem.isOwned ? Colors.white : Colors.lightGrey
+                            }}
+                        />
 
                         <View style={{ flexDirection: 'row', gap: 10, marginTop: 10 }}>
+                            {/* On peut afficher le type (Catégorie) car l'utilisateur est déjà dans le rayon */}
                             <Badge text={selectedItem.type.toUpperCase()} color={Colors.darkGrey} />
-                            {/* On réutilise le helper de couleur ici pour la modale */}
-                            <Badge text={selectedItem.rarity.toUpperCase()} color={getRarityColorModal(selectedItem.rarity)} />
+
+                            <Badge
+                                text={selectedItem.isOwned ? selectedItem.rarity.toUpperCase() : "INCONNU"}
+                                color={selectedItem.isOwned ? getRarityColorModal(selectedItem.rarity) : Colors.darkGrey}
+                            />
                         </View>
                     </View>
                 </CustomModal>
@@ -161,14 +191,13 @@ export default function CargoView({ inventory }: Props) {
     );
 }
 
-// ... Badge component and styles remain mostly the same ...
+// Helpers... (inchangés)
 const Badge = ({ text, color }: { text: string, color: string }) => (
     <View style={{ paddingHorizontal: 10, paddingVertical: 4, borderRadius: 8, backgroundColor: color + '40', borderWidth: 1, borderColor: color }}>
         <BodyText text={text} size="S" color={Colors.white} style={{ fontSize: 10 }} />
     </View>
 );
 
-// Fonction helper locale pour la modale uniquement (l'autre est dans la grille)
 const getRarityColorModal = (rarity: string) => {
     switch (rarity) {
         case 'legendary': return '#FFD700';
@@ -181,7 +210,7 @@ const getRarityColorModal = (rarity: string) => {
 const styles = StyleSheet.create({
     sectionHeader: { flexDirection: 'row', alignItems: 'center', gap: 15, marginBottom: 15 },
     backBtn: { padding: 8, backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 20 },
-    filterScroll: { gap: 8, alignItems: 'center' }, // Align items center pour centrer les chips verticalement
+    filterScroll: { gap: 8, alignItems: 'center' },
     chip: {
         paddingHorizontal: 14, paddingVertical: 6,
         borderRadius: 20,
@@ -189,7 +218,5 @@ const styles = StyleSheet.create({
         borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)',
         justifyContent: 'center'
     },
-    // On supprime les styles liés à l'ancienne grille (gridItem, itemImage, etc.)
     modalImageContainer: { alignItems: 'center', gap: 10 },
-    modalFlagTag: { flexDirection: 'row', gap: 5, alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.3)', padding: 5, borderRadius: 8 }
 });

@@ -85,7 +85,8 @@ export const generateGenericSteps = (country: Country): StoryStep[] => {
 
     if (isOrderGame) {
         // JEU D'ORDRE (Lettres)
-        const letters = country.capital.toUpperCase().split('').filter(char => char !== ' ');
+        // On retire les espaces, les virgules, les points, etc. pour ne garder que les lettres
+        const letters = country.capital.toUpperCase().split('').filter(char => /[A-Z]/.test(char));
 
         steps.push({
             id: 'gen_cap_order',

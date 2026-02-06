@@ -27,7 +27,7 @@ interface MyButtonProps {
 export default function MyButton({
   title,
   onPress,
-  variant = 'solid',
+  variant = 'glass',
   leftIcon,
   rightIcon,
   disabled = false,

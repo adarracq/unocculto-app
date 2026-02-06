@@ -10,6 +10,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Alert, Platform, StyleSheet, View } from 'react-native';
 import FlashMessage from 'react-native-flash-message';
 import LoadingScreen from './components/molecules/LoadingScreen';
+import Colors from './constants/Colors';
 import { NotificationsProvider } from './contexts/NotificationContext';
 import { UserContext } from './contexts/UserContext';
 import BottomTabNav from './navigations/BottomTabNav';
@@ -210,7 +211,7 @@ export default function App() {
             <UserContext.Provider
               value={[user, setUser]}>
               <StatusBar hidden />
-              <View style={StyleSheet.absoluteFillObject} onLayout={onLayoutRootView}>
+              <View style={[StyleSheet.absoluteFillObject, { backgroundColor: Colors.black }]} onLayout={onLayoutRootView}>
                 {
                   userLoaded && user ?
                     <BottomTabNav />

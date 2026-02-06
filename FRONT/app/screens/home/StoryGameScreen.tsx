@@ -8,11 +8,10 @@ import { DialogueStep, Story, StoryStep } from '@/app/models/Story'; //
 import { HomeNavParams } from '@/app/navigations/HomeNav';
 import { collectibleService } from '@/app/services/collectible.service';
 import { userService } from '@/app/services/user.service';
-import { functions } from '@/app/utils/Functions';
 import { generateGameFromAnecdote } from '@/app/utils/generators/GameGenerator'; // Assure-toi que le chemin est bon
 import { generateGenericSteps, generateOutroSteps, generateRewardStep } from '@/app/utils/generators/GenericStoryGenerator'; //
 import React, { useContext, useMemo, useState } from 'react';
-import { Image, View } from 'react-native';
+import { View } from 'react-native';
 import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack/types';
 import GameScreen from '../games/GameScreen';
 
@@ -77,8 +76,7 @@ export default function StoryGameScreen({ navigation, route }: Props) {
                 }
             });
         }
-
-        const hasFlag = userContext.passport[country.code]?.hasFlag || false;
+        const hasFlag = route.params.user.passport[country.code]?.hasFlag || false;
         const rewardSteps = generateOutroSteps(country, hasFlag);
         // Si une récompense collectible est définie, on l'ajoute aussi
         if (dbStory.collectible) {
@@ -90,17 +88,18 @@ export default function StoryGameScreen({ navigation, route }: Props) {
             steps: [...introSteps, ...contentSteps, ...rewardSteps],
         };
 
-    }, [country.code, dbStory.storyId, dbStory.collectible?.imageUrl]);
+    }, [country.code, dbStory.storyId, dbStory.collectible?.imageUrl, route.params.user.passport]);
 
 
     // --- 2. API SAVE ---
-    const { execute: completeStory } = useApi(
+    const { execute: completeStory, loading: loadingCompleteStory } = useApi(
         (data: any) => userService.completeStory(data),
         'StoryGame - Complete'
     );
 
     // --- 3. FIN DE JEU ---
     const handleGameFinish = async () => {
+        if (loadingCompleteStory) return; // Évite les doubles validations
         const result = await completeStory({
             storyId: dbStory.storyId,
             countryCode: country.code,
@@ -122,8 +121,7 @@ export default function StoryGameScreen({ navigation, route }: Props) {
                         <Title1 title="Passeport Diplomatique Débloqué" color={Colors.gold} />
                         <BodyText text={`Vous avez complété toutes les histoires de ${country.name_fr}.`} />
                         <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-                            <BodyText text={`+ ${result.earned.xp}`} style={{ color: Colors.lightGrey }} />
-                            <Image source={functions.getIconSource('lightning')} style={{ width: 12, height: 12 }} />
+                            <BodyText text={`+ ${result.earned.xp} XP`} style={{ color: Colors.lightGrey }} />
                         </View>
                     </View>
                 );

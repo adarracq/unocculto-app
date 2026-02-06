@@ -248,7 +248,33 @@ exports.completeStory = async (req, res, next) => {
             }
         }
 
+        user.storiesPlayedCount = (user.storiesPlayedCount || 0) + 1;
+
+        // --- GESTION DU DAY STREAK ---
+        const now = new Date();
+        const lastPlayDate = user.lastStoryPlayedAt ? new Date(user.lastStoryPlayedAt) : null;
+
+        if (!lastPlayDate) {
+            // Première histoire jamais jouée
+            user.dayStreak = 1;
+        } else {
+            const dayDiff = Math.floor((now - lastPlayDate) / (1000 * 60 * 60 * 24));
+
+            if (dayDiff === 0) {
+                // Même jour, ne rien changer au dayStreak
+            } else if (dayDiff === 1) {
+                // Jour suivant, incrémenter
+                user.dayStreak = (user.dayStreak || 0) + 1;
+            } else {
+                // Plus d'un jour écoulé, réinitialiser
+                user.dayStreak = 1;
+            }
+        }
+
+        user.lastStoryPlayedAt = new Date();
+
         // --- 5. SAUVEGARDE ---
+        user.xp += xpEarned;
         user.passport.set(countryCode, countryEntry);
         user.currentStoryId = null;
         await user.save();
@@ -292,7 +318,8 @@ exports.completeStory = async (req, res, next) => {
             updatedUser: {
                 passport: user.passport,
                 inventory: user.inventory,
-                coins: user.coins,
+                fuel: user.fuel,
+                xp: user.xp,
                 currentStoryId: null
             }
         });
@@ -608,6 +635,7 @@ exports.getMuseumInventory = async (req, res) => {
                 id: item.id,
                 name: item.name,
                 description: isOwned ? item.description : "???", // Mystère si pas possédé
+                countryCode: item.countryCode,
                 imageUrl: item.imageUrl,
                 rarity: item.rarity,
                 type: item.type,

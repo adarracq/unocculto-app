@@ -8,8 +8,8 @@ const app = express();
 
 
 const userRoutes = require('./routes/user');
-const ThemeRoutes = require('./routes/theme');
 const storyRoutes = require('./routes/story');
+const GameResultRoutes = require('./routes/gameResult');
 
 mongoose.connect(process.env.MONGO_URI,
     {
@@ -45,6 +45,6 @@ app.use((req, res, next) => {
 });
 
 app.use('/api/user', userRoutes);
-app.use('/api/theme', ThemeRoutes);
 app.use('/api/story', storyRoutes);
+app.use('/api/game', GameResultRoutes);
 module.exports = app;

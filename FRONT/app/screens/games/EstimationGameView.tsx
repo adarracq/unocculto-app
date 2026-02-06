@@ -136,13 +136,12 @@ export default function EstimationGameView({ step, onValid }: Props) {
                     <MyButton
                         title="Estimer"
                         onPress={handleValidate}
-                        variant="solid"
+                        variant="outline"
                     />
                 ) : (
                     <MyButton
                         title="Continuer"
                         onPress={onValid}
-                        variant="glass"
                         rightIcon="arrow-right"
                         bump
                     />
@@ -156,7 +155,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'space-between',
-        paddingVertical: 40,
     },
     imageContainer: {
         flex: 1,

@@ -27,7 +27,7 @@ export default function StoryReward({ step, onNext }: Props) {
                 <Title0 title={step.title} color={Colors.white} />
 
                 {step.rewardImage && (
-                    <View style={styles.glowContainer}>
+                    <View style={styles.rewardContainer}>
                         <Image
                             source={imageSource}
                             style={styles.rewardImage}
@@ -38,8 +38,8 @@ export default function StoryReward({ step, onNext }: Props) {
 
                 <BodyText
                     text={step.content}
-                    size='XL'
-                    style={{ color: Colors.white, textAlign: 'center', opacity: 0.9 }}
+                    size='L'
+                    style={{ color: Colors.lightGrey, textAlign: 'center', opacity: 0.8 }}
                 />
             </View>
 
@@ -57,12 +57,12 @@ export default function StoryReward({ step, onNext }: Props) {
 }
 
 const styles = StyleSheet.create({
-    container: { flex: 1, justifyContent: 'space-between', paddingVertical: 40, paddingHorizontal: 20 },
+    container: { flex: 1, justifyContent: 'space-between' },
     centerContent: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        gap: 30,
+        gap: 50,
     },
     glowContainer: {
         shadowColor: Colors.main,
@@ -71,8 +71,11 @@ const styles = StyleSheet.create({
         shadowRadius: 30, // Effet "Légendaire"
         elevation: 10,
     },
+    rewardContainer: {
+    },
     rewardImage: {
         width: 220,
-        height: 220,
+        height: 220
     }
+
 });

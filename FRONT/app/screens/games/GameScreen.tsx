@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: Colors.black,
-        paddingTop: 50, // Safe Area manuelle
+        paddingVertical: 50,
     },
     touchLayer: {
         flex: 1,
@@ -264,6 +264,7 @@ const styles = StyleSheet.create({
     contentContainer: {
         flex: 1,
         paddingHorizontal: 20,
+        paddingTop: 20,
         justifyContent: 'center',
     },
 });

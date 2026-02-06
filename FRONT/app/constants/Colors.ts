@@ -6,6 +6,8 @@ export default {
     mainVeryDark: '#614500',
 
     gold: '#FFD700',
+    silver: '#C0C0C0',
+    bronze: '#CD7F32',
 
     purple: '#9D00DB',
     green: '#00DB9D',

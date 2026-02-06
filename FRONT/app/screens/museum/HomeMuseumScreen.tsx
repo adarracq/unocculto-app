@@ -27,7 +27,7 @@ export default function HomeMuseumScreen({ navigation }: any) {
     const isLoading = inventoryApi.loading || logbookApi.loading;
 
     return (
-        <LinearGradient colors={[Colors.black, Colors.realBlack]} style={styles.container}>
+        <LinearGradient colors={[Colors.darkGrey, Colors.black]} style={styles.container}>
             {/* Dégradé différent selon le mode pour l'ambiance */}
             <GlowTopGradient color={mode === 'CARGO' ? Colors.main : Colors.main} />
 
@@ -36,7 +36,7 @@ export default function HomeMuseumScreen({ navigation }: any) {
             {isLoading ? (
                 <LoadingScreen />
             ) : (
-                <ScrollView contentContainerStyle={styles.scrollContent}>
+                <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
                     {mode === 'CARGO' && (
                         <CargoView inventory={inventoryApi.data || []} />
                     )}
@@ -51,6 +51,6 @@ export default function HomeMuseumScreen({ navigation }: any) {
 }
 
 const styles = StyleSheet.create({
-    container: { flex: 1, paddingTop: 50, paddingHorizontal: 20 },
-    scrollContent: { paddingBottom: 50 },
+    container: { flex: 1, paddingTop: 50 },
+    scrollContent: { paddingBottom: 50, paddingHorizontal: 20 },
 });
