@@ -1,5 +1,5 @@
 import { LinearGradient } from 'expo-linear-gradient';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Alert, Image, StyleSheet, View } from 'react-native';
 import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack/types';
 
@@ -10,7 +10,6 @@ import Title0 from '@/app/components/atoms/Title0';
 import SelectionGrid from '@/app/components/molecules/SelectionGrid';
 
 // Imports Data & Models
-import GlowTopGradient from '@/app/components/molecules/GlowTopGradient';
 import Colors from '@/app/constants/Colors';
 import { TUTORIAL_STORIES } from '@/app/constants/TutorialStories';
 import { ALL_COUNTRIES } from '@/app/models/Countries';
@@ -23,6 +22,7 @@ type Props = NativeStackScreenProps<NavParams, 'SelectStartCountry'>;
 export default function SelectStartCountryScreen({ navigation }: Props) {
     // On sélectionne maintenant une Story (ex: Paris), pas juste un pays
     const [selectedStory, setSelectedStory] = useState<Story | null>(null);
+    const [selectedColor, setSelectedColor] = useState<string>(Colors.darkGrey);
 
     // On transforme l'objet TUTORIAL_STORIES en tableau pour la grille
     // On ne garde que ceux qui sont définis
@@ -44,11 +44,16 @@ export default function SelectStartCountryScreen({ navigation }: Props) {
         }
     };
 
+    useEffect(() => {
+        if (selectedStory) {
+            setSelectedColor(ALL_COUNTRIES.find(c => c.code === selectedStory.countryCode)?.mainColor || Colors.darkGrey);
+        }
+    }, [selectedStory]);
+
     return (
         <LinearGradient
-            colors={[Colors.darkGrey, Colors.black]}
+            colors={[selectedColor, Colors.black]}
             style={styles.container}>
-            <GlowTopGradient />
             {/* --- HEADER --- */}
             <View style={styles.topSection}>
                 <View style={styles.logoContainer}>
@@ -92,7 +97,6 @@ export default function SelectStartCountryScreen({ navigation }: Props) {
                         onPress={handleValidation}
                         variant='glass'
                         rightIcon="arrow-right"
-                        bump
                     />
                 )}
             </View>

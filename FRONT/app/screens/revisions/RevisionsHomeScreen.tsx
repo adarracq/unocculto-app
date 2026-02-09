@@ -4,25 +4,26 @@ import MyButton from '@/app/components/atoms/MyButton';
 import Title0 from '@/app/components/atoms/Title0';
 import CustomModal from '@/app/components/molecules/CustomModal';
 import GlowTopGradient from '@/app/components/molecules/GlowTopGradient';
-import LoadingScreen from '@/app/components/molecules/LoadingScreen';
 import Colors from '@/app/constants/Colors';
+import { ThemeContext } from '@/app/contexts/ThemeContext';
 import { useApi } from '@/app/hooks/useApi'; //
 import { RevisionDashboardData, userService } from '@/app/services/user.service'; //
 import { useIsFocused } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import KnowledgeRadar from './components/KnowledgeRadar';
 import RevisionCockpit from './components/RevisionCockpit';
 
 export default function RevisionsHomeScreen({ navigation }: any) {
     const isFocused = useIsFocused();
+    const [themeContext, setThemeContext] = useContext(ThemeContext);
 
     // --- 1. ÉTATS DES SWITCHS ---
     const [filterGeo, setFilterGeo] = useState(true);
     const [filterFlag, setFilterFlag] = useState(true);
     const [filterCapital, setFilterCapital] = useState(true);
-    const [filterAnecdote, setFilterAnecdote] = useState(false);
+    const [filterAnecdote, setFilterAnecdote] = useState(true);
 
     const [modalConfig, setModalConfig] = useState({
         visible: false,
@@ -86,52 +87,40 @@ export default function RevisionsHomeScreen({ navigation }: any) {
 
     return (
         <LinearGradient colors={[Colors.darkGrey, Colors.black]} style={styles.container}>
-            <GlowTopGradient />
+            <GlowTopGradient color={themeContext.mainColor} />
+
             {/* Header */}
             <View style={styles.header}>
                 <Title0 title="Centre de Révision" color={Colors.white} isLeft />
-                <BodyText text="MAINTENANCE DES CONNAISSANCES" size="S" color={Colors.main} style={{ letterSpacing: 2 }} />
+                <BodyText text="MAINTENANCE DES CONNAISSANCES" size="S" color={Colors.lightGrey} style={{ letterSpacing: 2 }} />
             </View>
+            <ScrollView contentContainerStyle={{ paddingHorizontal: 20, gap: 20 }} showsVerticalScrollIndicator={false}>
 
-            {
-                dashboardApi.loading && !dashboardApi.data ?
-                    <LoadingScreen />
-                    :
+                {/* 2. LE RADAR (Visuel) */}
+                <KnowledgeRadar
+                    items={dashboardData.radarItems || []}
+                    isLoading={dashboardApi.loading}
+                    mainColor={themeContext.mainColor}
+                />
+                {/* 1. LE RADAR (Visuel) */}
 
-                    <ScrollView contentContainerStyle={{ paddingHorizontal: 20 }} showsVerticalScrollIndicator={false}>
-
-                        {/* 1. LE RADAR (Visuel) */}
-
-                        <RevisionCockpit
-                            totalDue={displayCount}
-                            filterGeo={filterGeo} setFilterGeo={setFilterGeo}
-                            filterFlag={filterFlag} setFilterFlag={setFilterFlag}
-                            filterCapital={filterCapital} setFilterCapital={setFilterCapital}
-                            filterAnecdote={filterAnecdote} setFilterAnecdote={setFilterAnecdote}
-                        />
-
-                        <View style={{ height: 30 }} />
-
-                        {/* 2. LE RADAR (Visuel) */}
-                        <KnowledgeRadar
-                            items={dashboardData.radarItems}
-                            isLoading={dashboardApi.loading}
-                        />
-
-
-                    </ScrollView>
-            }
-
-            {/* Bouton Flottant ou Fixe en bas */}
-            <View style={styles.footer}>
+                <RevisionCockpit
+                    totalDue={displayCount || 0}
+                    filterGeo={filterGeo} setFilterGeo={setFilterGeo}
+                    filterFlag={filterFlag} setFilterFlag={setFilterFlag}
+                    filterCapital={filterCapital} setFilterCapital={setFilterCapital}
+                    filterAnecdote={filterAnecdote} setFilterAnecdote={setFilterAnecdote}
+                    mainColor={themeContext.mainColor}
+                />
                 <MyButton
                     title="Décollage immédiat"
                     onPress={handleStartMission}
-                    variant="glass"
+                    variant="outline"
                     rightIcon="arrow-right"
                     bump
                 />
-            </View>
+
+            </ScrollView>
 
             <CustomModal
                 visible={modalConfig.visible}
@@ -146,7 +135,7 @@ export default function RevisionsHomeScreen({ navigation }: any) {
 }
 
 const styles = StyleSheet.create({
-    container: { flex: 1, paddingVertical: 60 },
+    container: { flex: 1, paddingTop: 60 },
     header: { marginBottom: 20, gap: 10, paddingHorizontal: 20 },
     footer: {
         position: 'absolute',

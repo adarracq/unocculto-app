@@ -1,4 +1,4 @@
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import React from 'react';
 import ReviewSessionScreen from '../screens/revisions/ReviewSessionScreen';
 import RevisionsHomeScreen from '../screens/revisions/RevisionsHomeScreen';
@@ -13,7 +13,11 @@ const Stack = createStackNavigator<RevisionsNavParams>();
 export default function RevisionsNav() {
 
     return (
-        <Stack.Navigator initialRouteName={'RevisionsHome'}>
+        <Stack.Navigator initialRouteName={'RevisionsHome'}
+            screenOptions={{
+                ...TransitionPresets.SlideFromRightIOS,
+            }}
+        >
             <Stack.Screen name="RevisionsHome" component={RevisionsHomeScreen} options={{ headerShown: false }} />
             <Stack.Screen name="ReviewSession" component={ReviewSessionScreen} options={{ headerShown: false }} />
         </Stack.Navigator>

@@ -1,5 +1,7 @@
 // app/models/Collectible.ts
 
+import Colors from "../constants/Colors";
+
 export type CollectibleTheme =
     // Humanités
     | 'history' | 'philosophy' | 'literature' | 'religion' | 'politics' | 'geopolitics' | 'economy'
@@ -27,21 +29,21 @@ export const DEPARTMENTS = [
         id: 'HUMANITIES',
         title: 'ARCHIVES HUMAINES',
         icon: 'book', // Assure-toi d'avoir une icone correspondante
-        color: '#E0C097', // Beige Parchemin
+        color: Colors.lightBlue,
         themes: ['history', 'philosophy', 'literature', 'religion', 'politics', 'geopolitics', 'economy']
     },
     {
         id: 'ARTS',
         title: 'GALERIE CULTURELLE',
         icon: 'palette',
-        color: '#FF6B6B', // Rouge Pastel
+        color: Colors.lightRed,
         themes: ['art', 'music', 'sport', 'culture']
     },
     {
         id: 'SCIENCES',
         title: 'LABORATOIRE & MONDE',
         icon: 'flask',
-        color: '#4ECDC4', // Turquoise
+        color: Colors.lightGreen,
         themes: ['science', 'psychology', 'geography', 'tech', 'nature']
     }
 ];

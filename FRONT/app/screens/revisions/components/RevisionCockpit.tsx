@@ -13,6 +13,7 @@ interface Props {
     filterFlag: boolean; setFilterFlag: (v: boolean) => void;
     filterCapital: boolean; setFilterCapital: (v: boolean) => void;
     filterAnecdote: boolean; setFilterAnecdote: (v: boolean) => void;
+    mainColor: string;
 }
 
 export default function RevisionCockpit({
@@ -20,51 +21,52 @@ export default function RevisionCockpit({
     filterGeo, setFilterGeo,
     filterFlag, setFilterFlag,
     filterCapital, setFilterCapital,
-    filterAnecdote, setFilterAnecdote
+    filterAnecdote, setFilterAnecdote,
+    mainColor
 }: Props) {
 
-    const statusColor = totalDue > 0 ? Colors.main : Colors.green;
+    const statusColor = totalDue > 0 ? mainColor : Colors.green;
 
     return (
         <LinearGradient
-            colors={[Colors.realBlack, Colors.black]}
+            colors={['rgba(0,0,0,0.05)', 'rgba(0,0,0,0.1)']}
             style={styles.container}
         >
-            {/* --- ZONE GAUCHE : LE COMPTEUR --- */}
+            {/* --- ZONE GAUCHE : COMPTEUR --- */}
             <View style={styles.leftPanel}>
-                <View style={styles.headerTitle}>
+
+                <View style={styles.panelHeader}>
                     <Image
                         source={functions.getIconSource('logo_white')}
-                        style={{ width: 16, height: 16, tintColor: Colors.darkGrey, marginRight: 6 }}
+                        style={{ width: 10, height: 10, tintColor: Colors.darkGrey, marginRight: 4 }}
                     />
-                    <BodyText text="SRS-V2" style={{ fontSize: 8, color: Colors.darkGrey }} />
+                    <BodyText text="RADAR" style={{ fontSize: 8, color: Colors.darkGrey }} />
                 </View>
 
-                {/* Le gros chiffre */}
-                <View style={styles.counterContainer}>
+                <View style={styles.counterWrapper}>
                     <Title1
                         title={totalDue.toString()}
                         color={statusColor}
-                        style={{ fontSize: 36, lineHeight: 40 }} // Compact
+                        // Taille réduite pour gagner en hauteur
+                        style={{ fontSize: 32, lineHeight: 36, textShadowColor: statusColor, textShadowRadius: 3 }}
                     />
-                    <BodyText text="ITEMS" style={{ color: Colors.darkGrey, marginTop: -4 }} />
+                    <BodyText
+                        text={totalDue > 1 ? "CIBLES" : "CIBLE"}
+                        style={{ color: statusColor, fontSize: 8, opacity: 0.8 }}
+                    />
                 </View>
-
-                {/* Petite barre de status */}
-                <View style={[styles.statusBar, { backgroundColor: statusColor }]} />
             </View>
 
-            {/* Séparateur vertical */}
-            <View style={styles.divider} />
+            {/* Séparateur fin */}
+            <View style={styles.separator} />
 
-            {/* --- ZONE DROITE : LES SWITCHS --- */}
+            {/* --- ZONE DROITE : LISTE VERTICALE --- */}
             <View style={styles.rightPanel}>
-                <View style={styles.grid}>
-                    <CockpitSwitch label="LOCS" value={filterGeo} onToggle={setFilterGeo} />
-                    <CockpitSwitch label="FLAGS" value={filterFlag} onToggle={setFilterFlag} />
-                    <CockpitSwitch label="CAPITALS" value={filterCapital} onToggle={setFilterCapital} />
-                    <CockpitSwitch label="FACTS" value={filterAnecdote} onToggle={setFilterAnecdote} />
-                </View>
+                {/* 1 switch par ligne, prend toute la largeur */}
+                <CockpitSwitch label="GÉOGRAPHIE" value={filterGeo} onToggle={setFilterGeo} mainColor={mainColor} />
+                <CockpitSwitch label="DRAPEAUX" value={filterFlag} onToggle={setFilterFlag} mainColor={mainColor} />
+                <CockpitSwitch label="CAPITALES" value={filterCapital} onToggle={setFilterCapital} mainColor={mainColor} />
+                <CockpitSwitch label="ANECDOTES" value={filterAnecdote} onToggle={setFilterAnecdote} mainColor={mainColor} />
             </View>
 
         </LinearGradient>
@@ -73,62 +75,49 @@ export default function RevisionCockpit({
 
 const styles = StyleSheet.create({
     container: {
+        flexDirection: 'row',
         width: '100%',
-        flexDirection: 'row', // Disposition horizontale !
-        backgroundColor: '#111',
         borderRadius: 12,
         borderWidth: 1,
-        borderColor: 'rgba(255,255,255,0.1)',
-        padding: 20,
+        borderColor: 'rgba(255,255,255,0.08)', // Bordure très discrète
+        padding: 12, // Padding réduit (était 16 ou 20)
         marginBottom: 15,
         alignItems: 'stretch',
-        // Ombre portée subtile
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 5,
     },
 
     // --- LEFT PANEL ---
     leftPanel: {
-        width: '25%', // Prend moins de place
-        justifyContent: 'space-between',
+        width: '30%',
+        justifyContent: 'center',
         alignItems: 'center',
         paddingRight: 10,
     },
-    headerTitle: {
+    panelHeader: {
         flexDirection: 'row',
         alignItems: 'center',
-        opacity: 0.8,
+        opacity: 0.6,
+        marginBottom: 2,
+        position: 'absolute', // On le colle en haut pour gagner de la place au centre
+        top: 0,
     },
-    counterContainer: {
-        alignItems: 'center',
-        justifyContent: 'center',
+    counterWrapper: {
         flex: 1,
-    },
-    statusBar: {
-        width: 20,
-        height: 2,
-        borderRadius: 1,
-        marginTop: 4,
-        opacity: 0.8
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 10, // Pour ne pas chevaucher le header absolu
     },
 
-    // --- DIVIDER ---
-    divider: {
+    // --- SEPARATOR ---
+    separator: {
         width: 1,
         backgroundColor: 'rgba(255,255,255,0.05)',
         marginRight: 10,
+        marginVertical: 5, // Ne touche pas les bords haut/bas
     },
 
     // --- RIGHT PANEL ---
     rightPanel: {
-        flex: 1, // Prend tout le reste
-        justifyContent: 'center',
+        flex: 1,
+        justifyContent: 'center', // Centre verticalement les switchs
     },
-    grid: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        gap: 8, // Espacement entre les boutons
-    }
 });

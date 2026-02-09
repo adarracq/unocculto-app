@@ -2,14 +2,6 @@ const mongoose = require('mongoose');
 const User = require('../models/User');
 const GameResult = require('../models/GameResult');
 
-// Fonction utilitaire pour les étoiles (logique à ajuster)
-const calculateStars = (score) => {
-    if (score >= 900) return 3;
-    if (score >= 600) return 2;
-    if (score > 0) return 1;
-    return 0;
-};
-
 
 exports.finishGame = async (req, res) => {
     try {
@@ -26,7 +18,7 @@ exports.finishGame = async (req, res) => {
             selectedFlag: user.selectedFlag,
             mode, region, lvl,
             score, timeTaken, accuracy,
-            xpEarned: score, // Bonus XP pour le mode quotidien
+            xpEarned: score,
         });
         await newResult.save();
 
@@ -205,7 +197,6 @@ exports.getHebdoLeaderBoard = async (req, res) => {
 
         const results = await GameResult.aggregate(pipeline);
         const data = results[0];
-        console.log("Hebdo Leaderboard Data:", data.topLeaderboard, data.userRank);
         // 3. Construction de la réponse propre
         const topList = data.topLeaderboard.map(entry => ({
             rank: entry.rank,

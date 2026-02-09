@@ -8,88 +8,77 @@ interface Props {
     label: string;
     value: boolean;
     onToggle: (val: boolean) => void;
+    mainColor: string;
 }
 
-export default function CockpitSwitch({ label, value, onToggle }: Props) {
-    // 0 = OFF, 1 = ON
+export default function CockpitSwitch({ label, value, onToggle, mainColor }: Props) {
     const animValue = useRef(new Animated.Value(value ? 1 : 0)).current;
 
     useEffect(() => {
         Animated.timing(animValue, {
             toValue: value ? 1 : 0,
-            duration: 200, // Un peu plus lent pour sentir le glissement
-            useNativeDriver: false // 'false' car on anime des couleurs parfois
+            duration: 200,
+            useNativeDriver: false
         }).start();
     }, [value]);
 
     const handlePress = () => {
-        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
         onToggle(!value);
     };
 
     // --- INTERPOLATIONS ---
-
-    // 1. Mouvement du curseur (Carré)
-    const translateX = animValue.interpolate({
+    const backgroundColor = animValue.interpolate({
         inputRange: [0, 1],
-        outputRange: [2, 18] // Déplacement de gauche (2px) à droite (18px)
+        outputRange: ['rgba(255,255,255,0.02)', mainColor + '15'] // Très subtil
     });
 
-    // 2. Couleur du curseur (Gris sombre -> Blanc/Orange)
-    const thumbColor = animValue.interpolate({
+    const borderColor = animValue.interpolate({
         inputRange: [0, 1],
-        outputRange: [Colors.darkGrey, Colors.white]
+        outputRange: ['rgba(255,255,255,0.05)', mainColor + '60']
     });
 
-    // 3. Couleur de la piste (Track) (Transparent -> Orange sombre)
-    const trackBorderColor = animValue.interpolate({
+    const diodeOpacity = animValue.interpolate({
         inputRange: [0, 1],
-        outputRange: ['rgba(255,255,255,0.1)', Colors.main]
+        outputRange: [0.1, 1]
     });
 
-    // 4. Lueur de fond globale
-    const containerBorderColor = animValue.interpolate({
+    const diodeColor = animValue.interpolate({
         inputRange: [0, 1],
-        outputRange: ['rgba(255,255,255,0.05)', Colors.main + '55']
+        outputRange: [Colors.darkGrey, mainColor]
     });
 
     return (
         <Pressable onPress={handlePress} style={styles.touchable}>
             <Animated.View style={[
                 styles.container,
-                { borderColor: containerBorderColor }
+                { backgroundColor, borderColor }
             ]}>
 
-                {/* PARTIE GAUCHE : LABEL */}
+                {/* LABEL (Gauche) */}
                 <View style={styles.labelContainer}>
                     <SmallText
                         text={label}
                         style={{
                             color: value ? Colors.white : Colors.darkGrey,
-                            fontSize: 9,
-                            fontWeight: '700',
+                            fontSize: 10,
+                            fontWeight: value ? 'bold' : 'normal',
                             letterSpacing: 0.5
                         }}
                     />
                 </View>
 
-                {/* PARTIE DROITE : LE SWITCH PHYSIQUE */}
+                {/* INDICATEUR (Droite) */}
                 <Animated.View style={[
-                    styles.switchTrack,
-                    { borderColor: trackBorderColor, backgroundColor: value ? Colors.main + '40' : 'rgba(0,0,0,0.3)' }
-                ]}>
-                    <Animated.View style={[
-                        styles.switchThumb,
-                        {
-                            transform: [{ translateX }],
-                            backgroundColor: thumbColor,
-                            // Petite ombre pour le relief
-                            shadowColor: value ? Colors.white : '#000',
-                            shadowOpacity: value ? 0.5 : 0,
-                            shadowRadius: 4
-                        }
-                    ]} />
-                </Animated.View>
+                    styles.indicatorLine,
+                    {
+                        backgroundColor: diodeColor,
+                        opacity: diodeOpacity,
+                        shadowColor: mainColor,
+                        shadowOpacity: value ? 0.8 : 0,
+                        shadowRadius: 4
+                    }
+                ]} />
 
             </Animated.View>
         </Pressable>
@@ -98,38 +87,24 @@ export default function CockpitSwitch({ label, value, onToggle }: Props) {
 
 const styles = StyleSheet.create({
     touchable: {
-        flex: 1,
-        minWidth: '45%',
+        width: '100%',
+        marginBottom: 6, // Espace vertical réduit
     },
     container: {
-        height: 38,
-        backgroundColor: 'rgba(255,255,255,0.02)', // Fond très subtil
-        borderRadius: 8,
+        height: 32, // Hauteur réduite (Compact)
+        borderRadius: 4,
         borderWidth: 1,
         flexDirection: 'row',
         alignItems: 'center',
+        paddingHorizontal: 10,
         justifyContent: 'space-between',
-        paddingHorizontal: 8,
     },
-
     labelContainer: {
         flex: 1,
-        marginRight: 8,
     },
-
-    // La "Piste" du switch
-    switchTrack: {
-        width: 36,
-        height: 20,
-        borderRadius: 4, // Coins légèrement arrondis mais tech
-        borderWidth: 1,
-        justifyContent: 'center', // Centrer verticalement le thumb
-    },
-
-    // Le "Bouton" qui bouge
-    switchThumb: {
-        width: 14,
-        height: 14,
-        borderRadius: 2, // Carré arrondi
+    indicatorLine: {
+        width: 20,
+        height: 3,
+        borderRadius: 1.5,
     }
 });

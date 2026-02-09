@@ -13,7 +13,7 @@ mongoose.connect(process.env.MONGO_URI)
 const seedStories = async () => {
     try {
         // 2. Lire le fichier JSON
-        const filePath = path.join(__dirname, 'stories', 'intro.json');
+        const filePath = path.join(__dirname, 'stories', 'c1to5.json');
         const rawData = fs.readFileSync(filePath);
         const stories = JSON.parse(rawData);
 
@@ -39,4 +39,4 @@ const seedStories = async () => {
 };
 
 seedStories();
-//node scripts/seeds/stories.js
+//node src/scripts/seeds/stories.js

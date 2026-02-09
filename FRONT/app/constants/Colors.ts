@@ -9,13 +9,14 @@ export default {
     silver: '#C0C0C0',
     bronze: '#CD7F32',
 
-    purple: '#9D00DB',
     green: '#00DB9D',
+    red: '#F03F5F',
 
     lightGreen: '#3DE781',
     lightBlue: '#E7EBFD',
     lightYellow: '#F6EB61',
     lightOrange: '#FFE5B4',
+    lightRed: '#FF7F7F',
 
     // Couleur néon très visible
     cyan: '#00FFFF',
@@ -23,9 +24,7 @@ export default {
     white: '#FFFFFF',
     black: '#2A2A2B',
     realBlack: '#000000',
-    red: '#F03F5F',
     darkGrey: '#717279',
-    darkBlue: '#1A1D21',
     lightGrey: '#C6C7CA',
     veryLightGrey: '#EDEDEE',
 

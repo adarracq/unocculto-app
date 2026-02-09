@@ -24,7 +24,7 @@ export default function DropDownFlag({ unlockedFlags, selectedFlag, onChangeFlag
 
         // Logique visuelle (identique à ton code, très bien faite)
         const opacity = isSelected ? 1 : (isCompleted ? 0.6 : 0.3);
-        const borderColor = isSelected ? Colors.mainLight : 'transparent';
+        const borderColor = isSelected ? Colors.gold : isCompleted ? Colors.gold + '60' : 'transparent';
         const backgroundColor = isSelected
             ? (isCompleted ? 'rgba(255, 215, 0, 0.1)' : 'rgba(255,255,255,0.05)')
             : 'transparent';
@@ -40,15 +40,6 @@ export default function DropDownFlag({ unlockedFlags, selectedFlag, onChangeFlag
             >
                 <View style={[styles.stampFrame, { borderColor, backgroundColor }, isSelected && styles.activeShadow]}>
                     <Image source={getFlagImage(item.code)} style={[styles.flagImage, { opacity }]} resizeMode="cover" />
-
-                    {/* Indicateur TAMPONNÉ si fini */}
-                    {isCompleted && (
-                        <View style={[styles.inkStampContainer, { opacity: isSelected ? 1 : 0.5 }]}>
-                            <View style={[styles.inkStampBorder, !isSelected && { borderColor: 'rgba(255, 215, 0, 0.4)' }]}>
-                                <BodyText text='100%' color={isSelected ? Colors.gold : 'rgba(255, 215, 0, 0.6)'} isBold size='S' />
-                            </View>
-                        </View>
-                    )}
                 </View>
 
                 <BodyText

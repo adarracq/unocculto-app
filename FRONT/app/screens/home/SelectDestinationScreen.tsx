@@ -1,6 +1,5 @@
 import MyButton from '@/app/components/atoms/MyButton';
 import Title0 from '@/app/components/atoms/Title0';
-import LoadingScreen from '@/app/components/molecules/LoadingScreen';
 import SelectionGrid from '@/app/components/molecules/SelectionGrid';
 import Colors from '@/app/constants/Colors';
 import { UserContext } from '@/app/contexts/UserContext';
@@ -12,6 +11,7 @@ import { userService } from '@/app/services/user.service';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { LinearGradient } from 'expo-linear-gradient';
 // 1. N'oublie pas d'importer useMemo
+import { ALL_COUNTRIES } from '@/app/models/Countries';
 import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import DestinationGridItem from '../unlogged/components/DestinationGridItem';
@@ -21,6 +21,7 @@ type Props = NativeStackScreenProps<HomeNavParams, 'SelectDestination'>;
 export default function SelectDestinationScreen({ navigation }: Props) {
     const [userContext, setUserContext] = useContext(UserContext);
     const [selectedStory, setSelectedStory] = useState<Story | null>(null);
+    const [selectedColor, setSelectedColor] = useState<string>(Colors.darkGrey);
 
     // API 1: Fetch
     const { execute: fetchDestinations, data: rawDestinations, loading: loadingFetch } = useApi(
@@ -61,10 +62,16 @@ export default function SelectDestinationScreen({ navigation }: Props) {
         }
     };
 
-    if (loadingFetch || loadingUpdate) return <LoadingScreen />;
+    useEffect(() => {
+        if (selectedStory) {
+            setSelectedColor(ALL_COUNTRIES.find(c => c.code === selectedStory.countryCode)?.mainColor || Colors.darkGrey);
+        }
+    }, [selectedStory]);
+
+
 
     return (
-        <LinearGradient colors={[Colors.black, Colors.mainDark]} style={styles.container}>
+        <LinearGradient colors={[selectedColor, Colors.black,]} style={styles.container}>
             <View style={{ gap: 20 }}>
                 <View style={styles.logoContainer}>
                     <Image
@@ -75,9 +82,8 @@ export default function SelectDestinationScreen({ navigation }: Props) {
                 <Title0 title="Prochaine Escale ?" color={Colors.white} isLeft />
             </View>
 
-            {/* Tu passes displayDestinations (la version mémoïsée) à la grille */}
             <SelectionGrid<Story>
-                data={displayDestinations}
+                data={loadingFetch || loadingUpdate ? [] : displayDestinations}
                 selectedItem={selectedStory}
                 onSelect={setSelectedStory}
                 // Attention ici aussi : utilise l'ID unique stable (souvent storyId dans notre logique)
@@ -92,7 +98,7 @@ export default function SelectDestinationScreen({ navigation }: Props) {
                 onPress={handleValidation}
                 variant={'glass'}
                 disabled={!selectedStory}
-                rightIcon="airplane-takeoff"
+                rightIcon="arrow-right"
                 bump={!!selectedStory}
             />
         </LinearGradient>

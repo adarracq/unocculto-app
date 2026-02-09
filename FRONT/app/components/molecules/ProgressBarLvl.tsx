@@ -10,11 +10,13 @@ import Title1 from '../atoms/Title1';
 type ProgressBarLvlProps = {
     xp: number; // Renommé pour la clarté
     width: number;
+    color?: string; // Optionnel, on peut utiliser la couleur par défaut
 }
 
 export default function ProgressBarLvl(props: ProgressBarLvlProps) {
     const levels = Levels.levels;
     const safeXp = props.xp || 0;
+    const barColor = props.color || Colors.main;
 
     const scaleAnim = useRef(new Animated.Value(1)).current;
     const isFirstRender = useRef(true);
@@ -68,7 +70,7 @@ export default function ProgressBarLvl(props: ProgressBarLvlProps) {
                 alignItems: 'flex-end'
             }}>
                 {/* Niveau (Label) */}
-                <Title1 title={progressData.label.toUpperCase()} color={Colors.lightGrey} style={{ fontSize: 16 }} />
+                <Title1 title={progressData.label.toUpperCase()} color={Colors.white} style={{ fontSize: 16 }} />
 
                 {/* Score Animé */}
                 <Animated.View style={{
@@ -76,8 +78,8 @@ export default function ProgressBarLvl(props: ProgressBarLvlProps) {
                     alignItems: 'flex-end',
                     transform: [{ scale: scaleAnim }]
                 }}>
-                    <Title1 title={progressData.current.toString()} color={Colors.main} />
-                    <BodyText text={' / ' + progressData.target + ' XP'} color={Colors.darkGrey} size='S' />
+                    <Title1 title={progressData.current.toString()} color={barColor} />
+                    <BodyText text={' / ' + progressData.target + ' XP'} color={Colors.lightGrey} size='S' />
                 </Animated.View>
             </View>
 
@@ -85,7 +87,7 @@ export default function ProgressBarLvl(props: ProgressBarLvlProps) {
                 progress={progressData.progress}
                 width={props.width}
                 height={8}
-                color={Colors.main}
+                color={barColor}
                 unfilledColor={'rgba(255,255,255,0.1)'}
                 borderWidth={0}
                 borderRadius={4}

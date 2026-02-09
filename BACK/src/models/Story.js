@@ -89,7 +89,8 @@ const storyStepSchema = mongoose.Schema({
 const storySchema = mongoose.Schema({
     storyId: { type: String, required: true, unique: true }, // ex: 'fr_paris_1'
     countryCode: { type: String, required: true, index: true }, // 'FR'
-
+    category: { type: String, required: true },
+    subCategory: { type: String, required: false },
     city: { type: String, required: true },
     rarity: {
         type: String,

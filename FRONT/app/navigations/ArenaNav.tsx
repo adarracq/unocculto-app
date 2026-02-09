@@ -1,4 +1,4 @@
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import React from 'react';
 import HomeArenaScreen from '../screens/arena/HomeArenaScreen';
 import LicenseMapScreen from '../screens/arena/LicenseMapScreen';
@@ -9,7 +9,7 @@ export type ArenaNavParams = {
     HomeArena: undefined;
     LicenseMap: { mode: 'country' | 'flag' | 'capital' };
     RegionLevels: { regionId: string, mode: 'country' | 'flag' | 'capital' };
-    GeoGame: { mode: 'country' | 'flag' | 'capital', regionId: string, level: number, isDailyBonus: boolean };
+    GeoGame: { mode: 'country' | 'flag' | 'capital', regionId: string, level: number, isDailyBonus: boolean, alreadyDone: boolean };
 };
 
 const Stack = createStackNavigator<ArenaNavParams>();
@@ -17,7 +17,11 @@ const Stack = createStackNavigator<ArenaNavParams>();
 export default function ArenaNav() {
 
     return (
-        <Stack.Navigator initialRouteName={'HomeArena'}>
+        <Stack.Navigator initialRouteName={'HomeArena'}
+            screenOptions={{
+                ...TransitionPresets.SlideFromRightIOS,
+            }}
+        >
             <Stack.Screen name="HomeArena" component={HomeArenaScreen} options={{ headerShown: false }} />
             <Stack.Screen name="LicenseMap" component={LicenseMapScreen} options={{ headerShown: false }} />
             <Stack.Screen name="RegionLevels" component={RegionLevelsScreen} options={{ headerShown: false }} />

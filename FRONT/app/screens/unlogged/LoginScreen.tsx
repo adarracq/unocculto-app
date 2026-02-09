@@ -1,7 +1,6 @@
 import MyButton from '@/app/components/atoms/MyButton'
 import SmallText from '@/app/components/atoms/SmallText'
 import Title0 from '@/app/components/atoms/Title0'
-import GlowTopGradient from '@/app/components/molecules/GlowTopGradient'
 import Colors from '@/app/constants/Colors'
 import { NavParams } from '@/app/navigations/UnloggedNav'
 import { LinearGradient } from 'expo-linear-gradient'
@@ -20,7 +19,6 @@ export default function LoginScreen({ navigation, route }: Props) {
         <LinearGradient
             colors={[Colors.darkGrey, Colors.black]}
             style={styles.container}>
-            <GlowTopGradient />
             <View style={{ gap: 20 }}>
                 <View style={styles.logoContainer}>
                     <Image source={require('../../assets/images/logo_white.png')}

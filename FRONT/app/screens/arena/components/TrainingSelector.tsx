@@ -20,21 +20,21 @@ export default function TrainingSelector({ onSelect }: SelectorProps) {
                     title="PAYS"
                     subtitle="Localisation"
                     icon="globe"
-                    color={Colors.main}
+                    color={Colors.lightBlue}
                     onPress={() => onSelect('country')}
                 />
                 <TrainingCard
                     title="DRAPEAUX"
                     subtitle="Identification"
                     icon="flag"
-                    color="#4A90E2"
+                    color={Colors.lightRed}
                     onPress={() => onSelect('flag')}
                 />
                 <TrainingCard
                     title="CAPITALES"
                     subtitle="Connaissances"
                     icon="capital"
-                    color="#50E3C2"
+                    color={Colors.lightGreen}
                     onPress={() => onSelect('capital')}
                 />
             </View>
@@ -77,7 +77,7 @@ const TrainingCard = ({ title, subtitle, icon, color, onPress }: any) => {
                 </View>
 
                 {/* Flèche subtile */}
-                <Image source={functions.getIconSource('arrow-right')} style={{ width: 12, height: 12, tintColor: Colors.darkGrey }} />
+                <Image source={functions.getIconSource('arrow-right')} style={{ width: 12, height: 12, tintColor: color }} />
             </Pressable>
         </Animated.View>
     );

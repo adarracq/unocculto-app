@@ -1,7 +1,7 @@
-import { GAME_CONFIG, GameModeId } from '@/app/constants/GameConfig';
+import { GAME_CONFIG, GameMode } from '@/app/constants/GameConfig';
 import { ZONES } from '../models/Countries';
 
-const MODES: GameModeId[] = ['flag', 'country', 'capital'];
+const MODES: GameMode[] = ['flag', 'country', 'capital'];
 
 export const getDailyMission = () => {
     // 1. Obtenir un entier unique pour aujourd'hui (Nombre de jours depuis 1970)

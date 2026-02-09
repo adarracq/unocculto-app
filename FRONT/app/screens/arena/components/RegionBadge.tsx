@@ -6,6 +6,7 @@ import * as Haptics from 'expo-haptics'; // Import Haptics
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useRef } from 'react';
 import { Animated, Dimensions, Image, Pressable, StyleSheet, Vibration, View } from 'react-native';
+import { showMessage } from 'react-native-flash-message';
 
 const { width } = Dimensions.get('window');
 const SPACING = 15;
@@ -37,6 +38,21 @@ export default function RegionBadge({ name, code, level, onPress, isLarge = fals
         Animated.spring(scaleValue, { toValue: 1, useNativeDriver: true, speed: 20 }).start();
     };
 
+    const handleOnPress = () => {
+        if (!isLocked) {
+            onPress();
+        }
+        else {
+            showMessage({
+                message: "Région verrouillée",
+                description: "Complétez les niveaux précédents pour déverrouiller cette région.",
+                type: "warning",
+                backgroundColor: Colors.black,
+                color: Colors.white,
+            });
+        }
+    }
+
     // --- Couleurs ---
     // Bordure : Grise si lock, Orange si ouvert, Or si max
     const borderColor =
@@ -65,7 +81,7 @@ export default function RegionBadge({ name, code, level, onPress, isLarge = fals
             ]}
         >
             <Pressable
-                onPress={isLocked ? undefined : onPress}
+                onPress={handleOnPress}
                 onPressIn={handlePressIn}
                 onPressOut={handlePressOut}
                 style={{ flex: 1 }} // Important pour que le Pressable remplisse la vue animée

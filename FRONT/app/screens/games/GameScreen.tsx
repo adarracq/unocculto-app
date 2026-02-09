@@ -1,5 +1,4 @@
 import SmallText from '@/app/components/atoms/SmallText';
-import GlowTopGradient from '@/app/components/molecules/GlowTopGradient';
 import StoryProgressBar from '@/app/components/molecules/StoryProgressBar';
 import Colors from '@/app/constants/Colors';
 import { Country } from '@/app/models/Countries';
@@ -28,6 +27,7 @@ interface Props {
 export default function GameScreen({ story, country, onFinish, headerTitle }: Props) {
     const [currentIndex, setCurrentIndex] = useState(0);
     const currentStep = story.steps[currentIndex];
+    console.log(currentStep);
 
     // --- DETECTION DU TYPE D'ÉTAPE ---
     // Si c'est un jeu, on désactive la navigation tactile globale "Instagram style"
@@ -188,10 +188,9 @@ export default function GameScreen({ story, country, onFinish, headerTitle }: Pr
 
     return (
         <LinearGradient
-            colors={[Colors.darkGrey, Colors.black]}
+            colors={[country.mainColor, Colors.black]}
             style={styles.container}
         >
-            <GlowTopGradient color={country.mainColor} />
 
             {/* ARCHITECTURAL CHANGE : 
                On ne wrappe PAS tout l'écran dans un Pressable unique.

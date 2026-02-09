@@ -1,7 +1,7 @@
 import Colors from '@/app/constants/Colors';
 
 // --- TYPES ---
-export type GameLevel = 1 | 2 | 3;
+export type GameLevel = 1 | 2 | 3 | 4;
 export type GameMode = 'country' | 'flag' | 'capital';
 
 export interface LevelConfig {
@@ -29,7 +29,7 @@ export const GAME_CONFIG: Record<GameMode, ModeConfig> = {
     country: {
         id: 'country',
         label: 'PAYS',
-        color: Colors.main, // Orange
+        color: Colors.lightBlue,
         levels: [
             {
                 id: 1,
@@ -58,14 +58,14 @@ export const GAME_CONFIG: Record<GameMode, ModeConfig> = {
                 subTitle: "FORME",
                 description: "Reconnaissez le pays uniquement à partir de sa forme géographique.",
                 rules: { accuracy: 100 },
-                color: Colors.gold // Niveau Spécial
+                color: Colors.realBlack
             }
         ]
     },
     flag: {
         id: 'flag',
         label: 'DRAPEAUX',
-        color: '#4A90E2', // Bleu
+        color: Colors.lightRed,
         levels: [
             {
                 id: 1,
@@ -93,7 +93,7 @@ export const GAME_CONFIG: Record<GameMode, ModeConfig> = {
     capital: {
         id: 'capital',
         label: 'CAPITALES',
-        color: '#50E3C2', // Teal
+        color: Colors.lightGreen,
         levels: [
             {
                 id: 1,

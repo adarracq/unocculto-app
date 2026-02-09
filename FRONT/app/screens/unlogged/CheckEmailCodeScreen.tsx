@@ -2,7 +2,6 @@ import BackArrow from '@/app/components/atoms/BackArrow';
 import BodyText from '@/app/components/atoms/BodyText';
 import SmallText from '@/app/components/atoms/SmallText';
 import Title0 from '@/app/components/atoms/Title0';
-import GlowTopGradient from '@/app/components/molecules/GlowTopGradient';
 import InputField from '@/app/components/molecules/InputField';
 import LoadingScreen from '@/app/components/molecules/LoadingScreen';
 import ProgressBar from '@/app/components/molecules/ProgressBar';
@@ -122,7 +121,6 @@ export default function CheckEmailCodeScreen({ navigation, route }: Props) {
         <LinearGradient
             colors={[Colors.darkGrey, Colors.black]}
             style={styles.container}>
-            <GlowTopGradient />
             <BackArrow onPress={() => navigation.goBack()} />
             <View style={{ gap: 20 }}>
                 <ProgressBar progress={2} total={4} title="Verification" width={80} />

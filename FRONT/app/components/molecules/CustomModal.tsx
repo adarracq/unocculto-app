@@ -36,7 +36,7 @@ export default function CustomModal({
     color = Colors.main,
 }: Props) {
 
-    const accentColor = variant === 'gold' ? Colors.gold : Colors.main;
+    const accentColor = variant === 'gold' ? Colors.gold : color;
 
     return (
         <Modal
@@ -53,9 +53,9 @@ export default function CustomModal({
 
                 {/* --- LA CARTE --- */}
                 <LinearGradient
-                    colors={[color + '40', Colors.black]} // Dégradé très sombre
+                    colors={[accentColor + '20', Colors.black]} // Dégradé très sombre
                     start={{ x: 0, y: 0 }}
-                    end={{ x: .3, y: .3 }}
+                    end={{ x: .5, y: .5 }}
                     style={[styles.container, { borderColor: accentColor + '30', backgroundColor: Colors.black }]}
                 >
                     {/* Header avec Logo + Titre */}

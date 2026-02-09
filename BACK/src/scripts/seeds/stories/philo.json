@@ -1,0 +1,1168 @@
+[
+    {
+        "storyId": "GR00",
+        "countryCode": "GR",
+        "city": "Athènes",
+        "title": "L'Ombre de la Caverne",
+        "isCapital": true,
+        "rarity": "legendary",
+        "xpReward": 300,
+        "rewardCollectibleId": "col_gr_buste_platon",
+        "timeline": [
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "Bienvenue à Athènes ! 🏛️ Ici, le soleil tape fort, mais Platon disait qu'on vit tous dans le noir. Prêt à sortir de la grotte ?"
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "anc_gr00_1",
+                    "type": "order",
+                    "task": "Remets dans l'ordre les étapes de la sortie de la caverne selon Platon.",
+                    "items": [
+                        "Voir les ombres sur le mur",
+                        "Se libérer des chaînes",
+                        "Sortir et être ébloui par le soleil",
+                        "Contempler le monde réel"
+                    ],
+                    "imageUri": "https://source.unsplash.com/featured/?cave,shadow"
+                }
+            },
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "Pas mal ! Mais attention, tes yeux piquent encore. Ce que tu voyais avant n'était qu'une illusion... 👀"
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "anc_gr00_2",
+                    "type": "choice",
+                    "question": "Dans l'allégorie, que représente le Soleil qui nous éblouit ?",
+                    "correctAnswer": "L'Idée du Bien et la Vérité",
+                    "distractors": [
+                        "Le dieu Apollon",
+                        "Le feu qui projette les ombres",
+                        "La sortie de secours"
+                    ],
+                    "lesson": "Pour Platon, le monde physique n'est qu'une copie imparfaite du monde des Idées. Le philosophe est celui qui ose regarder le soleil en face.",
+                    "imageUri": "https://source.unsplash.com/featured/?sun,philosophy"
+                }
+            },
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "Tu as vu la lumière ! ✨ La réalité est bien plus vaste que ce que tes sens te disent. Ne retourne pas te rasseoir dans le noir !"
+            }
+        ]
+    },
+    {
+        "storyId": "JP00",
+        "countryCode": "JP",
+        "city": "Kyoto",
+        "title": "Le Bruit d'une seule main",
+        "isCapital": false,
+        "rarity": "rare",
+        "xpReward": 200,
+        "rewardCollectibleId": "col_jp_fouet_the",
+        "timeline": [
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "Shh... Écoute le silence de Kyoto. 🍁 Ici, les moines Zen aiment poser des devinettes insolubles pour 'casser' ton esprit logique."
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "anc_jp00_1",
+                    "type": "true_false",
+                    "statement": "Un Kôan Zen est une énigme logique qui a toujours une réponse rationnelle.",
+                    "isTrue": false,
+                    "lesson": "C'est faux ! Le but du Kôan (comme 'Quel est le bruit d'une seule main ?') est d'épuiser l'intellect pour provoquer l'éveil (Satori) par l'intuition.",
+                    "imageUri": "https://source.unsplash.com/featured/?zen,monk"
+                }
+            },
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "Exactement. Si tu réfléchis trop, tu as déjà perdu ! Maintenant, regarde ce jardin de pierres... Il manque quelque chose, non ? 🤔"
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "anc_jp00_2",
+                    "type": "numeric",
+                    "label": "Combien de pierres composent le célèbre jardin sec du Ryoan-ji ?",
+                    "numericValue": 15,
+                    "unit": "pierres",
+                    "lesson": "Il y a 15 pierres, mais où que tu sois sur la véranda, tu ne peux en voir que 14 à la fois. La plénitude est invisible aux yeux.",
+                    "imageUri": "https://source.unsplash.com/featured/?ryoanji,rockgarden"
+                }
+            },
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "Le vide (Mu) n'est pas le néant. C'est un espace de possibles infinis. Respire... tu le sens ? 🍵"
+            }
+        ]
+    },
+    {
+        "storyId": "DE00",
+        "countryCode": "DE",
+        "city": "Königsberg",
+        "title": "La Promenade du Robot",
+        "isCapital": false,
+        "rarity": "uncommon",
+        "xpReward": 150,
+        "rewardCollectibleId": "col_de_montre_gousset",
+        "timeline": [
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "Guten Tag ! On est chez Emmanuel Kant. Le type était si ponctuel que les voisins réglaient leur montre sur lui. ⏱️"
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "anc_de00_1",
+                    "type": "numeric",
+                    "label": "À quelle heure précise Kant commençait-il sa promenade quotidienne ?",
+                    "numericValue": 1530,
+                    "unit": "h (format militaire)",
+                    "lesson": "À 15h30 pile ! Une seule fois il a manqué à l'appel : le jour où il a reçu le 'Contrat Social' de Rousseau. Il était trop captivé pour sortir.",
+                    "imageUri": "https://source.unsplash.com/featured/?clock,antique"
+                }
+            },
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "Une horloge suisse ! 🕰️ Pour lui, la morale c'est pareil : rigide et universelle. Pas d'excuses, jamais."
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "anc_de00_2",
+                    "type": "choice",
+                    "question": "Selon l'impératif catégorique, comment dois-tu agir ?",
+                    "correctAnswer": "Comme si ton action devait devenir une loi universelle",
+                    "distractors": [
+                        "Selon ce qui te fait plaisir sur le moment",
+                        "En fonction des conséquences positives",
+                        "Comme le prêtre te le dit"
+                    ],
+                    "lesson": "Kant dit : 'Agis uniquement d'après la maxime qui fait que tu peux vouloir en même temps qu'elle devienne une loi universelle'. Si tu mens, tu acceptes que tout le monde mente.",
+                    "imageUri": "https://source.unsplash.com/featured/?path,forest"
+                }
+            },
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "C'est dur, hein ? Mais c'est ça, la vraie liberté pour Kant : obéir à la loi qu'on s'est soi-même fixée. Allez, circulez, il est l'heure ! 👉"
+            }
+        ]
+    },
+    {
+        "storyId": "IN00",
+        "countryCode": "IN",
+        "city": "Varanasi",
+        "title": "Le Grand Saut Final",
+        "isCapital": false,
+        "rarity": "rare",
+        "xpReward": 200,
+        "rewardCollectibleId": "col_in_collier_mala",
+        "timeline": [
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "Namaste 🙏 Ici à Varanasi, la mort n'est pas une fin, c'est un check-point. Tout le monde veut briser le cycle !"
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "anc_in00_1",
+                    "type": "choice",
+                    "question": "Qu'est-ce que le 'Moksha' dans l'hindouisme ?",
+                    "correctAnswer": "La libération du cycle des réincarnations",
+                    "distractors": [
+                        "Une technique de yoga avancée",
+                        "Un plat très épicé au curry",
+                        "Le dieu de la richesse"
+                    ],
+                    "lesson": "Le Moksha est le but ultime : arrêter de renaître et fusionner avec le divin (Brahman). C'est la sortie définitive du jeu vidéo de la vie.",
+                    "imageUri": "https://source.unsplash.com/featured/?varanasi,ganga"
+                }
+            },
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "Mais avant de sortir, il faut bien jouer sa partie. La vie a des étapes précises qu'il ne faut pas griller. 🔥"
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "anc_in00_2",
+                    "type": "order",
+                    "task": "Remets dans l'ordre les 4 buts de la vie (Purusharthas) hindoue.",
+                    "items": [
+                        "Dharma (Devoir/Éthique)",
+                        "Artha (Prospérité)",
+                        "Kama (Plaisir)",
+                        "Moksha (Libération)"
+                    ],
+                    "lesson": "Il faut d'abord suivre son devoir, assurer sa vie matérielle et profiter des plaisirs avant de pouvoir aspirer à la libération totale.",
+                    "imageUri": "https://source.unsplash.com/featured/?hinduism,temple"
+                }
+            },
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "Tu vois, le plaisir (Kama) a sa place ! Mais ne t'y accroche pas, sinon... retour à la case départ dans la prochaine vie ! 🐘"
+            }
+        ]
+    },
+    {
+        "storyId": "DK00",
+        "countryCode": "DK",
+        "city": "Copenhague",
+        "title": "Le Saut dans le Vide",
+        "isCapital": true,
+        "rarity": "uncommon",
+        "xpReward": 150,
+        "rewardCollectibleId": "col_dk_journal_intime",
+        "timeline": [
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "Velkommen ! Il fait gris à Copenhague, l'ambiance parfaite pour l'angoisse existentielle avec Søren Kierkegaard. 🌧️"
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "anc_dk00_1",
+                    "type": "true_false",
+                    "statement": "Kierkegaard a rompu ses fiançailles avec Regine Olsen pour se consacrer à l'écriture et à Dieu.",
+                    "isTrue": true,
+                    "lesson": "Vrai. Il l'aimait follement mais pensait que son tempérament mélancolique la rendrait malheureuse. Il a sacrifié son amour terrestre pour sa quête spirituelle.",
+                    "imageUri": "https://source.unsplash.com/featured/?copenhagen,sad"
+                }
+            },
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "C'est tragique... 💔 Pour lui, vivre c'est choisir. Et choisir, c'est angoissant car on ne sait jamais si on a raison."
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "anc_dk00_2",
+                    "type": "choice",
+                    "question": "Quel est le stade ultime de l'existence selon Kierkegaard ?",
+                    "correctAnswer": "Le stade Religieux",
+                    "distractors": [
+                        "Le stade Esthétique (jouissance)",
+                        "Le stade Éthique (devoir)",
+                        "Le stade Scientifique"
+                    ],
+                    "lesson": "Après la jouissance (Don Juan) et le devoir (le Mari), il y a le saut dans la foi : croire en l'absurde, sans preuve, seul face à Dieu.",
+                    "imageUri": "https://source.unsplash.com/featured/?cliff,fog"
+                }
+            },
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "L'angoisse est le vertige de la liberté. Si tu as peur, c'est que tu es libre ! Saute ! (Au sens figuré, hein). 😉"
+            }
+        ]
+    },
+    {
+        "storyId": "CN00",
+        "countryCode": "CN",
+        "city": "Qufu",
+        "title": "L'Ordre sous le Ciel",
+        "isCapital": false,
+        "rarity": "common",
+        "xpReward": 100,
+        "rewardCollectibleId": "col_cn_rouleau_calligraphie",
+        "timeline": [
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "Ni hao ! 🎎 À Qufu, tout est carré. Confucius détestait le chaos. Pour lui, si chacun reste à sa place, le monde tourne rond."
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "anc_cn00_1",
+                    "type": "order",
+                    "task": "Classe ces relations de la plus intime à la plus politique (Hiérarchie Confucéenne).",
+                    "items": [
+                        "Père et Fils",
+                        "Frère aîné et Frère cadet",
+                        "Mari et Femme",
+                        "Prince et Sujet"
+                    ],
+                    "lesson": "Tout commence par la famille (Piété filiale). Si la famille est harmonieuse, l'État le sera aussi.",
+                    "imageUri": "https://source.unsplash.com/featured/?confucius,temple"
+                }
+            },
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "Respecte tes aînés et tout ira bien. Confucius était un super-prof, il avait une armée d'étudiants ! 📜"
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "anc_cn00_2",
+                    "type": "numeric",
+                    "label": "Combien de disciples Confucius aurait-il eu selon la légende ?",
+                    "numericValue": 3000,
+                    "unit": "disciples",
+                    "lesson": "On dit qu'il a enseigné à 3000 élèves, dont 72 maîtrisaient parfaitement les 'Six Arts'. Un vrai influenceur de l'époque !",
+                    "imageUri": "https://source.unsplash.com/featured/?chinese,study"
+                }
+            },
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "L'harmonie ne vient pas du ciel, elle se construit par les rites. Allez, redresse ton dos ! 🙇‍♂️"
+            }
+        ]
+    },
+    {
+        "storyId": "TR00",
+        "countryCode": "TR",
+        "city": "Konya",
+        "title": "La Danse des Atomes",
+        "isCapital": false,
+        "rarity": "rare",
+        "xpReward": 200,
+        "rewardCollectibleId": "col_tr_toque_derviche",
+        "timeline": [
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "Bienvenue à Konya. Ici, Rûmi nous apprend que l'amour fait tourner le monde... littéralement. 🌪️"
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "anc_tr00_1",
+                    "type": "order",
+                    "task": "Quel est le mouvement symbolique des mains du Derviche Tourneur ?",
+                    "items": [
+                        "Main droite paume vers le Ciel (recevoir la grâce)",
+                        "Le corps tourne sur le cœur",
+                        "Main gauche paume vers la Terre (transmettre aux hommes)"
+                    ],
+                    "lesson": "Le derviche est un canal : il prend l'énergie divine d'en haut pour la redistribuer sur Terre, tout en pivotant autour du cœur.",
+                    "imageUri": "https://source.unsplash.com/featured/?dervish,dance"
+                }
+            },
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "C'est beau, non ? On ne tourne pas pour s'étourdir, mais pour s'aligner avec les atomes de l'univers. ✨"
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "anc_tr00_2",
+                    "type": "choice",
+                    "question": "Complète ce vers célèbre de Rûmi : 'La blessure est l'endroit par où...'",
+                    "correctAnswer": "...la lumière entre en toi.'",
+                    "distractors": [
+                        "...la douleur s'échappe.'",
+                        "...le temps s'arrête.'",
+                        "...la mort s'invite.'"
+                    ],
+                    "lesson": "Rûmi enseigne que la souffrance brise la coquille de l'ego, permettant à l'amour divin d'y pénétrer. Tes cicatrices sont des portes.",
+                    "imageUri": "https://source.unsplash.com/featured/?light,crack"
+                }
+            },
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "Alors ne cache pas tes blessures. Danse avec elles ! 💃"
+            }
+        ]
+    },
+    {
+        "storyId": "FR00",
+        "countryCode": "FR",
+        "city": "Paris",
+        "title": "L'Enfer, c'est les autres",
+        "isCapital": true,
+        "rarity": "common",
+        "xpReward": 100,
+        "rewardCollectibleId": "col_fr_pipe_saint_germain",
+        "timeline": [
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "Salut ! On est au Café de Flore. ☕ Sartre et Beauvoir sont dans le coin. Ici, on fume beaucoup et on pense que tu es totalement libre."
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "anc_fr00_1",
+                    "type": "true_false",
+                    "statement": "Jean-Paul Sartre a refusé le Prix Nobel de Littérature en 1964.",
+                    "isTrue": true,
+                    "lesson": "Vrai ! Il a dit qu'un écrivain ne doit pas se transformer en institution. Il voulait rester libre jusqu'au bout (et il a refusé le chèque aussi !).",
+                    "imageUri": "https://source.unsplash.com/featured/?nobel,medal"
+                }
+            },
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "Quel caractère ! 😤 Pour Sartre, si tu cherches des excuses à tes actes, tu es de 'mauvaise foi'. Assumes !"
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "anc_fr00_2",
+                    "type": "choice",
+                    "question": "Qu'est-ce que l'attitude de 'mauvaise foi' selon Sartre ?",
+                    "correctAnswer": "Se mentir à soi-même en jouant un rôle pour fuir sa liberté",
+                    "distractors": [
+                        "Mentir aux autres pour gagner de l'argent",
+                        "Avoir une foi religieuse incorrecte",
+                        "Être pessimiste sur l'avenir"
+                    ],
+                    "lesson": "Le garçon de café qui joue 'trop' au garçon de café est de mauvaise foi. Il s'enferme dans un rôle pour oublier qu'il est libre de tout plaquer.",
+                    "imageUri": "https://source.unsplash.com/featured/?waiter,cafe"
+                }
+            },
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "Tu es condamné à être libre. C'est flippant, mais c'est toi le patron. À toi d'écrire la suite ! ✍️"
+            }
+        ]
+    },
+    {
+        "storyId": "NL00",
+        "countryCode": "NL",
+        "city": "Amsterdam",
+        "title": "Dieu ou la Nature ?",
+        "isCapital": true,
+        "rarity": "legendary",
+        "xpReward": 300,
+        "rewardCollectibleId": "col_nl_lentille_optique",
+        "timeline": [
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "Hoi ! Amsterdam, ville de tolérance... sauf pour Spinoza en son temps. 🚲 Il polissait des lentilles et voyait Dieu partout.",
+                "imageUri": "https://source.unsplash.com/featured/?amsterdam,canal"
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "anc_nl00_1",
+                    "type": "numeric",
+                    "label": "En quelle année Spinoza a-t-il été violemment excommunié (Herem) ?",
+                    "numericValue": 1656,
+                    "unit": "année",
+                    "lesson": "À 23 ans seulement ! La malédiction était terrible : 'Maudit soit-il le jour, maudit soit-il la nuit...'. Personne n'avait le droit de lui parler.",
+                    "imageUri": "https://source.unsplash.com/featured/?parchment,old"
+                }
+            },
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "Dur... Tout ça parce qu'il disait 'Deus sive Natura' (Dieu, c'est-à-dire la Nature). Pour lui, tout est lié par la nécessité. 🕸️"
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "anc_nl00_2",
+                    "type": "choice",
+                    "question": "Selon Spinoza, qu'est-ce qu'une 'passion triste' ?",
+                    "correctAnswer": "Un sentiment qui diminue notre puissance d'agir (haine, peur, culpabilité)",
+                    "distractors": [
+                        "Une dépression clinique",
+                        "Un amour non partagé",
+                        "Une colère juste"
+                    ],
+                    "lesson": "La joie augmente ta puissance, la tristesse la diminue. Le tyran utilise les passions tristes (peur) pour contrôler les hommes. Sois joyeux pour être libre !",
+                    "imageUri": "https://source.unsplash.com/featured/?smile,sun"
+                }
+            },
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "La liberté, c'est comprendre pourquoi les choses arrivent. Ne pleure pas, ne t'indigne pas, mais comprends. 💎"
+            }
+        ]
+    },
+    {
+        "storyId": "US00",
+        "countryCode": "US",
+        "city": "Concord",
+        "title": "Walden ou la cabane",
+        "isCapital": false,
+        "rarity": "uncommon",
+        "xpReward": 150,
+        "rewardCollectibleId": "col_us_crayon_thoreau",
+        "timeline": [
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "Welcome to the woods! 🌲 Thoreau en a eu marre de la société de consommation (déjà !). Il est parti vivre ici, seul.",
+                "imageUri": "https://source.unsplash.com/featured/?cabin,woods"
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "anc_us00_1",
+                    "type": "numeric",
+                    "label": "Combien Thoreau a-t-il dépensé pour construire sa cabane (en dollars de 1845) ?",
+                    "numericValue": 28.12,
+                    "unit": "dollars",
+                    "lesson": "28 dollars et 12 cents ! Moins que le loyer annuel d'une chambre à Harvard. Il a prouvé qu'on a besoin de très peu pour être libre.",
+                    "imageUri": "https://source.unsplash.com/featured/?coins,vintage"
+                }
+            },
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "Il voulait 'sucer la moelle de la vie'. Vivre délibérément. Pas juste exister comme un somnambule. 🚶"
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "anc_us00_2",
+                    "type": "order",
+                    "task": "Remets dans l'ordre les saisons décrites dans 'Walden'.",
+                    "items": [
+                        "Été (Construction et installation)",
+                        "Automne (Récolte et préparation)",
+                        "Hiver (Isolement et observation de la glace)",
+                        "Printemps (Renouveau et départ)"
+                    ],
+                    "lesson": "Après un cycle complet, il est reparti. Il avait 'd'autres vies à vivre'. La cabane n'était qu'une étape, pas une retraite définitive.",
+                    "imageUri": "https://source.unsplash.com/featured/?seasons,forest"
+                }
+            },
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "La simplicité est la clé. Si une loi est injuste, désobéis ! C'est aussi lui l'inventeur de la 'Désobéissance civile'. Respect. ✊"
+            }
+        ]
+    },
+    {
+        "storyId": "DE01",
+        "countryCode": "DE",
+        "city": "Weimar",
+        "title": "Le Crépuscule des Idoles",
+        "isCapital": false,
+        "rarity": "rare",
+        "xpReward": 200,
+        "rewardCollectibleId": "col_de_moustache_postiche",
+        "timeline": [
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "Achtung ! Nietzsche arrive avec son marteau. 🔨 Il est là pour casser toutes tes certitudes. Prêt pour le choc ?"
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "anc_de01_1",
+                    "type": "true_false",
+                    "statement": "Nietzsche était un fervent nationaliste allemand et antisémite.",
+                    "isTrue": false,
+                    "lesson": "Faux ! Il détestait le nationalisme et l'antisémitisme. C'est sa sœur, Elisabeth, qui a trafiqué ses écrits après sa folie pour plaire aux Nazis.",
+                    "imageUri": "https://source.unsplash.com/featured/?nietzsche,statue"
+                }
+            },
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "Ouf, rétablissons la vérité. Nietzsche veut qu'on devienne ce que l'on est, qu'on dépasse l'homme actuel. 🦁"
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "anc_de01_2",
+                    "type": "choice",
+                    "question": "Que signifie 'Dieu est mort' dans le Gai Savoir ?",
+                    "correctAnswer": "La fin des valeurs morales absolues qui guidaient l'Occident",
+                    "distractors": [
+                        "Une victoire de l'athéisme militant",
+                        "Que Dieu a existé mais est décédé",
+                        "La fin de l'église catholique"
+                    ],
+                    "lesson": "Ce n'est pas une fête, c'est un constat terrifiant. Sans Dieu, nous sommes seuls face au néant. Il faut créer nos propres valeurs : devenir des Surhommes.",
+                    "imageUri": "https://source.unsplash.com/featured/?empty,church"
+                }
+            },
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "Amor Fati : aime ton destin, même la souffrance. Tout ce qui ne te tue pas te rend plus fort ! 💪"
+            }
+        ]
+    },
+    {
+        "storyId": "IT00",
+        "countryCode": "IT",
+        "city": "Rome",
+        "title": "La Citadelle Intérieure",
+        "isCapital": true,
+        "rarity": "common",
+        "xpReward": 100,
+        "rewardCollectibleId": "col_it_medaille_marc_aurele",
+        "timeline": [
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "Salve ! 🏛️ Marc-Aurèle était l'homme le plus puissant du monde (Empereur), mais il se comportait comme un moine. Le Stoïcisme, c'est du solide."
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "anc_it00_1",
+                    "type": "choice",
+                    "question": "Quelle est la distinction fondamentale du Stoïcisme ?",
+                    "correctAnswer": "Ce qui dépend de nous vs Ce qui ne dépend pas de nous",
+                    "distractors": [
+                        "Le Bien vs le Mal",
+                        "Le plaisir vs la douleur",
+                        "L'Empire vs les Barbares"
+                    ],
+                    "lesson": "Tes opinions et tes actions dépendent de toi. La santé, la richesse, la réputation... non. Ne te soucie que du premier groupe !",
+                    "imageUri": "https://source.unsplash.com/featured/?roman,statue"
+                }
+            },
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "Simple, mais dur à appliquer quand ton téléphone tombe dans les toilettes... 📱💦 Marc-Aurèle écrivait ses 'Pensées' sous sa tente de guerre."
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "anc_it00_2",
+                    "type": "order",
+                    "task": "Remets ces célèbres Stoïciens dans l'ordre chronologique.",
+                    "items": [
+                        "Sénèque (Le conseiller riche)",
+                        "Épictète (L'esclave affranchi)",
+                        "Marc-Aurèle (L'empereur)"
+                    ],
+                    "lesson": "Le stoïcisme a touché toutes les classes : un esclave boiteux a inspiré l'Empereur de Rome. La sagesse n'a pas de rang social.",
+                    "imageUri": "https://source.unsplash.com/featured/?rome,ruins"
+                }
+            },
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "Construis ta citadelle intérieure. Si ton esprit est fort, rien à l'extérieur ne peut t'atteindre. 🛡️"
+            }
+        ]
+    },
+    {
+        "storyId": "ES00",
+        "countryCode": "ES",
+        "city": "Cordoue",
+        "title": "Le Commentateur Fou",
+        "isCapital": false,
+        "rarity": "rare",
+        "xpReward": 200,
+        "rewardCollectibleId": "col_es_manuscrit_andalou",
+        "timeline": [
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "Hola ! 🕌 Cordoue au 12ème siècle, c'était le New York de l'époque. Averroès (Ibn Rushd) y tentait l'impossible : marier l'Islam et Aristote."
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "anc_es00_1",
+                    "type": "true_false",
+                    "statement": "Averroès a fini sa vie honoré et riche à la cour du Calife.",
+                    "isTrue": false,
+                    "lesson": "Faux. Accusé d'hérésie par les fanatiques, il a été exilé, ses livres brûlés. Il est mort dans la solitude, réhabilité trop tard.",
+                    "imageUri": "https://source.unsplash.com/featured/?cordoba,mosque"
+                }
+            },
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "Triste fin... Mais ses livres ont voyagé ! Sans lui, l'Europe aurait oublié la philosophie grecque. 🗺️"
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "anc_es00_2",
+                    "type": "order",
+                    "task": "Trace le chemin de la redécouverte d'Aristote grâce à Averroès.",
+                    "items": [
+                        "Textes Grecs traduits en Arabe (Bagdad/Cordoue)",
+                        "Commentaires d'Averroès en Arabe",
+                        "Traduction en Latin (Tolède/Sicile)",
+                        "Lecture par Thomas d'Aquin à Paris"
+                    ],
+                    "lesson": "C'est grâce aux Arabes d'Andalousie que l'Occident chrétien a redécouvert ses propres racines grecques. Un beau pont culturel !",
+                    "imageUri": "https://source.unsplash.com/featured/?manuscript,library"
+                }
+            },
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "La vérité ne contredit pas la vérité. La foi et la raison sont deux ailes du même oiseau. Vole ! 🦅"
+            }
+        ]
+    },
+    {
+        "storyId": "CN01",
+        "countryCode": "CN",
+        "city": "Lhassa",
+        "title": "Tout passe, tout casse",
+        "isCapital": false,
+        "rarity": "legendary",
+        "xpReward": 300,
+        "rewardCollectibleId": "col_cn_roue_priere",
+        "timeline": [
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "Tashi Delek ! 🏔️ Sur le toit du monde, on apprend l'impermanence. Regarde ces moines construire un Mandala de sable..."
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "anc_cn01_1",
+                    "type": "numeric",
+                    "label": "Combien de grains de sable (estimation) pour un mandala complexe ?",
+                    "numericValue": 1000000,
+                    "unit": "grains (environ)",
+                    "lesson": "Des millions ! Chaque grain est posé un par un avec un petit entonnoir (chak-pur). Ça prend des semaines de concentration totale.",
+                    "imageUri": "https://source.unsplash.com/featured/?mandala,sand"
+                }
+            },
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "Des semaines de travail... Pour quoi faire ? Tu vas voir, ça fait mal au cœur la première fois. 💔"
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "anc_cn01_2",
+                    "type": "order",
+                    "task": "Que se passe-t-il une fois le Mandala terminé ?",
+                    "items": [
+                        "Cérémonie de consécration",
+                        "Destruction immédiate par les moines",
+                        "Mélange du sable en un tas gris",
+                        "Offrande du sable à la rivière"
+                    ],
+                    "lesson": "On détruit tout ! C'est la leçon ultime : rien ne dure. S'attacher à la beauté ou au travail crée de la souffrance. Il faut savoir lâcher prise.",
+                    "imageUri": "https://source.unsplash.com/featured/?river,hands"
+                }
+            },
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "L'attachement est la racine de la souffrance. Apprécie le moment, puis laisse-le partir comme le sable dans l'eau. 🌊"
+            }
+        ]
+    },
+    {
+        "storyId": "CH00",
+        "countryCode": "CH",
+        "city": "Genève",
+        "title": "Le Contrat Social",
+        "isCapital": false,
+        "rarity": "uncommon",
+        "xpReward": 150,
+        "rewardCollectibleId": "col_ch_herbier",
+        "timeline": [
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "Bonjour ! ⛰️ Genève, c'est propre, c'est carré. Rousseau est né ici. Il disait que l'homme naît bon, mais que la société le pourrit."
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "anc_ch00_1",
+                    "type": "true_false",
+                    "statement": "Jean-Jacques Rousseau, auteur de l'Émile (traité d'éducation), a abandonné ses 5 enfants.",
+                    "isTrue": true,
+                    "lesson": "Vrai... et très ironique. Il les a mis à l'hospice des Enfants-Trouvés, faute d'argent (disait-il). Le grand pédagogue n'a jamais élevé ses gosses.",
+                    "imageUri": "https://source.unsplash.com/featured/?orphanage,old"
+                }
+            },
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "Faites ce que je dis, pas ce que je fais... 🙄 Mais politiquement, c'était un génie. Il a inventé la 'Volonté Générale'."
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "anc_ch00_2",
+                    "type": "choice",
+                    "question": "Qu'est-ce que la 'Volonté Générale' ?",
+                    "correctAnswer": "L'intérêt commun du corps social (pas juste la majorité)",
+                    "distractors": [
+                        "La somme des volontés particulières",
+                        "Ce que le Roi décide",
+                        "L'avis de 51% des gens"
+                    ],
+                    "lesson": "Ce n'est pas l'addition des égoïsmes (je veux moins d'impôts, tu veux plus d'aides). C'est ce que nous voulons ENSEMBLE pour le bien du groupe.",
+                    "imageUri": "https://source.unsplash.com/featured/?crowd,flag"
+                }
+            },
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "On perd sa liberté naturelle en entrant en société, mais on gagne la liberté civile. C'est ça, le Deal (le Contrat). 🤝"
+            }
+        ]
+    },
+    {
+        "storyId": "GB00",
+        "countryCode": "GB",
+        "city": "Édimbourg",
+        "title": "Le Sceptique Aimable",
+        "isCapital": false,
+        "rarity": "common",
+        "xpReward": 100,
+        "rewardCollectibleId": "col_gb_jeu_backgammon",
+        "timeline": [
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "Cheers! 🍻 À Édimbourg, David Hume a cassé la baraque. Il disait qu'on ne peut rien prouver, même pas que le soleil se lèvera demain."
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "anc_gb00_1",
+                    "type": "order",
+                    "task": "Comment fonctionne l'illusion de la causalité (exemple du billard) ?",
+                    "items": [
+                        "La boule A bouge",
+                        "La boule A touche la boule B",
+                        "La boule B bouge",
+                        "L'esprit invente un lien nécessaire entre les deux"
+                    ],
+                    "lesson": "Tu vois A puis B. Tu ne vois pas la 'force' qui lie les deux. La causalité est une habitude de ton esprit, pas une vérité du monde !",
+                    "imageUri": "https://source.unsplash.com/featured/?billiards,ball"
+                }
+            },
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "Ça donne le tournis, non ? 😵 Si la raison ne mène à rien, qu'est-ce qu'on fait ? On déprime ?"
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "anc_gb00_2",
+                    "type": "choice",
+                    "question": "Que faisait Hume pour guérir de sa mélancolie sceptique ?",
+                    "correctAnswer": "Il jouait au Backgammon et dînait avec ses amis",
+                    "distractors": [
+                        "Il priait à l'église",
+                        "Il buvait seul dans le noir",
+                        "Il écrivait des poèmes tristes"
+                    ],
+                    "lesson": "La philosophie c'est bien, mais la vie c'est mieux. 'Soyez philosophe, mais au milieu de toute votre philosophie, soyez toujours un homme.'",
+                    "imageUri": "https://source.unsplash.com/featured/?pub,friends"
+                }
+            },
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "La raison est l'esclave des passions. Alors, suis tes passions (avec modération) ! 😉"
+            }
+        ]
+    },
+    {
+        "storyId": "BT00",
+        "countryCode": "BT",
+        "city": "Thimphu",
+        "title": "Le Ministère du Bonheur",
+        "isCapital": true,
+        "rarity": "rare",
+        "xpReward": 200,
+        "rewardCollectibleId": "col_bt_masque_festival",
+        "timeline": [
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "Kuzuzangpo ! 🇧🇹 Bienvenue au Bhoutan, le seul pays au monde qui se fiche du PIB. Ici, on compte le BNB : Bonheur National Brut."
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "anc_bt00_1",
+                    "type": "choice",
+                    "question": "Lequel de ces éléments N'EST PAS un des 4 piliers du BNB ?",
+                    "correctAnswer": "L'augmentation des exportations technologiques",
+                    "distractors": [
+                        "La protection de l'environnement",
+                        "La conservation de la culture",
+                        "La bonne gouvernance"
+                    ],
+                    "lesson": "L'économie n'est qu'un moyen, pas une fin. Si tu es riche mais que ta forêt brûle et que ta culture meurt, tu n'es pas heureux.",
+                    "imageUri": "https://source.unsplash.com/featured/?bhutan,mountains"
+                }
+            },
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "C'est radical ! Ils ont même interdit les sacs plastiques en 1999. 🌿 Mais comment on mesure le sourire ?"
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "anc_bt00_2",
+                    "type": "numeric",
+                    "label": "Quelle est la valeur maximale de l'indice de bonheur (sur 1) ?",
+                    "numericValue": 1,
+                    "unit": "point",
+                    "lesson": "C'est un index de 0 à 1. En 2015, l'indice était de 0.756. Le recensement pose des questions comme : 'Dormez-vous bien ?' ou 'Faites-vous confiance à vos voisins ?'.",
+                    "imageUri": "https://source.unsplash.com/featured/?smile,people"
+                }
+            },
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "Le bonheur, c'est une politique publique. Si l'État ne crée pas les conditions du bonheur, il échoue. À méditer... 🤔"
+            }
+        ]
+    },
+    {
+        "storyId": "GR01",
+        "countryCode": "GR",
+        "city": "Samos",
+        "title": "Le Jardin des Plaisirs",
+        "isCapital": false,
+        "rarity": "common",
+        "xpReward": 100,
+        "rewardCollectibleId": "col_gr_coupe_vin",
+        "timeline": [
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "Yassas ! 🍇 Sur cette île, Epicure a appris à profiter de la vie. Mais attention, 'épicurien' ne veut pas dire 'goinfre' !"
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "anc_gr01_1",
+                    "type": "choice",
+                    "question": "Quel type de plaisir Epicure recommande-t-il ?",
+                    "correctAnswer": "Les plaisirs naturels et nécessaires (boire de l'eau quand on a soif)",
+                    "distractors": [
+                        "Les plaisirs vains (gloire, richesse)",
+                        "Les plaisirs naturels mais non nécessaires (vin de luxe)",
+                        "L'abstinence totale"
+                    ],
+                    "lesson": "Un peu de pain, un peu d'eau, des amis et la paix de l'esprit. Le reste (le luxe, le pouvoir) apporte plus de soucis que de joie.",
+                    "imageUri": "https://source.unsplash.com/featured/?water,bread"
+                }
+            },
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "Le bonheur, c'est simple : ne pas avoir mal au corps, ne pas avoir peur dans la tête. C'est l'Ataraxie. 🧘‍♂️"
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "anc_gr01_2",
+                    "type": "order",
+                    "task": "Classe les priorités pour être heureux selon le Jardin.",
+                    "items": [
+                        "L'Amitié (le plus important)",
+                        "La Liberté (autosuffisance)",
+                        "La Réflexion (philosophie)",
+                        "Le Confort matériel (le moins important)"
+                    ],
+                    "lesson": "Epicure a acheté un jardin pour y vivre avec ses amis. Ils cultivaient leurs légumes. L'amitié est le remède à tous les maux.",
+                    "imageUri": "https://source.unsplash.com/featured/?picnic,friends"
+                }
+            },
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "Alors, appelle tes potes et partage une pizza. C'est ça, la haute philosophie. 🍕"
+            }
+        ]
+    },
+    {
+        "storyId": "ML00",
+        "countryCode": "ML",
+        "city": "Tombouctou",
+        "title": "L'Encre des Sables",
+        "isCapital": false,
+        "rarity": "legendary",
+        "xpReward": 300,
+        "rewardCollectibleId": "col_ml_livre_cuir",
+        "timeline": [
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "Bienvenue à Tombouctou, la 'Mystérieuse'. 🏜️ On pense que c'est le bout du monde, mais c'était le centre intellectuel de l'Afrique !"
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "anc_ml00_1",
+                    "type": "true_false",
+                    "statement": "Tombouctou abritait l'une des premières universités du monde au 12ème siècle.",
+                    "isTrue": true,
+                    "lesson": "Vrai. L'université de Sankoré comptait 25 000 étudiants ! On y étudiait le droit, l'astronomie, la médecine... pendant que l'Europe sortait à peine du Moyen Âge.",
+                    "imageUri": "https://source.unsplash.com/featured/?timbuktu,mosque"
+                }
+            },
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "Le savoir est une richesse. D'ailleurs, on dit ici : 'L'encre des savants est plus précieuse que le sang des martyrs'. ✒️"
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "anc_ml00_2",
+                    "type": "numeric",
+                    "label": "Combien de manuscrits anciens ont été sauvés des extrémistes en 2012 ?",
+                    "numericValue": 350000,
+                    "unit": "manuscrits (est.)",
+                    "lesson": "Plus de 350 000 ! Des bibliothécaires héroïques les ont cachés dans des cantines en métal et évacués en pirogue sur le fleuve Niger.",
+                    "imageUri": "https://source.unsplash.com/featured/?manuscript,arabic"
+                }
+            },
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "Ces livres parlent de paix et de tolérance. Le papier est fragile, mais les idées sont invincibles. 🛡️"
+            }
+        ]
+    },
+    {
+        "storyId": "JP01",
+        "countryCode": "JP",
+        "city": "Okinawa",
+        "title": "La Raison de se lever",
+        "isCapital": false,
+        "rarity": "uncommon",
+        "xpReward": 150,
+        "rewardCollectibleId": "col_jp_coquillage_etoile",
+        "timeline": [
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "Haisai ! 🌺 On est sur l'île des centenaires. Ici, les gens ne prennent pas leur retraite, ils changent juste d'Ikigai."
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "anc_jp01_1",
+                    "type": "order",
+                    "task": "L'Ikigai est au centre de 4 cercles. Lesquels ?",
+                    "items": [
+                        "Ce que tu aimes",
+                        "Ce pour quoi tu es doué",
+                        "Ce dont le monde a besoin",
+                        "Ce pour quoi tu es payé"
+                    ],
+                    "lesson": "Si tu as les 4, tu as ton Ikigai : ta 'raison d'être'. C'est le secret pour se lever le matin avec le sourire à 102 ans.",
+                    "imageUri": "https://source.unsplash.com/featured/?ikigai,diagram"
+                }
+            },
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "C'est l'équilibre parfait. Et ça marche aussi dans l'assiette ! Ici on mange le 'Goya' (concombre amer). 🥒"
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "anc_jp01_2",
+                    "type": "choice",
+                    "question": "Quel principe alimentaire japonais aide à la longévité ?",
+                    "correctAnswer": "Hara Hachi Bu (Manger à 80% de sa faim)",
+                    "distractors": [
+                        "Manger uniquement de la viande crue",
+                        "Jeûner deux jours par semaine",
+                        "Boire 5 litres de thé vert par jour"
+                    ],
+                    "lesson": "Arrête de manger quand tu n'as plus faim, pas quand tu es explosé. Ton estomac te remerciera en te donnant quelques années de plus.",
+                    "imageUri": "https://source.unsplash.com/featured/?japanese,food"
+                }
+            },
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "Trouve ton but, mange léger et garde tes amis proches. La vie est longue si on sait l'aimer ! ❤️"
+            }
+        ]
+    },
+    {
+        "storyId": "ZA00",
+        "countryCode": "ZA",
+        "city": "Le Cap",
+        "title": "Je suis car nous sommes",
+        "isCapital": false,
+        "rarity": "rare",
+        "xpReward": 200,
+        "rewardCollectibleId": "col_za_bracelet_perles",
+        "timeline": [
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "Molo ! 🌍 En Afrique du Sud, on a une philosophie qui a sauvé le pays de la guerre civile : l'Ubuntu."
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "anc_za00_1",
+                    "type": "true_false",
+                    "statement": "L'Ubuntu est une religion traditionnelle bantoue.",
+                    "isTrue": false,
+                    "lesson": "Faux. C'est une philosophie éthique, un humanisme. Desmond Tutu et Mandela l'utilisaient. Ça signifie : 'Je suis humain parce que tu es humain'.",
+                    "imageUri": "https://source.unsplash.com/featured/?southafrica,people"
+                }
+            },
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "On est tous connectés. Si je te fais du mal, je m'abîme moi-même. C'est puissant, surtout après l'Apartheid. 🤝"
+            },
+            {
+                "type": "anecdote",
+                "data": {
+                    "id": "anc_za00_2",
+                    "type": "choice",
+                    "question": "Comment la justice Ubuntu règle-t-elle un conflit ?",
+                    "correctAnswer": "Par la réconciliation et la restauration du lien social",
+                    "distractors": [
+                        "Par la punition sévère du coupable",
+                        "Par l'isolement en prison",
+                        "Par la vengeance de la victime"
+                    ],
+                    "lesson": "La Commission Vérité et Réconciliation a permis aux bourreaux d'avouer et aux victimes de pardonner. Le but n'est pas de punir, mais de guérir la communauté.",
+                    "imageUri": "https://source.unsplash.com/featured/?hands,holding"
+                }
+            },
+            {
+                "type": "dialogue",
+                "characterId": "guide_local",
+                "content": "Personne ne naît en haïssant. On apprend à haïr, alors on peut apprendre à aimer. Ubuntu ! ✨"
+            }
+        ]
+    }
+]

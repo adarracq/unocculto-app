@@ -1,4 +1,3 @@
-import BodyText from '@/app/components/atoms/BodyText';
 import Colors from '@/app/constants/Colors';
 import { getFlagImage } from '@/app/models/Countries';
 import { RadarItem } from '@/app/services/user.service';
@@ -14,6 +13,7 @@ const BLIP_SIZE = 32;
 interface Props {
     items: RadarItem[];
     isLoading?: boolean;
+    mainColor: string;
 }
 
 // --- SOUS-COMPOSANT : BLIP (Drapeau) ---
@@ -75,7 +75,7 @@ const RadarBlip = ({ item, x, y }: { item: RadarItem, x: number, y: number }) =>
     );
 };
 
-export default function KnowledgeRadar({ items }: Props) {
+export default function KnowledgeRadar({ items, mainColor }: Props) {
     const scanAnim = useRef(new Animated.Value(0)).current;
 
     // Rotation infinie
@@ -122,7 +122,7 @@ export default function KnowledgeRadar({ items }: Props) {
                 <View style={styles.gridContainer}>
                     <View style={[styles.ring, { width: '33%', height: '33%' }]} />
                     <View style={[styles.ring, { width: '66%', height: '66%' }]} />
-                    <View style={[styles.ring, { width: '100%', height: '100%', borderColor: Colors.main + '40' }]} />
+                    <View style={[styles.ring, { width: '100%', height: '100%', borderColor: mainColor + '40' }]} />
 
                     <View style={styles.axisVertical} />
                     <View style={styles.axisHorizontal} />
@@ -139,7 +139,7 @@ export default function KnowledgeRadar({ items }: Props) {
                     <View style={styles.sweepSector}>
                         <LinearGradient
                             // Dégradé Horizontal : Transparent (Gauche) -> Vert (Droite/Centre)
-                            colors={['transparent', Colors.main + '50']}
+                            colors={['transparent', mainColor + '50']}
                             start={{ x: 0, y: 1 }} // Coin Bas-Gauche (Loin)
                             end={{ x: 1, y: 1 }}   // Coin Bas-Droit (Près de la ligne)
                             style={styles.sweepGradient}
@@ -147,7 +147,7 @@ export default function KnowledgeRadar({ items }: Props) {
                     </View>
 
                     {/* La Ligne Brillante (Bord d'attaque) */}
-                    <View style={styles.laserLine} />
+                    <View style={[styles.laserLine, { backgroundColor: mainColor, shadowColor: mainColor }]} />
                 </Animated.View>
 
                 {/* 3. Point Central */}
@@ -166,10 +166,6 @@ export default function KnowledgeRadar({ items }: Props) {
                     );
                 })}
             </View>
-
-            <View style={styles.legend}>
-                <BodyText text="RADAR DE PROXIMITÉ MNÉMONIQUE" size="S" color={Colors.darkGrey} style={{ letterSpacing: 1 }} />
-            </View>
         </View>
     );
 }
@@ -182,7 +178,7 @@ const styles = StyleSheet.create({
         height: RADAR_SIZE,
         borderRadius: RADAR_SIZE / 2,
         // CORRECTION COULEUR : Plus clair/transparent (Vert nuit militaire)
-        backgroundColor: 'rgba(0, 20, 0, 0.4)',
+        backgroundColor: 'rgba(0, 0, 0, 0.4)',
         overflow: 'hidden',
         position: 'relative',
         borderWidth: 1,
@@ -223,8 +219,6 @@ const styles = StyleSheet.create({
         left: '50%', // Au centre horizontal
         width: 2,
         height: '50%', // Demi-hauteur
-        backgroundColor: Colors.main,
-        shadowColor: Colors.main,
         shadowOpacity: 0.8,
         shadowRadius: 4,
         elevation: 5,

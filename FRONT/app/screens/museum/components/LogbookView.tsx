@@ -3,9 +3,10 @@ import Title1 from '@/app/components/atoms/Title1';
 import Title2 from '@/app/components/atoms/Title2';
 import CustomModal from '@/app/components/molecules/CustomModal';
 import Colors from '@/app/constants/Colors';
+import { ThemeContext } from '@/app/contexts/ThemeContext';
 import { ALL_COUNTRIES, getFlagImage } from '@/app/models/Countries';
 import { functions } from '@/app/utils/Functions';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import LogbookStats from './LogbookStats';
 // Type exporté pour l'usage dans le parent
@@ -25,6 +26,7 @@ interface Props {
 export default function LogbookView({ logbook }: Props) {
     const [selectedCountryEntry, setSelectedCountryEntry] = useState<LogbookEntry | null>(null);
     const [countryModalVisible, setCountryModalVisible] = useState(false);
+    const [themeContext, setThemeContext] = useContext(ThemeContext);
 
     const renderLogbookEntry = (entry: LogbookEntry) => {
         const countryData = ALL_COUNTRIES.find(c => c.code === entry.countryCode);
@@ -62,7 +64,7 @@ export default function LogbookView({ logbook }: Props) {
                     />
                 </View>
 
-                <Image source={functions.getIconSource('arrow-right')} style={{ width: 16, height: 16, tintColor: Colors.darkGrey }} />
+                <Image source={functions.getIconSource('arrow-right')} style={{ width: 16, height: 16, tintColor: Colors.lightGrey }} />
             </TouchableOpacity>
         );
     };
@@ -90,6 +92,7 @@ export default function LogbookView({ logbook }: Props) {
                     onConfirm={() => setCountryModalVisible(false)}
                     confirmText="FERMER DOSSIER"
                     variant={selectedCountryEntry.isCompleted ? 'gold' : 'default'}
+                    color={themeContext.mainColor}
                 >
                     {(() => {
                         const countryStatic = ALL_COUNTRIES.find(c => c.code === selectedCountryEntry.countryCode);
@@ -100,7 +103,7 @@ export default function LogbookView({ logbook }: Props) {
                                     <Image source={getFlagImage(countryStatic.code)} style={{ width: 50, height: 35, borderRadius: 4 }} />
                                     <View>
                                         <BodyText text={`Capitale : ${countryStatic.capital}`} size="S" isBold />
-                                        <BodyText text={`Villes explorées : ${selectedCountryEntry.cities.join(', ')}`} size="S" color={Colors.main} />
+                                        <BodyText text={`Villes explorées : ${selectedCountryEntry.cities.join(', ')}`} size="S" color={themeContext.mainColor} />
                                     </View>
                                 </View>
 
@@ -110,10 +113,10 @@ export default function LogbookView({ logbook }: Props) {
                                         text={addLineBreaks(countryStatic.intro_fr)}
                                         style={{ marginLeft: 20 }}
                                     />
-                                    <Title2 title="RECOMPENSES" isLeft style={{ marginTop: 8, color: Colors.main }} />
+                                    <Title2 title="RECOMPENSES" isLeft style={{ marginTop: 8, color: themeContext.mainColor }} />
                                     <BodyText
                                         text={`Votre exploration ici a permis de collecter ${selectedCountryEntry.storiesCount} souvenirs majeurs.`}
-                                        style={{ marginLeft: 20 }} color={Colors.main}
+                                        style={{ marginLeft: 20 }} color={themeContext.mainColor}
                                     />
                                     <Title2 title="STATUT" isLeft style={{ marginTop: 8, color: selectedCountryEntry.isCompleted ? Colors.gold : Colors.lightGrey }} />
                                     {selectedCountryEntry.isCompleted ? (

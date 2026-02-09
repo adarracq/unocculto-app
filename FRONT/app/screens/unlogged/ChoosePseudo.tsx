@@ -1,7 +1,6 @@
 import BackArrow from '@/app/components/atoms/BackArrow';
 import MyButton from '@/app/components/atoms/MyButton';
 import Title0 from '@/app/components/atoms/Title0';
-import GlowTopGradient from '@/app/components/molecules/GlowTopGradient';
 import InputField from '@/app/components/molecules/InputField';
 import LoadingScreen from '@/app/components/molecules/LoadingScreen';
 import ProgressBar from '@/app/components/molecules/ProgressBar';
@@ -108,7 +107,6 @@ export default function ChoosePseudoScreen({ navigation, route }: Props) {
         <LinearGradient
             colors={[Colors.darkGrey, Colors.black]}
             style={styles.container}>
-            <GlowTopGradient />
             <BackArrow onPress={() => navigation.goBack()} />
             <View style={{ gap: 24 }}>
                 <ProgressBar progress={3} total={4} title="Pseudo" width={80} />

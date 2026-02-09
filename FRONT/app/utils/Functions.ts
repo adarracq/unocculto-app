@@ -40,6 +40,14 @@ function getIconSource(name: string) {
             return require('@/app/assets/icons/target.png');
         case 'clock':
             return require('@/app/assets/icons/clock.png');
+        case 'fingerprint':
+            return require('@/app/assets/icons/fingerprint.png');
+        case 'error':
+            return require('@/app/assets/icons/error.png');
+        case 'flight-ticket':
+            return require('@/app/assets/icons/flight-ticket.png');
+        case 'repeat':
+            return require('@/app/assets/icons/repeat.png');
         case 'gamepad':
             return require('@/app/assets/icons/gamepad.png');
         case 'profile':
@@ -145,6 +153,7 @@ function formatTime(seconds: number): string {
     const secs = seconds % 60;
     return `${mins > 0 ? mins + 'min ' : ''}${secs > 0 ? secs + 's' : ''}`.trim();
 }
+
 
 
 async function convertImageToBase64(imageSource: any) {

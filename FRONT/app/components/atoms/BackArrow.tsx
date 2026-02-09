@@ -5,6 +5,8 @@ import { Image, TouchableOpacity, Vibration } from 'react-native';
 
 type Props = {
     onPress: () => void;
+    top?: number;
+    left?: number;
 }
 export default function BackArrow(props: Props) {
 
@@ -12,8 +14,8 @@ export default function BackArrow(props: Props) {
         <TouchableOpacity onPress={() => {
             Vibration.vibrate(10)
             props.onPress()
-        }} style={{ position: 'absolute', top: 0, left: 0, zIndex: 2, padding: 20 }}>
-            <Image source={functions.getIconSource('arrow-left')} style={{ width: 25, height: 25, tintColor: Colors.white }} />
+        }} style={{ position: 'absolute', top: props.top ?? 0, left: props.left ?? 0, zIndex: 10, padding: 8, backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 20 }}>
+            <Image source={functions.getIconSource('arrow-left')} style={{ width: 20, height: 20, tintColor: Colors.white }} />
         </TouchableOpacity>
     )
 }

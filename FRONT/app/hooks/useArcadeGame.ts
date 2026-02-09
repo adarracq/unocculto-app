@@ -76,24 +76,25 @@ export const useArcadeGame = (
         if (isCorrect) {
             setStatus('success');
             Vibration.vibrate(50);
+            // Juste le vert sur la bonne réponse
             setMapFeedback({ [currentQuestion.target.code]: 'correct' });
-
             setTimeout(nextStep, 1000);
         } else {
             setStatus('error');
             setErrors(e => e + 1);
             Vibration.vibrate([0, 50, 50, 100]);
 
-            setMapFeedback(prev => ({
-                ...prev,
-                [answerCountryCode]: 'wrong',
-                ...(level === 1 ? { [currentQuestion.target.code]: 'correct' } : {})
-            }));
+            // LOGIQUE MISE À JOUR :
+            // Peu importe le niveau, on montre la correction et on passe
+            setMapFeedback({
+                [answerCountryCode]: 'wrong', // Ce qu'il a cliqué (Rouge)
+                [currentQuestion.target.code]: 'correct' // La vraie réponse (Vert)
+            });
 
+            // On attend un peu plus longtemps (1.5s) pour qu'il voit la correction
             setTimeout(() => {
-                setStatus('playing');
-                if (level === 1) nextStep();
-            }, 1000);
+                nextStep(); // On force le passage à la suite
+            }, 1500);
         }
     };
 

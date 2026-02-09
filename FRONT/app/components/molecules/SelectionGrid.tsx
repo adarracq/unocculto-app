@@ -25,6 +25,24 @@ export default function SelectionGrid<T>({
     keyExtractor
 }: Props<T>) {
 
+    // On retourne 4 cases vides si pas de données pour éviter que la grille ne disparaisse
+    if (data.length === 0) {
+        return (
+            <View style={styles.gridContainer}>
+                {[1, 2, 3, 4].map((i) => (
+                    <View
+                        key={i}
+                        style={[
+                            styles.itemContainer,
+                            styles.unselected,
+                            { borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' }
+                        ]}
+                    />
+                ))}
+            </View>
+        );
+    }
+
     return (
         <View style={styles.gridContainer}>
             {data.map((item) => {
@@ -68,7 +86,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         padding: 10,
-        // @ts-ignore
         borderCurve: 'continuous',
     },
 

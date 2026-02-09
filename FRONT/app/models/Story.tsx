@@ -121,7 +121,8 @@ export interface Story {
     _id: string;
     storyId: string;
     countryCode: string;
-
+    category: string;
+    subCategory: string;
     // Metadonnées
     city: string;
     isCapital: boolean;

@@ -59,10 +59,8 @@ export const NotificationsProvider = ({ children }: { children: ReactNode }) => 
             await AsyncStorage.setItem(NOTIF_KEY, JSON.stringify(newNotifications));
 
             const totalCount = (Object.values(newNotifications) as number[]).reduce((acc: number, curr: number) => acc + curr, 0);
-            console.log('Total notification count:', totalCount);
             await Notifications.setBadgeCountAsync(totalCount);
 
-            console.log('Notifications updated and stored in AsyncStorage:', newNotifications);
         } catch (error) {
             console.error('Error updating notifications:', error);
         }

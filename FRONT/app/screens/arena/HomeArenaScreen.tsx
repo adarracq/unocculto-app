@@ -1,6 +1,6 @@
 import Title2 from '@/app/components/atoms/Title2';
-import LoadingScreen from '@/app/components/molecules/LoadingScreen';
 import Colors from '@/app/constants/Colors';
+import { ThemeContext } from '@/app/contexts/ThemeContext';
 import { UserContext } from '@/app/contexts/UserContext';
 import { useApi } from '@/app/hooks/useApi';
 import { gameResultService } from '@/app/services/gameResult';
@@ -18,10 +18,11 @@ import TrainingSelector from './components/TrainingSelector';
 
 export default function HomeArenaScreen({ navigation }: any) {
     const [userContext, setUserContext] = useContext(UserContext);
+    const [themeContext, setThemeContext] = useContext(ThemeContext);
     const isFocused = useIsFocused();
 
     // Récupération des données utilisateur à jour (Fuel, XP...)
-    const { data: user, execute: refreshUser } = useApi(
+    const { data: userData, execute: refreshUser } = useApi(
         () => userService.getByEmail(userContext.email),
         'HomeArenaScreen - GetUser'
     );
@@ -36,6 +37,13 @@ export default function HomeArenaScreen({ navigation }: any) {
         refreshUser();
         refreshLeaderboard();
     }, [isFocused]);
+
+    useEffect(() => {
+        if (userData) {
+            console.log("Syncing UserContext from Arena");
+            setUserContext(userData);
+        }
+    }, [userData]);
 
 
     const handleSelectMode = (mode: 'country' | 'flag' | 'capital') => {
@@ -70,48 +78,47 @@ export default function HomeArenaScreen({ navigation }: any) {
     // Nom de la ligue (simulé pour l'instant, ou basé sur le rang user plus tard)
     const leagueName = "LIGUE BRONZE";
 
+    const userToDisplay = userData || (userContext.pseudo ? userContext : null);
+
 
     return (
         <LinearGradient colors={[Colors.darkGrey, Colors.black]} style={styles.container}>
 
-            {user ?
-                <>
-
-                    {/* 1. RAPPEL INFOS (Header) */}
-                    <ProfileHeader
-                        user={user}
-                        onChangeFlag={() => { }} // Pas besoin de changer le flag ici
-                        hidePassport
-                    />
-                    <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-                        <Title2 title="MISSION DU JOUR" isLeft style={{ marginBottom: 15, marginLeft: 20 }} color={Colors.lightGrey} />
-                        {/* 2. MISSION DU JOUR (Boost) */}
-                        <DailyMissionCard
-                            onPress={handleDailyMission}
-                            bonus={dailyMission.bonus}
-                            regionId={dailyMission.regionId}
-                            title={dailyMission.title} // ex: "OPÉRATION : AFRIQUE"
-                            type={dailyMission.typeLabel} // ex: "DRAPEAUX"
-                        />
-
-                        {/* 3. SÉLECTEUR DE MODE (Entraînement) */}
-                        <TrainingSelector onSelect={handleSelectMode} />
-
-                        {/* 4. CLASSEMENT (Aperçu) */}
-                        <View style={{ paddingHorizontal: 20 }}>
-                            <LeaderboardCard
-                                title="CLASSEMENT HEBDO"
-                                subTitle={leagueName} // ex: LIGUE BRONZE
-                                data={leaderboardEntries}
-                                limit={10} // On peut afficher plus que 5 si on veut
-                            />
-                        </View>
-
-                    </ScrollView>
-                </>
+            {/* 1. RAPPEL INFOS (Header) */}
+            {userToDisplay ?
+                <ProfileHeader
+                    user={userToDisplay}
+                    onChangeFlag={() => { }} // Pas besoin de changer le flag ici
+                    hidePassport
+                />
                 :
-                <LoadingScreen />
-            }
+                <LinearGradient colors={[themeContext.mainColor + '80', Colors.realBlack]} style={{ borderBottomLeftRadius: 32, borderBottomRightRadius: 32, gap: 30, height: 160 }}>
+                </LinearGradient>}
+            <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+                <Title2 title="MISSION DU JOUR" isLeft style={{ marginBottom: 15, marginLeft: 20 }} color={Colors.lightGrey} />
+                {/* 2. MISSION DU JOUR (Boost) */}
+                <DailyMissionCard
+                    onPress={handleDailyMission}
+                    bonus={dailyMission.bonus}
+                    regionId={dailyMission.regionId}
+                    title={dailyMission.title} // ex: "OPÉRATION : AFRIQUE"
+                    type={dailyMission.typeLabel} // ex: "DRAPEAUX"
+                />
+
+                {/* 3. SÉLECTEUR DE MODE (Entraînement) */}
+                <TrainingSelector onSelect={handleSelectMode} />
+
+                {/* 4. CLASSEMENT (Aperçu) */}
+                <View style={{ paddingHorizontal: 20 }}>
+                    <LeaderboardCard
+                        title="CLASSEMENT HEBDO"
+                        subTitle={leagueName} // ex: LIGUE BRONZE
+                        data={leaderboardEntries}
+                        limit={10} // On peut afficher plus que 5 si on veut
+                    />
+                </View>
+
+            </ScrollView>
         </LinearGradient>
     );
 }

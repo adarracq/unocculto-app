@@ -12,6 +12,7 @@ import FlashMessage from 'react-native-flash-message';
 import LoadingScreen from './components/molecules/LoadingScreen';
 import Colors from './constants/Colors';
 import { NotificationsProvider } from './contexts/NotificationContext';
+import { ThemeContext } from './contexts/ThemeContext';
 import { UserContext } from './contexts/UserContext';
 import BottomTabNav from './navigations/BottomTabNav';
 import UnLoggedNav from './navigations/UnloggedNav';
@@ -61,6 +62,7 @@ export default function App() {
   // Main
   const [userLoaded, setUserLoaded] = useState(false);
   const [user, setUser] = useState(null);
+  const [themeContext, setThemeContext] = useState({ mode: 'dark', mainColor: Colors.main });
 
   const [expoPushToken, setExpoPushToken] = useState('');
 
@@ -157,7 +159,7 @@ export default function App() {
               )
             }
             else {
-              setUser(resp);
+              setUser(user);
               setLoading(false);
             }
           })
@@ -179,7 +181,6 @@ export default function App() {
 
 
   useEffect(() => {
-    //requestLocationPermission();
     getUserFromStorage();
     //AsyncStorageUser.Logout();
   }, []);
@@ -208,19 +209,21 @@ export default function App() {
         <NotificationHandler />
         <NavigationIndependentTree>
           <NavigationContainer ref={navigationRef}>
-            <UserContext.Provider
-              value={[user, setUser]}>
-              <StatusBar hidden />
-              <View style={[StyleSheet.absoluteFillObject, { backgroundColor: Colors.black }]} onLayout={onLayoutRootView}>
-                {
-                  userLoaded && user ?
-                    <BottomTabNav />
-                    :
-                    <UnLoggedNav />
-                }
-                <FlashMessage position="top" statusBarHeight={10} />
-              </View>
-            </UserContext.Provider>
+            <ThemeContext.Provider value={[themeContext, setThemeContext]}>
+              <UserContext.Provider
+                value={[user, setUser]}>
+                <StatusBar hidden />
+                <View style={[StyleSheet.absoluteFillObject, { backgroundColor: Colors.black }]} onLayout={onLayoutRootView}>
+                  {
+                    userLoaded && user ?
+                      <BottomTabNav />
+                      :
+                      <UnLoggedNav />
+                  }
+                  <FlashMessage position="top" statusBarHeight={10} />
+                </View>
+              </UserContext.Provider>
+            </ThemeContext.Provider>
           </NavigationContainer>
         </NavigationIndependentTree>
       </NotificationsProvider>

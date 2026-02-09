@@ -9,6 +9,7 @@ export const storyService = {
 };
 
 function getById(id: string) {
+    console.log("storyService.getById - id:", id);
     return fetchWrapper.get(`${baseUrl}/id/${id}`);
 }
 

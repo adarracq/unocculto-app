@@ -21,16 +21,18 @@ export default function ArcadeHeader({ currentStep, totalSteps, errors, elapsedT
     return (
         <View style={styles.header}>
             <View style={styles.badge}>
-                <BodyText text={`${currentStep} / ${totalSteps}`} color={Colors.white} size="XS" />
+                <BodyText text={currentStep.toString()} color={Colors.main} isBold />
+                <BodyText text={`/ ${totalSteps}`} color={Colors.white} size="S" />
             </View>
 
             <View style={styles.timerBadge}>
-                <Ionicons name="time-outline" size={16} color={Colors.main} />
+                <Ionicons name="time-outline" size={20} color={Colors.main} />
                 <BodyText text={formatTime(elapsedTime)} color={Colors.main} size="S" style={{ fontWeight: 'bold' }} />
             </View>
 
             <View style={[styles.badge, { borderColor: errors > 0 ? Colors.red : 'rgba(255,255,255,0.2)' }]}>
-                <BodyText text={`${errors} Erreur${errors > 1 ? 's' : ''}`} color={errors > 0 ? Colors.red : Colors.disabled} size="XS" />
+                <Ionicons name="close-circle-outline" size={20} color={errors > 0 ? Colors.red : 'rgba(255,255,255,0.2)'} />
+                <BodyText text={errors.toString()} color={errors > 0 ? Colors.red : Colors.disabled} size="XS" />
             </View>
         </View>
     );
@@ -46,10 +48,14 @@ const styles = StyleSheet.create({
         zIndex: 10,
     },
     badge: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
         paddingHorizontal: 12,
         paddingVertical: 6,
         borderRadius: 20,
         borderWidth: 1,
+        gap: 5,
         backgroundColor: 'rgba(0,0,0,0.4)',
         borderColor: 'rgba(255,255,255,0.2)'
     },

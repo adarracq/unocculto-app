@@ -3,6 +3,7 @@ import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import React, { useContext } from 'react';
 import TabBarElement from '../components/molecules/TabBarElement';
 import { useNotifications } from '../contexts/NotificationContext';
+import { ThemeContext } from '../contexts/ThemeContext';
 import { UserContext } from '../contexts/UserContext';
 import ArenaNav from './ArenaNav';
 import HomeNav from './HomeNav';
@@ -20,6 +21,7 @@ const Tab = createBottomTabNavigator<BottomNavParams>();
 
 export default function BottomTabNav() {
     const [user, setUser] = useContext(UserContext);
+    const [themeContext, setThemeContext] = useContext(ThemeContext);
     const { notifications, resetNotification } = useNotifications();
 
     const noTabBarScreens = [
@@ -75,6 +77,7 @@ export default function BottomTabNav() {
                             focused={focused}
                             name='compass'
                             nbNotifications={notifications.courses}
+                            mainColor={themeContext.mainColor}
                         />
                     ),
                 }}
@@ -89,6 +92,7 @@ export default function BottomTabNav() {
                             focused={focused}
                             name='student'
                             nbNotifications={notifications.revisions}
+                            mainColor={themeContext.mainColor}
                         />
                     ),
                 }}
@@ -103,6 +107,7 @@ export default function BottomTabNav() {
                             focused={focused}
                             name='duel'
                             nbNotifications={notifications.quiz}
+                            mainColor={themeContext.mainColor}
                         />
                     ),
                 }}
@@ -117,6 +122,7 @@ export default function BottomTabNav() {
                             focused={focused}
                             name='museum'
                             nbNotifications={notifications.museum}
+                            mainColor={themeContext.mainColor}
                         />
                     ),
                 }}

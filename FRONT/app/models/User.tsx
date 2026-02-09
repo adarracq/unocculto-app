@@ -71,4 +71,8 @@ export default class User {
     getUnlockedFlags(): string[] {
         return Object.keys(this.passport).filter(code => this.passport[code].hasFlag);
     }
+
+    hasCompletedGame(regionCode: string, modeId: string, level: number): boolean {
+        return !!this.progression[regionCode]?.[modeId]?.levels[level]?.completed;
+    }
 }

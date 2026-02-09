@@ -22,10 +22,12 @@ declare module '@maplibre/maplibre-react-native' {
 
     export interface CameraProps {
         ref?: React.Ref<CameraRef>;
+        bounds?: any;
         defaultSettings?: {
             centerCoordinate?: [number, number];
             zoomLevel?: number;
         };
+        animationDuration?: number;
     }
 
     export interface ShapeSourceProps {
@@ -33,6 +35,7 @@ declare module '@maplibre/maplibre-react-native' {
         shape: any;
         onPress?: (e: any) => void;
         children?: React.ReactNode;
+        hitbox?: { width: number; height: number };
     }
 
     export interface FillLayerProps {

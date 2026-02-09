@@ -5,6 +5,16 @@ export const ZONES = [
     { id: 'AME', name: 'AMÉRIQUES' },
     { id: 'OCE', name: 'OCÉANIE' },
 ];
+export const MICRO_STATES = ['AD', 'MC', 'LI', 'MT', 'SM', 'VA', 'SG', 'BH', 'KM', 'LC', 'VC', 'GD', 'BB', 'AG', 'KN', 'DM'];
+export const MICRO_ISLANDS_STATES = ['CV', 'ST', 'SC', 'MV', 'KI', 'NR', 'TV', 'MH', 'PW', 'FM'];
+export const REGION_CAMERAS: Record<string, { center: [number, number]; zoom: number }> = {
+    AFR: { center: [20, 0], zoom: 2.5 },      // Afrique
+    EUR: { center: [15, 50], zoom: 3 },       // Europe
+    ASI: { center: [100, 30], zoom: 2 },      // Asie
+    AME: { center: [-75, 0], zoom: 2 },       // Amériques (Vue large)
+    OCE: { center: [140, -25], zoom: 1.5 },   // Océanie
+    WLD: { center: [0, 20], zoom: 1 }         // Monde
+};
 
 export interface Country {
     code: string;

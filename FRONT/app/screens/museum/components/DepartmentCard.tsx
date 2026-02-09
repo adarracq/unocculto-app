@@ -32,7 +32,7 @@ export default function DepartmentCard({ title, icon, color, ownedCount, totalCo
                     <Title1 title={title} isLeft style={{ fontSize: 16 }} />
                     <BodyText text={`${ownedCount} / ${totalCount} DÉCOUVERTES`} size="S" color={Colors.lightGrey} />
                 </View>
-                <Image source={functions.getIconSource('arrow-right')} style={{ width: 16, height: 16, tintColor: Colors.darkGrey }} />
+                <Image source={functions.getIconSource('arrow-right')} style={{ width: 16, height: 16, tintColor: Colors.lightGrey }} />
             </View>
 
             {/* Barre de progression */}

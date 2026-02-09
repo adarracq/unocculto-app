@@ -6,23 +6,24 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 interface Props {
     mode: 'CARGO' | 'LOGBOOK';
     setMode: (mode: 'CARGO' | 'LOGBOOK') => void;
+    mainColor: string;
 }
 
-export default function MuseumHeader({ mode, setMode }: Props) {
+export default function MuseumHeader({ mode, setMode, mainColor }: Props) {
     return (
         <View style={styles.header}>
             <View style={styles.switchContainer}>
                 <TouchableOpacity
-                    style={[styles.switchBtn, mode === 'CARGO' && styles.switchBtnActive]}
+                    style={[styles.switchBtn, mode === 'CARGO' && { backgroundColor: Colors.white }]}
                     onPress={() => setMode('CARGO')}
                 >
-                    <BodyText text="CARGO" isBold color={mode === 'CARGO' ? Colors.white : Colors.lightGrey} />
+                    <BodyText text="CARGO" isBold color={mode === 'CARGO' ? mainColor : Colors.lightGrey} />
                 </TouchableOpacity>
                 <TouchableOpacity
-                    style={[styles.switchBtn, mode === 'LOGBOOK' && styles.switchBtnActive]}
+                    style={[styles.switchBtn, mode === 'LOGBOOK' && { backgroundColor: Colors.white }]}
                     onPress={() => setMode('LOGBOOK')}
                 >
-                    <BodyText text="LOGBOOK" isBold color={mode === 'LOGBOOK' ? Colors.white : Colors.lightGrey} />
+                    <BodyText text="LOGBOOK" isBold color={mode === 'LOGBOOK' ? mainColor : Colors.lightGrey} />
                 </TouchableOpacity>
             </View>
         </View>
@@ -43,8 +44,5 @@ const styles = StyleSheet.create({
     switchBtn: {
         paddingVertical: 8, paddingHorizontal: 24,
         borderRadius: 20,
-    },
-    switchBtnActive: {
-        backgroundColor: Colors.main,
     },
 });

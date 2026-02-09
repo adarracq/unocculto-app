@@ -1,6 +1,5 @@
 import BodyText from '@/app/components/atoms/BodyText';
 import CustomModal from '@/app/components/molecules/CustomModal'; //
-import LoadingScreen from '@/app/components/molecules/LoadingScreen';
 import StoryProgressBar from '@/app/components/molecules/StoryProgressBar';
 import Colors from '@/app/constants/Colors';
 import { ALL_COUNTRIES } from '@/app/models/Countries';
@@ -93,13 +92,11 @@ export default function ReviewSessionScreen({ route, navigation }: any) {
         }
     };
 
-    if (loading && !modalConfig.visible) return <LoadingScreen />;
 
     const currentStep = steps[currentIndex];
     const currentMemory = memories[currentIndex];
     const currentCountry = ALL_COUNTRIES.find(c => c.code === currentMemory?.countryCode); // Ajout du ? de sécurité
 
-    console.log("Review Session - Current Step:", currentStep);
     // --- 3. RENDU DU JEU ---
     const renderGame = () => {
         if (!currentCountry) return null;
@@ -124,38 +121,43 @@ export default function ReviewSessionScreen({ route, navigation }: any) {
 
     return (
         <LinearGradient colors={[Colors.darkGrey, Colors.black]} style={styles.container}>
-            {/* Barre de progression simple en haut */}
-            <View style={styles.progressContainer}>
-                <StoryProgressBar
-                    steps={steps}
-                    currentIndex={currentIndex}
-                    animValue={new Animated.Value(1)}
-                />
-            </View>
+            {(loading && !modalConfig.visible) ?
+                <></>
+                :
+                <>
+                    {/* Barre de progression simple en haut */}
+                    <View style={styles.progressContainer}>
+                        <StoryProgressBar
+                            steps={steps}
+                            currentIndex={currentIndex}
+                            animValue={new Animated.Value(1)}
+                        />
+                    </View>
 
-            <View style={styles.gameContainer}>
-                {renderGame()}
-            </View>
+                    <View style={styles.gameContainer}>
+                        {renderGame()}
+                    </View>
 
-            {/* --- NOUVEAU : Intégration de la Modale --- */}
-            <CustomModal
-                visible={modalConfig.visible}
-                title={modalConfig.title}
-                onConfirm={() => {
-                    setModalConfig({ ...modalConfig, visible: false }); // Fermer d'abord
-                    modalConfig.onConfirm(); // Exécuter l'action (goBack)
-                }}
-                confirmText="Continuer"
-                variant={modalConfig.variant}
-            >
-                <BodyText text={modalConfig.message} color={Colors.white} />
-            </CustomModal>
+                    {/* --- NOUVEAU : Intégration de la Modale --- */}
+                    <CustomModal
+                        visible={modalConfig.visible}
+                        title={modalConfig.title}
+                        onConfirm={() => {
+                            setModalConfig({ ...modalConfig, visible: false }); // Fermer d'abord
+                            modalConfig.onConfirm(); // Exécuter l'action (goBack)
+                        }}
+                        confirmText="Continuer"
+                        variant={modalConfig.variant}
+                    >
+                        <BodyText text={modalConfig.message} color={Colors.white} />
+                    </CustomModal>
+                </>}
         </LinearGradient>
     );
 }
 
 const styles = StyleSheet.create({
-    container: { flex: 1, paddingTop: 40, paddingHorizontal: 20 },
+    container: { flex: 1, paddingVertical: 40, paddingHorizontal: 20 },
     progressContainer: {
         paddingHorizontal: 10,
         marginBottom: 10,

@@ -38,7 +38,7 @@ function generateNumericGame(data: NumericAnecdote, mode: 'story' | 'review'): S
     // 70% de chance d'Estimation, 30% de chance de Quiz
     const isEstimation = Math.random() > 0.3;
 
-    let unit = data.unit.toLowerCase().includes('année') ? "" : data.unit;
+    let unit = data.unit.toLowerCase().includes('an') ? "" : data.unit;
 
 
     if (isEstimation) {
@@ -49,7 +49,7 @@ function generateNumericGame(data: NumericAnecdote, mode: 'story' | 'review'): S
         let step = val > 1000 ? 50 : 1;
         let tolerance = val * 0.1;
         // hardcode if currency is année step de 1 an et min max de -300/+300 ans
-        if (data.unit.toLowerCase().includes('année')) {
+        if (data.unit.toLowerCase().includes('an')) {
             step = 1;
             min = val - 50;
             max = val + 50;
@@ -74,7 +74,7 @@ function generateNumericGame(data: NumericAnecdote, mode: 'story' | 'review'): S
         let wrong2 = Math.round(data.numericValue * (Math.random() > 0.5 ? 0.7 : 1.2));
         let wrong3 = Math.round(data.numericValue * (Math.random() > 0.5 ? 0.6 : 1.3));
 
-        if (data.unit.toLowerCase().includes('année')) {// -50 à +50 ans
+        if (data.unit.toLowerCase().includes('an')) {// -50 à +50 ans
             wrong1 = data.numericValue + Math.floor(Math.random() * 100 - 50);
             wrong2 = data.numericValue + Math.floor(Math.random() * 100 - 50);
             wrong3 = data.numericValue + Math.floor(Math.random() * 100 - 50);

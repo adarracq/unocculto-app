@@ -1,5 +1,6 @@
 // app/screens/museum/components/CargoView.tsx
 
+import BackArrow from '@/app/components/atoms/BackArrow';
 import BodyText from '@/app/components/atoms/BodyText';
 import Title1 from '@/app/components/atoms/Title1';
 import CustomModal from '@/app/components/molecules/CustomModal';
@@ -86,9 +87,8 @@ export default function CargoView({ inventory }: Props) {
     return (
         <View style={{ flex: 1, minHeight: 500 }}>
             <View style={styles.sectionHeader}>
-                <TouchableOpacity onPress={() => setActiveDepartmentId(null)} style={styles.backBtn}>
-                    <Image source={functions.getIconSource('arrow-left')} style={{ width: 20, height: 20, tintColor: Colors.white }} />
-                </TouchableOpacity>
+                <BackArrow onPress={() => setActiveDepartmentId(null)} />
+                <View></View>
                 <Title1 title={activeDepartment?.title || ''} style={{ fontSize: 16 }} />
             </View>
 
@@ -208,8 +208,14 @@ const getRarityColorModal = (rarity: string) => {
 };
 
 const styles = StyleSheet.create({
-    sectionHeader: { flexDirection: 'row', alignItems: 'center', gap: 15, marginBottom: 15 },
-    backBtn: { padding: 8, backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 20 },
+    sectionHeader: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: '100%',
+        marginBottom: 30,
+        height: 40,
+    },
     filterScroll: { gap: 8, alignItems: 'center' },
     chip: {
         paddingHorizontal: 14, paddingVertical: 6,

@@ -1,4 +1,4 @@
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import React from 'react';
 import { Country } from '../models/Countries';
 import { Story } from '../models/Story';
@@ -29,7 +29,11 @@ export default function UnLoggedNav() {
 
 
     return (
-        <Stack.Navigator initialRouteName={"Welcome"}>
+        <Stack.Navigator initialRouteName={"Welcome"}
+            screenOptions={{
+                ...TransitionPresets.SlideFromRightIOS,
+            }}
+        >
             <Stack.Screen name="Welcome" component={WelcomeScreen} options={{ headerShown: false }} />
             <Stack.Screen name="OnBoarding" component={OnBoardingScreen} options={{ headerShown: false }} />
             <Stack.Screen name="SelectStartCountry" component={SelectStartCountryScreen} options={{ headerShown: false }} />

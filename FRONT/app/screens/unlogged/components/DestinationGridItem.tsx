@@ -14,7 +14,6 @@ interface Props {
 export default function DestinationGridItem({ story, isSelected }: Props) {
     // On retrouve le drapeau via le code pays
     const countryInfo = ALL_COUNTRIES.find(c => c.code === story.countryCode);
-    const flag = countryInfo?.flag || '✈️';
 
     return (
         <View style={styles.container}>
@@ -44,22 +43,15 @@ export default function DestinationGridItem({ story, isSelected }: Props) {
                 />
                 <BodyText
                     text={story.title}
+                    isBold={isSelected}
                     style={{
-                        color: isSelected ? Colors.main : 'rgba(255,255,255,0.5)',
+                        color: isSelected ? Colors.white : 'rgba(255,255,255,0.5)',
                         fontSize: 10,
                         marginTop: 2
                     }}
 
                 />
             </View>
-
-            {/* Badge Rareté (Optionnel, petit point de couleur) */}
-            {story.rarity !== 'common' && (
-                <View style={[
-                    styles.rarityBadge,
-                    { backgroundColor: story.rarity === 'legendary' ? Colors.gold : '#A020F0' }
-                ]} />
-            )}
         </View>
     );
 }

@@ -8,9 +8,10 @@ type TabBarElementProps = {
     focused: boolean;
     name: string;
     nbNotifications?: number;
+    mainColor?: string;
 }
 
-export default function TabBarElement({ focused, name, nbNotifications }: TabBarElementProps) {
+export default function TabBarElement({ focused, name, nbNotifications, mainColor }: TabBarElementProps) {
     const animValue = useRef(new Animated.Value(focused ? 1 : 0)).current;
 
     useEffect(() => {
@@ -35,6 +36,8 @@ export default function TabBarElement({ focused, name, nbNotifications }: TabBar
         outputRange: [1, 1.1]
     });
 
+    const color = mainColor || Colors.main;
+
     return (
         <View style={styles.container}>
 
@@ -45,7 +48,7 @@ export default function TabBarElement({ focused, name, nbNotifications }: TabBar
                     width: 28, // Taille raisonnable
                     height: 28,
                     // Si actif: Orange (Main), Sinon: Gris clair (pas blanc pur pour contraste)
-                    tintColor: focused ? Colors.main : '#888',
+                    tintColor: focused ? color : '#888',
                     transform: [{ translateY }, { scale }]
                 }}
                 resizeMode="contain"
@@ -56,7 +59,9 @@ export default function TabBarElement({ focused, name, nbNotifications }: TabBar
                 styles.dot,
                 {
                     opacity: animValue, // Invisible si pas focus
-                    transform: [{ scale: animValue }] // Grossit en apparaissant
+                    transform: [{ scale: animValue }], // Grossit en apparaissant
+                    backgroundColor: color,
+                    shadowColor: color,
                 }
             ]} />
 
@@ -87,9 +92,7 @@ const styles = StyleSheet.create({
         width: 5,
         height: 5,
         borderRadius: 2.5,
-        backgroundColor: Colors.main,
         // Petit effet néon
-        shadowColor: Colors.main,
         shadowOffset: { width: 0, height: 0 },
         shadowOpacity: 0.8,
         shadowRadius: 4,
