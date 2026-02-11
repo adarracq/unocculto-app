@@ -3,8 +3,9 @@ import MyButton from '@/app/components/atoms/MyButton';
 import Title0 from '@/app/components/atoms/Title0';
 import Colors from '@/app/constants/Colors';
 import { QuizStep } from '@/app/models/Story';
+import { functions } from '@/app/utils/Functions';
 import React, { useEffect, useState } from 'react';
-import { Image, StyleSheet, TouchableOpacity, Vibration, View } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 interface Props {
     step: QuizStep;
@@ -29,12 +30,12 @@ export default function QuizGameView({ step, onValid }: Props) {
         if (index === step.correctAnswerIndex) {
             // SUCCÈS : On fige l'état, pas de transition auto
             setIsSuccess(true);
-            Vibration.vibrate(50);
+            functions.vibrate('success');
             // On a retiré le setTimeout(() => onValid(), 1000);
         } else {
             // ERREUR : On laisse le rouge 1s puis on reset
             setIsSuccess(false);
-            Vibration.vibrate([0, 100, 50, 100]);
+            functions.vibrate('error');
             setTimeout(() => {
                 setSelectedIndex(null);
                 setIsSuccess(null);
@@ -116,7 +117,16 @@ export default function QuizGameView({ step, onValid }: Props) {
             {/* Header Question */}
             <View style={{ gap: 20 }}>
                 <Title0 title={step.title} color={Colors.white} isLeft />
-                <BodyText text={step.content} size='XL' color={Colors.lightGrey} style={{ marginBottom: 20 }} />
+                <BodyText text={step.content} size='XL' color={Colors.lightGrey} />
+                {
+                    step.imageUri && (
+                        <Image
+                            source={{ uri: step.imageUri }}
+                            style={{ width: '100%', height: 200, borderRadius: 16, marginBottom: 20 }}
+                            resizeMode="cover"
+                        />
+                    )
+                }
             </View>
 
             {/* Container des Choix */}

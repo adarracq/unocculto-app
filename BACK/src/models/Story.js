@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 // Pas besoin d'un modèle à part entière, c'est une sous-structure.
 const swipeCardSchema = new mongoose.Schema({
     id: { type: String, required: true },
-    imageUrl: { type: String, required: true }, // Le drapeau
+    imageUri: { type: String, required: true }, // Le drapeau
     text: { type: String, default: '' },        // Nom du pays (optionnel)
     isCorrect: { type: Boolean, required: true }
 }, { _id: false }); // On évite de générer un _id mongo pour chaque carte, c'est inutile ici
@@ -40,8 +40,6 @@ const anecdoteSchema = new mongoose.Schema({
     correctAnswer: { type: String },
     distractors: [{ type: String }],
 
-    // Image contextuelle (optionnelle)
-    imageUri: { type: String }
 }, { _id: false });
 
 const storyStepSchema = mongoose.Schema({
@@ -56,7 +54,6 @@ const storyStepSchema = mongoose.Schema({
     title: { type: String, required: true },
     content: { type: String, required: true },
     duration: { type: Number, required: false }, // Pour l'autoplay
-    imageUrl: { type: String, required: false }, // Image de fond/illustration générique
 
     // --- SPÉCIFIQUE REWARD ---
     rewardImage: { type: String, required: false },
@@ -78,7 +75,6 @@ const storyStepSchema = mongoose.Schema({
     currency: { type: String, required: false },    // €, $, ¥...
     min: { type: Number, required: false },
     max: { type: Number, required: false },
-    imageUri: { type: String, required: false },    // L'objet à estimer (distinct de imageUrl qui est le fond)
     tolerance: { type: Number, required: false },   // Marge d'erreur
     step: { type: Number, required: false },        // Pas du slider (ex: 10, 50)
 
@@ -109,7 +105,10 @@ const storySchema = mongoose.Schema({
 
             // Si type === 'dialogue'
             content: { type: String },
-            characterId: { type: String }, // Qui parle ?
+            characterId: { type: String },
+            // Image contextuelle (optionnelle)
+            imageUri: { type: String },
+            imageKeywords: { type: [String] },
 
             // Si type === 'anecdote'
             data: anecdoteSchema

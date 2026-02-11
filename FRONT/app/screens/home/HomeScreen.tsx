@@ -2,6 +2,7 @@ import BodyText from '@/app/components/atoms/BodyText';
 import MyButton from '@/app/components/atoms/MyButton';
 import Title0 from '@/app/components/atoms/Title0';
 import CustomModal from '@/app/components/molecules/CustomModal';
+import DayStreakModal from '@/app/components/organisms/DayStreakModal';
 import FlightLoader from '@/app/components/organisms/FlightLoader';
 import SubscriptionModal from '@/app/components/organisms/SubscriptionModal';
 import Colors from '@/app/constants/Colors';
@@ -12,11 +13,11 @@ import { ALL_COUNTRIES, getFlagImage } from '@/app/models/Countries';
 import { HomeNavParams } from '@/app/navigations/HomeNav';
 import { storyService } from '@/app/services/story.service';
 import { userService } from '@/app/services/user.service';
+import { functions } from '@/app/utils/Functions';
 import { useIsFocused } from '@react-navigation/native';
-import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
-import React, { useContext, useEffect, useState } from 'react';
-import { ActivityIndicator, Image, ScrollView, StyleSheet, Vibration, View } from 'react-native';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { ActivityIndicator, Image, ScrollView, StyleSheet, View } from 'react-native';
 import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack/types';
 import BoardingPass from './components/BoardingPass';
 import HomeSkeleton from './components/HomeSkeleton'; // Assure-toi d'avoir créé ce fichier ou retire l'import si tu ne l'as pas encore
@@ -31,6 +32,8 @@ export default function HomeScreen({ navigation }: Props) {
     const [isTakingOff, setIsTakingOff] = useState(false);
     const [showBoardingModal, setShowBoardingModal] = useState(false);
     const [showPremiumModal, setShowPremiumModal] = useState(false);
+    const [premiumReason, setPremiumReason] = useState<'fuel' | 'story' | 'none'>('none');
+    const [showStreakModal, setShowStreakModal] = useState(false);
 
     // --- API 1: USER DATA ---
     const userApi = useApi(
@@ -52,6 +55,7 @@ export default function HomeScreen({ navigation }: Props) {
     // --- 0. SOURCE DE VÉRITÉ ---
     // On utilise les données fraîches si dispos, sinon le cache du contexte
     const userData = userApi.data || userContext;
+    const prevStreak = useRef<number>(userData?.dayStreak || 0);
 
     // --- EFFETS ---
     useEffect(() => {
@@ -97,13 +101,13 @@ export default function HomeScreen({ navigation }: Props) {
     const handleBoardingPress = () => {
         if (!userData || !storyApi.data) return;
 
-        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+        functions.vibrate('small-success');
         setShowBoardingModal(true);
     };
 
     const confirmLaunch = () => {
         setShowBoardingModal(false);
-        Vibration.vibrate([0, 50, 100, 50]);
+        functions.vibrate('success');
         setIsTakingOff(true);
     };
 
@@ -163,6 +167,22 @@ export default function HomeScreen({ navigation }: Props) {
         return nextMidnight;
     };
 
+    // --- DETECTION DU CHANGEMENT DE STREAK ---
+    useEffect(() => {
+        // On attend d'avoir des données API fraîches ou consolidées
+        if (userData) {
+            const currentStreak = userData.dayStreak;
+
+            // On vérifie que le streak a AUGMENTÉ par rapport à la dernière valeur connue en mémoire
+            if (currentStreak > 0 && currentStreak > prevStreak.current) {
+                setShowStreakModal(true);
+            }
+
+            // On met à jour la ref pour la prochaine comparaison
+            prevStreak.current = currentStreak;
+        }
+    }, [userData?.dayStreak]);
+
     // --- RENDER ---
 
     // 1. Si aucune donnée nulle part => Squelette complet
@@ -184,6 +204,15 @@ export default function HomeScreen({ navigation }: Props) {
                 <ProfileHeader
                     user={userData}
                     onChangeFlag={handleChangeFlag}
+                    onClickStreak={() => {
+                        functions.vibrate('small-warning');
+                        setShowStreakModal(true)
+                    }}
+                    onClickFuel={() => {
+                        functions.vibrate('small-warning');
+                        setPremiumReason('none');
+                        setShowPremiumModal(true);
+                    }}
                 />
 
                 <View style={styles.content}>
@@ -197,7 +226,10 @@ export default function HomeScreen({ navigation }: Props) {
                             originCity={lastTrip?.city}
                             originCountryCode={lastTrip?.countryCode}
                             onPress={handleBoardingPress}
-                            onPremiumPress={() => setShowPremiumModal(true)}
+                            onPremiumPress={() => {
+                                setPremiumReason('story');
+                                setShowPremiumModal(true);
+                            }}
                             lockedUntil={lockedUntil}
                         />
                     ) : (
@@ -205,7 +237,7 @@ export default function HomeScreen({ navigation }: Props) {
                         // On évite d'afficher le bouton "Choisir" si on sait qu'une story arrive
                         (storyApi.loading) ? (
                             <View style={{ height: 200, justifyContent: 'center', alignItems: 'center' }}>
-                                <ActivityIndicator size="large" color={Colors.main} />
+                                <ActivityIndicator size="large" color={themeContext.mainColor} />
                                 <BodyText text="Récupération du billet..." style={{ marginTop: 10, color: Colors.lightGrey, fontSize: 10 }} />
                             </View>
                         ) : (
@@ -235,15 +267,15 @@ export default function HomeScreen({ navigation }: Props) {
                 >
                     <View style={{ gap: 8 }}>
                         <BodyText text="Destination :" style={{ color: Colors.lightGrey }} />
-                        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 20, marginLeft: 20 }}>
-                            <Title0
-                                title={destinationStory.city.toUpperCase()}
-                                color={Colors.white}
-                            />
+                        <View style={{ flexDirection: 'column', alignItems: 'center', gap: 10, marginBottom: 20, marginLeft: 20 }}>
                             <Image
                                 source={getFlagImage(destinationCountry?.code || '')}
                                 style={{ width: 40, height: 25, borderRadius: 4, marginTop: 6 }}
                                 resizeMode="cover"
+                            />
+                            <Title0
+                                title={destinationStory.city.toUpperCase()}
+                                color={Colors.white}
                             />
                         </View>
                     </View>
@@ -262,7 +294,12 @@ export default function HomeScreen({ navigation }: Props) {
             <SubscriptionModal
                 visible={showPremiumModal}
                 onClose={() => setShowPremiumModal(false)}
-                reason='story'
+                reason={premiumReason}
+            />
+            <DayStreakModal
+                visible={showStreakModal}
+                streak={userData.dayStreak}
+                onClose={() => setShowStreakModal(false)}
             />
         </LinearGradient>
     );

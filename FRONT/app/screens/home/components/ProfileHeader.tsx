@@ -9,13 +9,15 @@ import User from '@/app/models/User';
 import { functions } from '@/app/utils/Functions';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useContext, useState } from 'react';
-import { Dimensions, Image, StyleSheet, View } from 'react-native';
+import { Dimensions, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import DropDownFlag from './DropDownFlag';
 
 type Props = {
     user: User;
     onChangeFlag: (code: string) => void;
     hidePassport?: boolean;
+    onClickStreak?: () => void;
+    onClickFuel?: () => void;
 }
 
 export default function ProfileHeader(props: Props) {
@@ -42,13 +44,14 @@ export default function ProfileHeader(props: Props) {
             {/* --- LIGNE DU HAUT : RESSOURCES --- */}
             < View style={styles.statsRow} >
                 {/* STREAK */}
-                < View style={styles.statPill} >
+                < TouchableOpacity style={styles.statPill} onPress={props.onClickStreak}>
                     <Image source={functions.getIconSource('fire')} style={styles.iconSmall} />
-                    <BodyText text={props.user.dayStreak.toString()} isBold style={{ color: Colors.main }} />
-                </View >
+                    <BodyText text={props.user.dayStreak.toString()} isBold style={{ color: Colors.gold }} />
+                </TouchableOpacity >
 
                 {/* FUEL (Affiché en rouge si vide, bleu/blanc sinon) */}
-                < View style={[styles.statPill, { borderColor: props.user.fuel === 0 ? Colors.red : 'rgba(255,255,255,0.05)' }]} >
+                < TouchableOpacity onPress={props.onClickFuel}
+                    style={[styles.statPill, { borderColor: props.user.fuel === 0 ? Colors.red : 'rgba(255,255,255,0.05)' }]} >
                     <Image
                         source={functions.getIconSource('fuel')}
                         style={[styles.iconSmall, { tintColor: props.user.fuel === 0 ? Colors.red : undefined }]}
@@ -56,9 +59,9 @@ export default function ProfileHeader(props: Props) {
                     <BodyText
                         text={props.user.fuel.toString() || '0'}
                         isBold
-                        style={{ color: props.user.fuel > 0 ? '#566069' : Colors.red }}
+                        style={{ color: props.user.fuel > 0 ? Colors.fuel : Colors.red }}
                     />
-                </View >
+                </TouchableOpacity >
             </View >
 
             {/* --- CARTE PASSEPORT --- */}

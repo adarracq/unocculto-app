@@ -7,8 +7,11 @@ import { EstimationStep, OrderStep, QuizStep, StoryStep, TrueFalseStep } from '@
  * @param anecdote La donnée brute
  * @param mode 'story' (avec dialogue d'intro) ou 'review' (direct au but)
  */
-export const generateGameFromAnecdote = (anecdote: Anecdote, mode: 'story' | 'review' = 'story'): StoryStep => {
+export const generateGameFromAnecdote = (anecdote: Anecdote, mode: 'story' | 'review' = 'story', imageUri?: string): StoryStep => {
 
+    if (imageUri) {
+        anecdote.imageUri = imageUri;
+    }
     // --- TYPE NUMERIQUE (Hauteur, Date, Population...) ---
     if (anecdote.type === 'numeric') {
         return generateNumericGame(anecdote, mode);
@@ -65,7 +68,7 @@ function generateNumericGame(data: NumericAnecdote, mode: 'story' | 'review'): S
             targetValue: val,
             currency: unit,
             min, max, step,
-            imageUri: data.imageUri || '',
+            imageUri: data.imageUri,
             tolerance: tolerance
         } as EstimationStep;
     } else {
@@ -92,7 +95,8 @@ function generateNumericGame(data: NumericAnecdote, mode: 'story' | 'review'): S
             answerType: 'text',
             choices: choices,
             correctAnswerIndex: choices.indexOf(`${data.numericValue} ${unit}`),
-            explanation: data.lesson
+            explanation: data.lesson,
+            imageUri: data.imageUri,
         } as QuizStep;
     }
 }
@@ -116,7 +120,7 @@ function generateOrderGame(data: OrderAnecdote): OrderStep {
         type: 'order',
         title: "Remettre en ordre",
         content: data.task,
-        orderItems: data.items
+        orderItems: data.items,
     };
 }
 
@@ -131,6 +135,7 @@ function generateChoiceGame(data: ChoiceAnecdote): QuizStep {
         answerType: 'text',
         choices: allChoices,
         correctAnswerIndex: allChoices.indexOf(data.correctAnswer),
-        explanation: data.lesson
+        explanation: data.lesson,
+        imageUri: data.imageUri,
     };
 }

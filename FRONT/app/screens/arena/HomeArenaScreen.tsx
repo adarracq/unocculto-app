@@ -6,8 +6,8 @@ import { useApi } from '@/app/hooks/useApi';
 import { gameResultService } from '@/app/services/gameResult';
 import { userService } from '@/app/services/user.service';
 import { getDailyMission } from '@/app/utils/DailyGameManager';
+import { functions } from '@/app/utils/Functions';
 import { useIsFocused } from '@react-navigation/native';
-import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useContext, useEffect } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
@@ -55,7 +55,7 @@ export default function HomeArenaScreen({ navigation }: any) {
 
     // 2. Handler Intelligent
     const handleDailyMission = () => {
-        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+        functions.vibrate('small-success');
         // On navigue directement vers l'écran de Niveaux de la région cible
         // En précisant qu'on vient du Daily (pour appliquer le bonus X2 potentiellement)
         navigation.navigate('RegionLevels', {

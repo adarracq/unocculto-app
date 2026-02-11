@@ -46,7 +46,7 @@ export const generateGenericSteps = (country: Country): StoryStep[] => {
             const isTarget = c.code === correctCountry.code;
             return {
                 id: c.code,
-                imageUrl: Image.resolveAssetSource(getFlagImage(c.code)).uri,
+                imageUri: Image.resolveAssetSource(getFlagImage(c.code)).uri,
                 text: "???",
                 isCorrect: isTarget,
                 isText: false
@@ -156,6 +156,6 @@ export const generateRewardStep = (collectible: Collectible): RewardStep => {
         type: 'reward',
         title: collectible.name + ' débloqué' || "Récompense Débloquée",
         content: collectible.description || "Vous avez obtenu une nouvelle récompense.",
-        rewardImage: collectible.imageUrl
+        rewardImage: collectible.imageUri
     };
 }

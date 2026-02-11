@@ -9,12 +9,12 @@ import { ScrollView, StyleSheet } from 'react-native';
 import GlowTopGradient from '@/app/components/molecules/GlowTopGradient';
 import { ThemeContext } from '@/app/contexts/ThemeContext';
 import { useIsFocused } from '@react-navigation/native';
-import CargoView from './components/CargoView';
 import LogbookView from './components/LogbookView';
 import MuseumHeader from './components/MuseumHeader';
+import MuseumView from './components/MuseumView';
 
 export default function HomeMuseumScreen({ navigation }: any) {
-    const [mode, setMode] = useState<'CARGO' | 'LOGBOOK'>('LOGBOOK');
+    const [mode, setMode] = useState<'MUSÉE' | 'LOGBOOK'>('MUSÉE');
     const [themeContext, setThemeContext] = useContext(ThemeContext);
     const isFocused = useIsFocused();
 
@@ -24,13 +24,10 @@ export default function HomeMuseumScreen({ navigation }: any) {
 
     useEffect(() => {
         if (isFocused) {
-            console.log("HomeMuseumScreen is focused - fetching inventory and logbook");
             inventoryApi.execute();
             logbookApi.execute();
         }
     }, [isFocused]); // Re-fetch à chaque fois que l'écran est focus
-
-    const isLoading = inventoryApi.loading || logbookApi.loading;
 
     return (
         <LinearGradient colors={[Colors.darkGrey, Colors.black]} style={styles.container}>
@@ -40,8 +37,8 @@ export default function HomeMuseumScreen({ navigation }: any) {
             <MuseumHeader mode={mode} setMode={setMode} mainColor={themeContext.mainColor} />
 
             <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-                {mode === 'CARGO' && (
-                    <CargoView inventory={inventoryApi.data || []} />
+                {mode === 'MUSÉE' && (
+                    <MuseumView inventory={inventoryApi.data || []} />
                 )}
 
                 {mode === 'LOGBOOK' && (
@@ -55,5 +52,5 @@ export default function HomeMuseumScreen({ navigation }: any) {
 
 const styles = StyleSheet.create({
     container: { flex: 1, paddingTop: 50 },
-    scrollContent: { paddingBottom: 50, paddingHorizontal: 20 },
+    scrollContent: { paddingBottom: 50, },
 });

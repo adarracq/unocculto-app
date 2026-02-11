@@ -19,7 +19,7 @@ export type Rarity = 'common' | 'uncommon' | 'rare' | 'legendary';
 
 export interface SwipeCard {
     id: string;
-    imageUrl?: string;
+    imageUri?: string;
     text: string;
     isText: boolean;
     isCorrect: boolean;
@@ -38,6 +38,8 @@ export interface TimelineItem {
 
     // Si type = 'anecdote'
     data?: Anecdote;
+
+    imageUri?: string;
 }
 
 // --- BASE STEP (Champs communs pour l'affichage) ---
@@ -47,7 +49,7 @@ interface StoryStepBase {
     title: string;
     content: string;
     duration?: number;
-    imageUrl?: string;
+    imageUri?: string;
     nextStepId?: string;
 }
 

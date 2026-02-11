@@ -1,5 +1,5 @@
 import Colors from '@/app/constants/Colors';
-import * as Haptics from 'expo-haptics';
+import { functions } from '@/app/utils/Functions';
 import React from 'react';
 import { Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native';
 
@@ -59,7 +59,7 @@ export default function SelectionGrid<T>({
                         ]}
                         onPress={() => {
                             onSelect(item);
-                            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
+                            functions.vibrate('small-warning');
                         }}
                         activeOpacity={0.7}
                     >

@@ -2,10 +2,9 @@ import BodyText from '@/app/components/atoms/BodyText';
 import Title2 from '@/app/components/atoms/Title2';
 import Colors from '@/app/constants/Colors';
 import { functions } from '@/app/utils/Functions';
-import * as Haptics from 'expo-haptics'; // Import Haptics
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useRef } from 'react';
-import { Animated, Dimensions, Image, Pressable, StyleSheet, Vibration, View } from 'react-native';
+import { Animated, Dimensions, Image, Pressable, StyleSheet, View } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 
 const { width } = Dimensions.get('window');
@@ -27,9 +26,7 @@ export default function RegionBadge({ name, code, level, onPress, isLarge = fals
     const scaleValue = useRef(new Animated.Value(1)).current;
 
     const handlePressIn = () => {
-        isLocked ? Vibration.vibrate(10)
-            :
-            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+        isLocked ? functions.vibrate('small-error') : functions.vibrate('small-success');
 
         Animated.spring(scaleValue, { toValue: 0.96, useNativeDriver: true, speed: 20 }).start();
     };

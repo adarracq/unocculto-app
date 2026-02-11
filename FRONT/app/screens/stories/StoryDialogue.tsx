@@ -9,14 +9,21 @@ import { Image, StyleSheet, View } from "react-native";
 export default function StoryDialogue({ step }: { step: StoryStep }) {
     return (
         <View style={styles.centerContent}>
-            {step.imageUrl && (
+            {step.imageUri && (
                 <Image
-                    source={{ uri: step.imageUrl }}
+                    source={{
+                        uri: step.imageUri,
+                        headers: {
+                            'User-Agent': 'Unocculto/1.0 (contact@unocculto.com)'
+                        }
+                    }}
                     style={styles.storyImage}
                     resizeMode='contain'
+                    // load
+                    onLoad={() => console.log("Image loaded:", step.imageUri)}
                 />
             )}
-            <View style={{ gap: 20, marginTop: step.imageUrl ? 20 : 0 }}>
+            <View style={{ gap: 20, marginTop: step.imageUri ? 20 : 0 }}>
                 <Title0 title={step.title} isLeft color={Colors.white} />
                 <BodyText text={step.content} size='XL' style={{ color: Colors.white }} />
             </View>

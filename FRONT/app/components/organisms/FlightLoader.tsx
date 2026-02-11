@@ -127,11 +127,11 @@ export default function FlightLoader({
                 {/* --- 4. TÉLÉMÉTRIE (Cockpit Data) --- */}
                 <View style={styles.telemetryWrapper}>
                     <View style={styles.telemetryContainer}>
-                        <TelemetryItem label="ALTITUDE" value="32,000 FT" />
+                        <TelemetryItem label="ALTITUDE" value={Math.floor(10 + Math.random() * 10) + ",834 FT"} />
                         <View style={styles.separator} />
-                        <TelemetryItem label="VITESSE" value="850 KM/H" />
+                        <TelemetryItem label="VITESSE" value={Math.floor(300 + Math.random() * 200) + " KM/H"} />
                         <View style={styles.separator} />
-                        <TelemetryItem label="EXT" value="-52°C" />
+                        <TelemetryItem label="EXT" value={Math.floor(-50 + Math.random() * 30) + " °C"} />
                     </View>
                 </View>
 

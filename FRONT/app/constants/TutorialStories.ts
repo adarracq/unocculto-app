@@ -50,8 +50,8 @@ function setTutorialStory(id: string, storyId: string, countryCode: string, city
 }
 
 export const TUTORIAL_STORIES: Record<string, Story> = {
-    'AF': setTutorialStory('tutorial_af', 'AF00', 'AF', 'Kaboul'),
-    'ZA': setTutorialStory('tutorial_za', 'ZA00', 'ZA', 'Le Cap'),
-    'AL': setTutorialStory('tutorial_al', 'AL00', 'AL', 'Tirana'),
-    'DE': setTutorialStory('tutorial_de', 'DE00', 'DE', 'Berlin'),
+    'AF': setTutorialStory('tutorial_af', 'AF01', 'AF', 'Kaboul'),
+    'ZA': setTutorialStory('tutorial_za', 'ZA01', 'ZA', 'Le Cap'),
+    'AL': setTutorialStory('tutorial_al', 'AL01', 'AL', 'Tirana'),
+    'DE': setTutorialStory('tutorial_de', 'DE01', 'DE', 'Berlin'),
 };

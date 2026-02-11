@@ -19,12 +19,14 @@ export default function DepartmentCard({ title, icon, color, ownedCount, totalCo
     const progress = totalCount > 0 ? ownedCount / totalCount : 0;
 
     return (
-        <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.8}>
+        <TouchableOpacity style={[styles.card, {
+            borderColor: color + '30',
+        }]} onPress={onPress} activeOpacity={0.8}>
             {/* Header Carte */}
             <View style={styles.header}>
-                <View style={[styles.iconBox, { backgroundColor: color + '20' }]}>
+                <View style={[styles.iconBox, { backgroundColor: color + '30' }]}>
                     <Image
-                        source={functions.getIconSource(icon)}
+                        source={functions.getCategoriesource(icon)}
                         style={{ width: 24, height: 24, tintColor: color }}
                     />
                 </View>

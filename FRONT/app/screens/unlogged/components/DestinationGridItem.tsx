@@ -1,8 +1,11 @@
 import BodyText from '@/app/components/atoms/BodyText';
+import SmallText from '@/app/components/atoms/SmallText';
 import Title2 from '@/app/components/atoms/Title2';
 import Colors from '@/app/constants/Colors';
-import { ALL_COUNTRIES, getFlagImage } from '@/app/models/Countries';
+import { DEPARTMENTS } from '@/app/models/Collectible';
+import { getFlagImage } from '@/app/models/Countries';
 import { Story } from '@/app/models/Story'; // Ton interface Story
+import { functions } from '@/app/utils/Functions';
 import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 
@@ -12,9 +15,9 @@ interface Props {
 }
 
 export default function DestinationGridItem({ story, isSelected }: Props) {
-    // On retrouve le drapeau via le code pays
-    const countryInfo = ALL_COUNTRIES.find(c => c.code === story.countryCode);
-
+    const department = DEPARTMENTS.find(dep => dep.id === story.category) || { icon: 'question', color: Colors.lightGrey, title: 'Inconnu', subcategories: [] };
+    const subCategory = department.subcategories.find(sub => sub.id === story.subCategory) || { icon: 'question', title: 'Inconnu' };
+    console.log(story.subCategory);
     return (
         <View style={styles.container}>
             {/* Header : Drapeau + Code Pays */}
@@ -33,13 +36,25 @@ export default function DestinationGridItem({ story, isSelected }: Props) {
                     }}
                 />
             </View>
+            {isSelected &&
+                <View style={{ flexDirection: 'column', alignItems: 'center', gap: 6 }}>
+                    <Image
+                        source={functions.getCategoriesource(subCategory.icon)}
+                        style={{ width: 25, height: 25, borderRadius: 4, tintColor: Colors.lightGrey }}
+                        resizeMode="cover"
+                    />
+                    <SmallText text={subCategory.title}
+                        color={Colors.lightGrey}
+                    />
+                </View>
+            }
 
             {/* Info Ville */}
             <View>
                 <Title2
                     title={story.city.toUpperCase()}
                     color={isSelected ? Colors.white : 'rgba(255,255,255,0.9)'}
-                    style={{ fontSize: 18, letterSpacing: 1 }}
+                    style={{ fontSize: 17, letterSpacing: 1 }}
                 />
                 <BodyText
                     text={story.title}

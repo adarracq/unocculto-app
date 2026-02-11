@@ -7,7 +7,7 @@ import { functions } from '@/app/utils/Functions';
 import { Ionicons } from '@expo/vector-icons';
 import Slider from '@react-native-community/slider';
 import React, { useState } from 'react';
-import { Image, StyleSheet, Vibration, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 
 interface Props {
     step: EstimationStep;
@@ -28,11 +28,11 @@ export default function EstimationGameView({ step, onValid }: Props) {
         if (diff <= tolerance) {
             // GAGNÉ
             setStatus('success');
-            Vibration.vibrate([0, 50, 50, 50]);
+            functions.vibrate('success');
         } else {
             // PERDU
             setStatus('fail');
-            Vibration.vibrate([0, 100, 50, 100]);
+            functions.vibrate('error');
         }
     };
 

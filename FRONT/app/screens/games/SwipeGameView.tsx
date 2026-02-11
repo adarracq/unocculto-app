@@ -4,6 +4,7 @@ import Title0 from '@/app/components/atoms/Title0';
 import Title1 from '@/app/components/atoms/Title1';
 import Colors from '@/app/constants/Colors';
 import { SwipeCard, SwipeStep } from '@/app/models/Story';
+import { functions } from '@/app/utils/Functions';
 import { Ionicons } from '@expo/vector-icons';
 import React, { useMemo, useRef, useState } from 'react';
 import {
@@ -12,7 +13,6 @@ import {
     Image,
     PanResponder,
     StyleSheet,
-    Vibration,
     View
 } from 'react-native';
 
@@ -66,7 +66,7 @@ export default function SwipeGameView({ step, onValid }: Props) {
             if (card.isCorrect) {
                 // C'est le bon drapeau -> VICTOIRE
                 setIsSuccess(true);
-                Vibration.vibrate([0, 50, 50, 50]);
+                functions.vibrate('success');
             } else {
                 // C'était un intrus -> ERREUR (Mauvais choix)
                 handleError();
@@ -99,7 +99,7 @@ export default function SwipeGameView({ step, onValid }: Props) {
     };
 
     const handleError = () => {
-        Vibration.vibrate([0, 100, 50, 100]);
+        functions.vibrate('error');
         setIsGameOver(true);
     };
 
@@ -154,7 +154,7 @@ export default function SwipeGameView({ step, onValid }: Props) {
                 {...(isTop ? panResponder.panHandlers : {})}
             >
                 {/* On suppose ici que SwipeGameView ne sert QUE pour les images (Drapeaux) */}
-                <Image source={{ uri: card.imageUrl }} style={styles.cardImage} resizeMode="cover" />
+                <Image source={{ uri: card.imageUri }} style={styles.cardImage} resizeMode="cover" />
 
                 {isTop && (
                     <>
@@ -179,7 +179,7 @@ export default function SwipeGameView({ step, onValid }: Props) {
 
                     {/* Carte gagnante statique */}
                     <View style={[styles.card, { position: 'relative', transform: [{ rotate: '0deg' }], height: 200 }]}>
-                        <Image source={{ uri: deck[currentIndex].imageUrl }} style={styles.cardImage} resizeMode="cover" />
+                        <Image source={{ uri: deck[currentIndex].imageUri }} style={styles.cardImage} resizeMode="cover" />
                     </View>
 
                     <BodyText text={"C'était bien le drapeau recherché."} style={{ textAlign: 'center' }} />

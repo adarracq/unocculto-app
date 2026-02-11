@@ -23,7 +23,7 @@ export default function RevisionsHomeScreen({ navigation }: any) {
     const [filterGeo, setFilterGeo] = useState(true);
     const [filterFlag, setFilterFlag] = useState(true);
     const [filterCapital, setFilterCapital] = useState(true);
-    const [filterAnecdote, setFilterAnecdote] = useState(true);
+    const [filterAnecdote, setFilterAnecdote] = useState(false);
 
     const [modalConfig, setModalConfig] = useState({
         visible: false,

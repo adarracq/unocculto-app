@@ -1,7 +1,7 @@
 import { Country } from '@/app/models/Countries';
 import { useEffect, useRef, useState } from 'react';
-import { Vibration } from 'react-native';
 import { GameLevel, GameMode } from '../constants/GameConfig';
+import { functions } from '../utils/Functions';
 
 
 interface Question {
@@ -75,14 +75,14 @@ export const useArcadeGame = (
 
         if (isCorrect) {
             setStatus('success');
-            Vibration.vibrate(50);
+            functions.vibrate('small-success');
             // Juste le vert sur la bonne réponse
             setMapFeedback({ [currentQuestion.target.code]: 'correct' });
             setTimeout(nextStep, 1000);
         } else {
             setStatus('error');
             setErrors(e => e + 1);
-            Vibration.vibrate([0, 50, 50, 100]);
+            functions.vibrate('small-error');
 
             // LOGIQUE MISE À JOUR :
             // Peu importe le niveau, on montre la correction et on passe

@@ -5,6 +5,7 @@ import Title1 from '@/app/components/atoms/Title1';
 import Title2 from '@/app/components/atoms/Title2';
 import Colors from '@/app/constants/Colors';
 import { TrueFalseStep } from '@/app/models/Story';
+import { functions } from '@/app/utils/Functions';
 import { Ionicons } from '@expo/vector-icons';
 import React, { useMemo, useRef, useState } from 'react';
 import {
@@ -13,7 +14,6 @@ import {
     Image,
     PanResponder,
     StyleSheet,
-    Vibration,
     View
 } from 'react-native';
 
@@ -66,14 +66,14 @@ export default function TrueFalseGameView({ step, onValid }: Props) {
 
         if (isCorrect) {
             setIsSuccess(true);
-            Vibration.vibrate([0, 50, 50, 50]);
+            functions.vibrate('success');
         } else {
             handleError();
         }
     };
 
     const handleError = () => {
-        Vibration.vibrate([0, 100, 50, 100]);
+        functions.vibrate('error');
         setIsGameOver(true);
     };
 

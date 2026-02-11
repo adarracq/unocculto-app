@@ -18,7 +18,7 @@ const VOID_STYLE = {
             id: 'background',
             type: 'background',
             paint: {
-                'background-color': '#0000' // Noir profond
+                'background-color': Colors.realBlack
             }
         }
     ]

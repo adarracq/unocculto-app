@@ -4,8 +4,8 @@ import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 interface Props {
-    mode: 'CARGO' | 'LOGBOOK';
-    setMode: (mode: 'CARGO' | 'LOGBOOK') => void;
+    mode: 'MUSÉE' | 'LOGBOOK';
+    setMode: (mode: 'MUSÉE' | 'LOGBOOK') => void;
     mainColor: string;
 }
 
@@ -14,10 +14,10 @@ export default function MuseumHeader({ mode, setMode, mainColor }: Props) {
         <View style={styles.header}>
             <View style={styles.switchContainer}>
                 <TouchableOpacity
-                    style={[styles.switchBtn, mode === 'CARGO' && { backgroundColor: Colors.white }]}
-                    onPress={() => setMode('CARGO')}
+                    style={[styles.switchBtn, mode === 'MUSÉE' && { backgroundColor: Colors.white }]}
+                    onPress={() => setMode('MUSÉE')}
                 >
-                    <BodyText text="CARGO" isBold color={mode === 'CARGO' ? mainColor : Colors.lightGrey} />
+                    <BodyText text="MUSÉE" isBold color={mode === 'MUSÉE' ? mainColor : Colors.lightGrey} />
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={[styles.switchBtn, mode === 'LOGBOOK' && { backgroundColor: Colors.white }]}

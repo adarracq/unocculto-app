@@ -21,73 +21,6 @@ exports.getByID = async (req, res, next) => {
     }
 };
 
-exports.getNextByCountryCode = async (req, res, next) => {
-    try {
-        const countryCode = req.params.countryCode;
-        // On suppose que l'ID du user est dans req.auth.userId (via ton middleware d'auth)
-        // Sinon adapte selon ton système (req.body.userId, etc.)
-        const userId = req.auth.userId;
-
-        // 1. Récupérer le User pour voir son historique
-        const user = await User.findById(userId);
-        if (!user) {
-            return res.status(404).json({ error: 'User not found' });
-        }
-
-        // 2. Lister les IDs des stories DÉJÀ complétées pour ce pays
-        const completedStoryIds = user.travelLog
-            .filter(log => log.countryCode === countryCode)
-            .map(log => log.storyId);
-
-        // 3. STRATÉGIE : CAPITALE D'ABORD
-        // On vérifie si la capitale a été faite
-        const capitalStory = await Story.findOne({
-            countryCode: countryCode,
-            isCapital: true
-        });
-
-        // Si la capitale existe et n'est PAS dans la liste des complétées -> On la sert
-        if (capitalStory && !completedStoryIds.includes(capitalStory.storyId)) {
-            return res.status(200).json(capitalStory);
-        }
-
-        // 4. STRATÉGIE : EXPLORATION (Random)
-        // On cherche toutes les stories du pays SAUF celles déjà faites
-        const availableStories = await Story.find({
-            countryCode: countryCode,
-            storyId: { $nin: completedStoryIds } // $nin = Not In
-        });
-
-        if (availableStories.length > 0) {
-            // Tirage au sort simple
-            // (Tu pourras ajouter de la logique de rareté ici plus tard)
-            const randomIndex = Math.floor(Math.random() * availableStories.length);
-            const nextStory = availableStories[randomIndex];
-
-            // on recupere le collectible associé s'il y en a un
-            if (nextStory.rewardCollectibleId) {
-                const collectible = await Collectible.findOne({ id: nextStory.rewardCollectibleId });
-                if (collectible) {
-                    nextStory._doc.collectible = collectible; // Ajouter le collectible à la réponse
-                }
-            }
-
-            return res.status(200).json(nextStory);
-        }
-
-        // 5. CAS : TOUT EST FINI
-        // Le user a fait toutes les stories dispos pour ce pays
-        return res.status(200).json({
-            message: 'Country fully explored',
-            allCompleted: true
-        });
-
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Erreur serveur lors de la récupération de la story' });
-    }
-};
-
 exports.getAvailableDestinations = async (req, res) => {
     try {
         const userId = req.auth.userId;
@@ -122,7 +55,7 @@ exports.getAvailableDestinations = async (req, res) => {
         // Requête MongoDB : On cherche tout ce qui n'est PAS dans completedIds
         const availableStories = await Story.find({
             storyId: { $nin: completedIds }
-        }).select('storyId countryCode city title rarity isCapital');
+        }).select('storyId countryCode city title rarity isCapital category subCategory'); // On peut sélectionner uniquement les champs nécessaires pour la liste
 
         // --- 3. Mélange (Fisher-Yates) ---
         for (let i = availableStories.length - 1; i > 0; i--) {
@@ -140,7 +73,7 @@ exports.getAvailableDestinations = async (req, res) => {
             // Mélange rapide pour le replay
             return res.status(200).json(replayStories.sort(() => 0.5 - Math.random()));
         }
-
+        console.log(`User ${selection}`);
         res.status(200).json(selection);
 
     } catch (error) {

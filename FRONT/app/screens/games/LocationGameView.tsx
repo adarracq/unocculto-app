@@ -5,9 +5,10 @@ import InteractiveMap from '@/app/components/organisms/InteractiveMap';
 import Colors from '@/app/constants/Colors';
 import { Country } from '@/app/models/Countries';
 import { LocationStep } from '@/app/models/Story';
+import { functions } from '@/app/utils/Functions';
 import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
-import { StyleSheet, Vibration, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 interface Props {
     step: LocationStep;
@@ -39,10 +40,10 @@ export default function LocationGameView({ step, country, onValid }: Props) {
 
         if (userCode === targetCode) {
             setStatus('success');
-            Vibration.vibrate([0, 50, 50, 50]);
+            functions.vibrate('success');
         } else {
             setStatus('error');
-            Vibration.vibrate([0, 100, 50, 100]);
+            functions.vibrate('error');
             if (country.longitude && country.latitude) {
                 setCameraTarget([country.longitude, country.latitude]);
             }
@@ -66,7 +67,7 @@ export default function LocationGameView({ step, country, onValid }: Props) {
 
     return (
         <View style={styles.container}>
-            <View style={{ gap: 20 }}>
+            <View style={{ gap: 20, zIndex: 2 }}>
                 <Title0 title={step.title} color={Colors.white} isLeft />
                 <BodyText text={step.content} size='L' color={Colors.white} />
             </View>
@@ -77,6 +78,7 @@ export default function LocationGameView({ step, country, onValid }: Props) {
                     onCountryPress={handleCountryPress}
                     countryColors={getMapColors()}
                     focusCoordinates={cameraTarget}
+                    isFullHeight
                 />
 
                 <View style={styles.feedbackBar}>
@@ -123,6 +125,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     mapWrapper: {
+        position: 'absolute',
+        top: -150, left: 0, right: 0, bottom: 0,
         width: '100%',
         alignItems: 'center',
         marginVertical: 10

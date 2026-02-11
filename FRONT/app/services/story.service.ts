@@ -4,17 +4,11 @@ const baseUrl = process.env.EXPO_PUBLIC_API_URL + '/api/story';
 
 export const storyService = {
     getById,
-    getNextByCountryCode,
     getAvailableDestinations,
 };
 
 function getById(id: string) {
-    console.log("storyService.getById - id:", id);
     return fetchWrapper.get(`${baseUrl}/id/${id}`);
-}
-
-function getNextByCountryCode(countryCode: string) {
-    return fetchWrapper.get(`${baseUrl}/next/${countryCode}`);
 }
 
 function getAvailableDestinations() {

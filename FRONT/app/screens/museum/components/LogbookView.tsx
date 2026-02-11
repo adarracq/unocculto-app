@@ -75,7 +75,7 @@ export default function LogbookView({ logbook }: Props) {
     }
 
     return (
-        <View style={{ gap: 20 }}>
+        <View style={{ gap: 20, paddingHorizontal: 20 }}>
             {/* Le composant importé */}
             <LogbookStats logbook={logbook} />
 

@@ -1,7 +1,6 @@
-// backend/seeds/index.js
 require('dotenv').config(); // Pour charger ton process.env.MONGO_URI
 const mongoose = require('mongoose');
-const Story = require('../../models/Story');
+const Collectible = require('../../models/Collectible');
 const fs = require('fs');
 const path = require('path');
 
@@ -10,23 +9,23 @@ mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log('SEEDING: Connecté à MongoDB'))
     .catch(err => console.error('SEEDING: Erreur connexion', err));
 
-const seedStories = async () => {
+const seedCollectibles = async () => {
     try {
         // 2. Lire le fichier JSON
-        const filePath = path.join(__dirname, 'stories', 'c1to5.json');
+        const filePath = path.join(__dirname, 'collectibles', 'collectibles.json');
         const rawData = fs.readFileSync(filePath);
-        const stories = JSON.parse(rawData);
+        const collectibles = JSON.parse(rawData);
 
-        console.log(`SEEDING: ${stories.length} histoires trouvées...`);
+        console.log(`SEEDING: ${collectibles.length} collectibles trouvées...`);
 
         // 3. Boucle d'Upsert (Update or Insert)
-        for (const story of stories) {
-            await Story.findOneAndUpdate(
-                { storyId: story.storyId }, // Critère de recherche
-                story, // Nouvelles données
+        for (const collectible of collectibles) {
+            await Collectible.findOneAndUpdate(
+                { id: collectible.id }, // Critère de recherche
+                collectible, // Nouvelles données
                 { upsert: true, new: true, setDefaultsOnInsert: true } // Options
             );
-            console.log(`--> Histoire traitée : ${story.storyId}`);
+            console.log(`--> Collectible traitée : ${collectible.id}`);
         }
 
         console.log('SEEDING TERMINÉ AVEC SUCCÈS 🚀');
@@ -38,5 +37,5 @@ const seedStories = async () => {
     }
 };
 
-seedStories();
-//node src/scripts/seeds/stories.js
+seedCollectibles();
+//node src/scripts/seeds/seedCol.js

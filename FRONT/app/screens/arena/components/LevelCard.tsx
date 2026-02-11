@@ -2,7 +2,6 @@ import BodyText from '@/app/components/atoms/BodyText';
 import Title2 from '@/app/components/atoms/Title2';
 import Colors from '@/app/constants/Colors';
 import { functions } from '@/app/utils/Functions';
-import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useRef } from 'react';
 import { Animated, Image, Pressable, StyleSheet, View } from 'react-native';
@@ -30,8 +29,7 @@ export default function LevelCard({ level, title, subTitle, color, isLocked, bes
     const roman = ['I', 'II', 'III', 'IV', 'V'][level - 1] || `${level}`;
 
     const handlePressIn = () => {
-        const feedback = isLocked ? Haptics.NotificationFeedbackType.Error : Haptics.NotificationFeedbackType.Success;
-        Haptics.notificationAsync(feedback);
+        isLocked ? functions.vibrate('small-error') : functions.vibrate('small-success');
         Animated.spring(scaleValue, { toValue: 0.98, useNativeDriver: true, speed: 20 }).start();
     };
 

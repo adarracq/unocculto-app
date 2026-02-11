@@ -12,11 +12,14 @@ export default {
     green: '#00DB9D',
     red: '#F03F5F',
 
+    fuel: '#566069',
+
     lightGreen: '#3DE781',
     lightBlue: '#E7EBFD',
     lightYellow: '#F6EB61',
     lightOrange: '#FFE5B4',
     lightRed: '#FF7F7F',
+    lightPurple: '#D8B4FE',
 
     // Couleur néon très visible
     cyan: '#00FFFF',

@@ -2,13 +2,6 @@
 
 import Colors from "../constants/Colors";
 
-export type CollectibleTheme =
-    // Humanités
-    | 'history' | 'philosophy' | 'literature' | 'religion' | 'politics' | 'geopolitics' | 'economy'
-    // Arts & Culture
-    | 'art' | 'music' | 'sport' | 'culture'
-    // Sciences & Monde
-    | 'science' | 'psychology' | 'geography' | 'tech' | 'nature';
 
 export type Rarity = 'common' | 'uncommon' | 'rare' | 'legendary';
 
@@ -16,9 +9,10 @@ export interface Collectible {
     id: string;
     name: string;
     description: string;
-    imageUrl: string;
+    imageUri: string;
     rarity: Rarity;
-    type: CollectibleTheme;
+    category: string;
+    subCategory: string;
     countryCode: string; // Important pour l'affichage du drapeau
     isOwned: boolean;
 }
@@ -26,24 +20,52 @@ export interface Collectible {
 // Configuration des Départements (Groupement)
 export const DEPARTMENTS = [
     {
-        id: 'HUMANITIES',
-        title: 'ARCHIVES HUMAINES',
-        icon: 'book', // Assure-toi d'avoir une icone correspondante
+        id: 'humanity',
+        title: 'HUMANITÉS & ESPRIT',
+        icon: 'lotus', // Symbole : Éveil et Intériorité
         color: Colors.lightBlue,
-        themes: ['history', 'philosophy', 'literature', 'religion', 'politics', 'geopolitics', 'economy']
+        subcategories: [
+            { id: 'philo', title: 'Philosophie & Sagesse', icon: 'owl' },
+            { id: 'psycho', title: 'Psychologie & Codes Sociaux', icon: 'puzzle' },
+            { id: 'religion', title: 'Croyances & Spiritualité', icon: 'third-eye' },
+            { id: 'emotion', title: 'Émotions & Sentiments', icon: 'heart-line' }
+        ]
     },
     {
-        id: 'ARTS',
-        title: 'GALERIE CULTURELLE',
-        icon: 'palette',
+        id: 'power',
+        title: 'POUVOIR & SOCIÉTÉ',
+        icon: 'chess',
         color: Colors.lightRed,
-        themes: ['art', 'music', 'sport', 'culture']
+        subcategories: [
+            { id: 'history', title: 'Histoire & Conflits', icon: 'greek-helmet' },
+            { id: 'geopolitics', title: 'Géopolitique & Frontières', icon: 'globe' },
+            { id: 'economy', title: 'Économie & Ressources', icon: 'chart' },
+            { id: 'politics', title: 'Politique & Droits', icon: 'gavel' }
+        ]
     },
     {
-        id: 'SCIENCES',
-        title: 'LABORATOIRE & MONDE',
-        icon: 'flask',
+        id: 'art',
+        title: 'ARTS & CULTURE',
+        icon: 'theatre', // Symbole : Comédie et Tragédie
+        color: Colors.lightPurple, // J'ai ajouté Purple pour différencier les Arts
+        subcategories: [
+            { id: 'archi', title: 'Beaux-Arts & Architecture', icon: 'palette' },
+            { id: 'music', title: 'Musique & Danse', icon: 'music-note' },
+            { id: 'books', title: 'Littérature & Récits', icon: 'open-book' },
+            { id: 'cinema', title: 'Cinéma & Pop Culture', icon: 'film-reel' },
+            { id: 'sport', title: 'Sport & Art de Vivre', icon: 'sport' }
+        ]
+    },
+    {
+        id: 'knowledge',
+        title: 'SAVOIR & MONDE',
+        icon: 'atom', // Symbole : Science et Matière
         color: Colors.lightGreen,
-        themes: ['science', 'psychology', 'geography', 'tech', 'nature']
+        subcategories: [
+            { id: 'tech', title: 'Inventions & Tech', icon: 'lightbulb' },
+            { id: 'science', title: 'Sciences & Mathématiques', icon: 'flask' },
+            { id: 'geography', title: 'Géographie Humaine', icon: 'compass' },
+            { id: 'nature', title: 'Nature & Biodiversité', icon: 'leaf' }
+        ]
     }
 ];

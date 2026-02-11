@@ -27,7 +27,6 @@ interface Props {
 export default function GameScreen({ story, country, onFinish, headerTitle }: Props) {
     const [currentIndex, setCurrentIndex] = useState(0);
     const currentStep = story.steps[currentIndex];
-    console.log(currentStep);
 
     // --- DETECTION DU TYPE D'ÉTAPE ---
     // Si c'est un jeu, on désactive la navigation tactile globale "Instagram style"

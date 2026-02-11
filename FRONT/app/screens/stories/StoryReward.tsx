@@ -4,6 +4,7 @@ import Title0 from "@/app/components/atoms/Title0";
 import Colors from "@/app/constants/Colors";
 import { RewardStep } from "@/app/models/Story"; // On importe le type spécifique
 import { functions } from "@/app/utils/Functions";
+import { useEffect, useState } from "react";
 import { Image, StyleSheet, View } from "react-native";
 
 interface Props {
@@ -13,12 +14,18 @@ interface Props {
 
 export default function StoryReward({ step, onNext }: Props) {
 
+    const [next, setNext] = useState(false);
     // Logique d'image : 
     // Si c'est une URL/URI (http ou file), on l'utilise directement (pour les drapeaux générés)
     // Sinon, on passe par la fonction helper (pour les badges statiques 'badge_paris')
     const imageSource = step.rewardImage?.startsWith('http') || step.rewardImage?.startsWith('file')
         ? { uri: step.rewardImage }
         : functions.getRewardSource(step.rewardImage || 'none');
+
+    useEffect(() => {
+        functions.vibrate('success');
+        setNext(false);
+    }, [step]);
 
     return (
         <View style={styles.container}>
@@ -38,19 +45,23 @@ export default function StoryReward({ step, onNext }: Props) {
 
                 <BodyText
                     text={step.content}
-                    size='L'
-                    style={{ color: Colors.lightGrey, textAlign: 'center', opacity: 0.8 }}
+                    style={{ color: Colors.lightGrey, textAlign: 'center', }}
                 />
             </View>
 
             <View style={{ width: '100%' }}>
-                <MyButton
-                    title="Réclamer"
-                    onPress={onNext}
-                    variant="glass"
-                    rightIcon="arrow-right"
-                    bump
-                />
+                {
+                    !next &&
+                    <MyButton
+                        title="Réclamer"
+                        onPress={() => {
+                            setNext(true);
+                            onNext();
+                        }}
+                        variant="glass"
+                        rightIcon="arrow-right"
+                        bump
+                    />}
             </View>
         </View>
     );
@@ -72,10 +83,18 @@ const styles = StyleSheet.create({
         elevation: 10,
     },
     rewardContainer: {
+        width: 220,
+        height: 220,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 32,
+        backgroundColor: Colors.white + '10',
+        borderWidth: 1,
+        borderColor: Colors.white + '20',
     },
     rewardImage: {
-        width: 220,
-        height: 220
+        width: 150,
+        height: 150
     }
 
 });

@@ -6,7 +6,6 @@ import { UserContext } from '@/app/contexts/UserContext';
 import { useApi } from '@/app/hooks/useApi';
 import { DialogueStep, Story, StoryStep } from '@/app/models/Story'; //
 import { HomeNavParams } from '@/app/navigations/HomeNav';
-import { collectibleService } from '@/app/services/collectible.service';
 import { userService } from '@/app/services/user.service';
 import { generateGameFromAnecdote } from '@/app/utils/generators/GameGenerator'; // Assure-toi que le chemin est bon
 import { generateGenericSteps, generateOutroSteps, generateRewardStep } from '@/app/utils/generators/GenericStoryGenerator'; //
@@ -31,10 +30,6 @@ export default function StoryGameScreen({ navigation, route }: Props) {
     // Note: dbStory ici est l'objet "Raw" venant du back avec la 'timeline'
     const { country, story: dbStory } = route.params;
 
-    const apiCollectible = useApi(
-        (id: string) => collectibleService.getById(id),
-        'StoryGame - Get Collectible'
-    );
 
     // --- 1. GÉNÉRATION HYBRIDE & DYNAMIQUE ---
     const fullStory: Story = useMemo(() => {
@@ -57,14 +52,14 @@ export default function StoryGameScreen({ navigation, route }: Props) {
                         title: dbStory.title, // Ou un titre spécifique si dispo
                         content: item.content || "...",
                         duration: 8000, // Temps de lecture par défaut
-                        // imageUrl: item.characterImage ... (si dispo)
+                        imageUri: item.imageUri, // Si l'API fournit une image pour le dialogue
                     } as DialogueStep);
                 }
                 else if (item.type === 'anecdote' && item.data) {
                     // Transformation via le Moteur de Jeu pour l'Anecdote
                     try {
                         // On passe 'story' pour avoir le contexte narratif si besoin
-                        const gameStep = generateGameFromAnecdote(item.data, 'story');
+                        const gameStep = generateGameFromAnecdote(item.data, 'story', item.imageUri);
                         console.log("Généré le jeu pour l'anecdote:", item.data);
                         // On écrase l'ID généré pour garder une cohérence de séquence si besoin, 
                         // ou on garde celui du générateur. Ici on force l'ID unique de step.
@@ -88,7 +83,7 @@ export default function StoryGameScreen({ navigation, route }: Props) {
             steps: [...introSteps, ...contentSteps, ...rewardSteps],
         };
 
-    }, [country.code, dbStory.storyId, dbStory.collectible?.imageUrl, route.params.user.passport]);
+    }, [country.code, dbStory.storyId, dbStory.collectible?.imageUri, route.params.user.passport]);
 
 
     // --- 2. API SAVE ---

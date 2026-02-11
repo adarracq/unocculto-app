@@ -1,9 +1,13 @@
 import { Asset } from 'expo-asset';
+import { Audio } from 'expo-av';
 import * as FileSystem from 'expo-file-system/legacy';
+import * as Haptics from 'expo-haptics';
+import { Vibration } from 'react-native';
 
 export const functions = {
     getIconSource,
     getRewardSource,
+    getCategoriesource,
     getImageSource,
     shuffleArray,
     addSpacesInNumber,
@@ -12,6 +16,7 @@ export const functions = {
     dateToString,
     stringDateToString,
     simpleDateToString,
+    vibrate,
 }
 
 function getIconSource(name: string) {
@@ -26,10 +31,6 @@ function getIconSource(name: string) {
             return require('@/app/assets/icons/chevron-down.png');
         case 'book':
             return require('@/app/assets/icons/book.png');
-        case 'palette':
-            return require('@/app/assets/icons/palette.png');
-        case 'flask':
-            return require('@/app/assets/icons/flask.png');
         case 'flag':
             return require('@/app/assets/icons/flag.png');
         case 'capital':
@@ -122,6 +123,54 @@ function getImageSource(name: string) {
     }
 }
 
+function getCategoriesource(name: string) {
+    switch (name) {
+        case 'lotus':
+            return require('@/app/assets/categories/lotus.png');
+        case 'atom':
+            return require('@/app/assets/categories/atom.png');
+        case 'chess':
+            return require('@/app/assets/categories/chess.png');
+        case 'theatre':
+            return require('@/app/assets/categories/theatre.png');
+        case 'owl':
+            return require('@/app/assets/categories/owl.png');
+        case 'puzzle':
+            return require('@/app/assets/categories/puzzle.png');
+        case 'third-eye':
+            return require('@/app/assets/categories/third-eye.png');
+        case 'heart-line':
+            return require('@/app/assets/categories/heart-line.png');
+        case 'greek-helmet':
+            return require('@/app/assets/categories/greek-helmet.png');
+        case 'globe':
+            return require('@/app/assets/categories/globe.png');
+        case 'chart':
+            return require('@/app/assets/categories/chart.png');
+        case 'gavel':
+            return require('@/app/assets/categories/gavel.png');
+        case 'palette':
+            return require('@/app/assets/categories/palette.png');
+        case 'music-note':
+            return require('@/app/assets/categories/music-note.png');
+        case 'open-book':
+            return require('@/app/assets/categories/open-book.png');
+        case 'film-reel':
+            return require('@/app/assets/categories/film-reel.png');
+        case 'sport':
+            return require('@/app/assets/categories/sport.png');
+        case 'lightbulb':
+            return require('@/app/assets/categories/lightbulb.png');
+        case 'flask':
+            return require('@/app/assets/categories/flask.png');
+        case 'compass':
+            return require('@/app/assets/categories/compass.png');
+        case 'leaf':
+            return require('@/app/assets/categories/leaf.png');
+        default:
+            return require('@/app/assets/icons/none.png');
+    }
+}
 
 function getRewardSource(name: string) {
     switch (name) {
@@ -279,5 +328,58 @@ function simpleDateToString(date: number) {
         const month = dateStr.slice(4, 6);
         const day = dateStr.slice(6, 8);
         return `${day}/${month}/${year}`;
+    }
+}
+
+function vibrate(type:
+    'success' |
+    'error' |
+    'notification' |
+    'small-success' |
+    'small-error' |
+    'small-warning' |
+    'click'
+    = 'notification',
+    withSound: boolean = false) {
+    switch (type) {
+        case 'success':
+            Vibration.vibrate([0, 100, 50, 100, 50, 100, 200, 500]);
+            if (withSound) {
+                const soundObject = new Audio.Sound();
+                soundObject.loadAsync(require('@/app/assets/sounds/success3.mp3')).then(() => {
+                    soundObject.playAsync();
+                });
+                break;
+            }
+        case 'error':
+            Vibration.vibrate([0, 80, 50, 80, 50, 120]);
+            break;
+        case 'small-success':
+            if (withSound) {
+                const soundObject = new Audio.Sound();
+                soundObject.loadAsync(require('@/app/assets/sounds/success.mp3')).then(() => {
+                    soundObject.playAsync();
+                });
+            }
+            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+            break;
+        case 'small-error':
+            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+            break;
+        case 'small-warning':
+            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
+            break;
+        case 'click':
+            if (withSound) {
+                const soundObject = new Audio.Sound();
+                soundObject.loadAsync(require('@/app/assets/sounds/click.mp3')).then(() => {
+                    soundObject.playAsync();
+                });
+            }
+            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+            break;
+        case 'notification':
+            Vibration.vibrate([0, 100]);
+            break;
     }
 }

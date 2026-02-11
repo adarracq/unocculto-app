@@ -2,7 +2,6 @@ import BodyText from '@/app/components/atoms/BodyText';
 import Title2 from '@/app/components/atoms/Title2';
 import Colors from '@/app/constants/Colors';
 import { functions } from '@/app/utils/Functions';
-import * as Haptics from 'expo-haptics'; // Import Haptics
 import React, { useRef } from 'react';
 import { Animated, Image, Pressable, StyleSheet, View } from 'react-native';
 
@@ -48,7 +47,7 @@ const TrainingCard = ({ title, subtitle, icon, color, onPress }: any) => {
     const scaleValue = useRef(new Animated.Value(1)).current;
 
     const handlePressIn = () => {
-        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+        functions.vibrate('small-success');
         Animated.spring(scaleValue, { toValue: 0.96, useNativeDriver: true, speed: 20 }).start();
     };
 

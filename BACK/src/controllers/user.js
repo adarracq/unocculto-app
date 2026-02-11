@@ -269,6 +269,11 @@ exports.completeStory = async (req, res, next) => {
                 // Plus d'un jour écoulé, réinitialiser
                 user.dayStreak = 1;
             }
+
+            // on rajoute le fuel si le user n'est pas premium
+            if (dayDiff > 0 && user.isPremium == false) {
+                user.fuel = 5;
+            }
         }
 
         user.lastStoryPlayedAt = new Date();
@@ -533,6 +538,9 @@ exports.getRevisionDashboardData = async (req, res) => {
         // On regroupe les mémoires par code pays
         const countriesMap = {};
 
+        // Liste des types autorisés pour le calcul du Radar
+        const radarTypes = ['flag', 'capital', 'location'];
+
         memories.forEach(mem => {
             // 1. Mise à jour des compteurs "DUE"
             if (mem.dueDate <= now) {
@@ -540,31 +548,32 @@ exports.getRevisionDashboardData = async (req, res) => {
                     counts[mem.factType]++;
                 }
             }
+            if (radarTypes.includes(mem.factType)) {
+                // 2. Agrégation par Pays pour le Radar
+                if (!countriesMap[mem.countryCode]) {
+                    countriesMap[mem.countryCode] = {
+                        totalInterval: 0,
+                        itemCount: 0,
+                        hasDueItems: false,
+                        lastReviewed: mem.lastReviewedAt
+                    };
+                }
 
-            // 2. Agrégation par Pays pour le Radar
-            if (!countriesMap[mem.countryCode]) {
-                countriesMap[mem.countryCode] = {
-                    totalInterval: 0,
-                    itemCount: 0,
-                    hasDueItems: false,
-                    lastReviewed: mem.lastReviewedAt
-                };
-            }
+                const cData = countriesMap[mem.countryCode];
 
-            const cData = countriesMap[mem.countryCode];
+                // On accumule les intervalles (Jours)
+                cData.totalInterval += mem.interval;
+                cData.itemCount++;
 
-            // On accumule les intervalles (Jours)
-            cData.totalInterval += mem.interval;
-            cData.itemCount++;
+                // Est-ce qu'il y a urgence sur ce pays ?
+                if (mem.dueDate <= now) {
+                    cData.hasDueItems = true;
+                }
 
-            // Est-ce qu'il y a urgence sur ce pays ?
-            if (mem.dueDate <= now) {
-                cData.hasDueItems = true;
-            }
-
-            // On garde la date la plus récente d'activité
-            if (mem.lastReviewedAt > cData.lastReviewed) {
-                cData.lastReviewed = mem.lastReviewedAt;
+                // On garde la date la plus récente d'activité
+                if (mem.lastReviewedAt > cData.lastReviewed) {
+                    cData.lastReviewed = mem.lastReviewedAt;
+                }
             }
         });
 
@@ -602,8 +611,8 @@ exports.getRevisionDashboardData = async (req, res) => {
             return new Date(b.lastReviewed) - new Date(a.lastReviewed); // Puis les récents
         });
 
-        // On garde le Top 15 pour le Radar
-        const topRadarItems = radarItems.slice(0, 15);
+        // On garde le Top 20 pour le Radar
+        const topRadarItems = radarItems.slice(0, 20);
 
         res.status(200).json({
             counts: counts,
@@ -634,9 +643,11 @@ exports.getMuseumInventory = async (req, res) => {
             return {
                 id: item.id,
                 name: item.name,
+                category: item.category,
+                subCategory: item.subCategory,
                 description: isOwned ? item.description : "???", // Mystère si pas possédé
                 countryCode: item.countryCode,
-                imageUrl: item.imageUrl,
+                imageUri: item.imageUri,
                 rarity: item.rarity,
                 type: item.type,
                 isOwned: isOwned

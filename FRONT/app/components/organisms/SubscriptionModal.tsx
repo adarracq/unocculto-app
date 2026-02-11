@@ -3,7 +3,6 @@ import Title1 from '@/app/components/atoms/Title1';
 import Title2 from '@/app/components/atoms/Title2';
 import Colors from '@/app/constants/Colors';
 import { functions } from '@/app/utils/Functions';
-import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState } from 'react';
 import { Image, LayoutAnimation, Modal, Platform, StyleSheet, TouchableOpacity, UIManager, View } from 'react-native';
@@ -18,7 +17,7 @@ if (Platform.OS === 'android') {
 interface Props {
     visible: boolean;
     onClose: () => void;
-    reason: 'fuel' | 'story';
+    reason: 'fuel' | 'story' | 'none';
 }
 
 const SUBSCRIPTIONS = [
@@ -58,7 +57,7 @@ export default function SubscriptionModal({ visible, onClose, reason }: Props) {
 
     const handleSwitch = (id: string) => {
         // Animation fluide lors du changement
-        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+        functions.vibrate('small-success');
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         setSelectedId(id);
     };
@@ -66,7 +65,7 @@ export default function SubscriptionModal({ visible, onClose, reason }: Props) {
     const handleSelectPlan = (id: string) => {
         // Ici, on déclencherait le processus d'achat (ex: via RevenueCat ou l'API d'Apple/Google)
         console.log(`Achat: ${id}`);
-        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+        functions.vibrate('small-success');
         // Pour l'instant, on ferme la modal après sélection
         onClose();
     };
@@ -114,16 +113,21 @@ export default function SubscriptionModal({ visible, onClose, reason }: Props) {
                         />
                     </TouchableOpacity>
 
+
+
                     <View style={styles.header}>
-                        <View style={styles.iconCircle}>
-                            <Image
-                                source={functions.getIconSource(headerConfig.icon)}
-                                style={{ width: 32, height: 32, tintColor: Colors.red }} // Utilisation de l'orange
-                            />
-                        </View>
-                        <Title1 title={headerConfig.title} color={Colors.white} style={{ marginTop: 15 }} />
-                        <BodyText text={headerConfig.subtitle} style={{ color: Colors.lightGrey, textAlign: 'center', marginTop: 5 }} />
+                        {reason !== 'none' &&
+                            <><View style={styles.iconCircle}>
+                                <Image
+                                    source={functions.getIconSource(headerConfig.icon)}
+                                    style={{ width: 32, height: 32, tintColor: Colors.red }} // Utilisation de l'orange
+                                />
+                            </View>
+                                <Title1 title={headerConfig.title} color={Colors.white} style={{ marginTop: 15 }} />
+                                <BodyText text={headerConfig.subtitle} style={{ color: Colors.lightGrey, textAlign: 'center', marginTop: 5 }} />
+                            </>}
                     </View>
+
 
                     {/* --- SWITCHER (ONGLETS) --- */}
                     <View style={styles.switchContainer}>

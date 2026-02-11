@@ -62,7 +62,7 @@ export const generateReviewStep = (memory: UserMemory): StoryStep => {
 
                 return {
                     id: c.code,
-                    imageUrl: Image.resolveAssetSource(getFlagImage(c.code)).uri,
+                    imageUri: Image.resolveAssetSource(getFlagImage(c.code)).uri,
                     text: '', // Pas de texte, c'est visuel
                     isText: false,
                     isCorrect: isTarget, // SEUL le pays cible est "Correct" (à swiper à droite)
@@ -125,9 +125,6 @@ export const generateReviewStep = (memory: UserMemory): StoryStep => {
             content: `Localisez ${country.name_fr}.`,
             type: 'location',
         } as LocationStep;
-    }
-    if (memory.factType === 'anecdote') {
-        console.log(memory);
     }
 
     // --- LOGIQUE ANECDOTE / CULTURE ---

@@ -1,6 +1,5 @@
 import Colors from '@/app/constants/Colors';
 import { functions } from '@/app/utils/Functions';
-import * as Haptics from 'expo-haptics';
 import React, { useEffect, useRef } from 'react';
 import { Animated, Easing, Image, Pressable, StyleSheet, Text, View, ViewStyle } from 'react-native';
 
@@ -43,7 +42,7 @@ export default function MyButton({
 
   const handlePressIn = () => {
     if (disabled) return;
-    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    functions.vibrate('click');
     Animated.spring(scaleValue, { toValue: 0.96, useNativeDriver: true, speed: 20 }).start();
   };
 

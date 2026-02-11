@@ -5,9 +5,10 @@ import Title0 from '@/app/components/atoms/Title0';
 import Title2 from '@/app/components/atoms/Title2';
 import Colors from '@/app/constants/Colors';
 import { OrderStep } from '@/app/models/Story';
+import { functions } from '@/app/utils/Functions';
 import * as Haptics from 'expo-haptics';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, Vibration, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 interface Props {
     step: OrderStep;
@@ -60,7 +61,7 @@ export default function OrderGameView({ step, onValid }: Props) {
 
     const handlePressSlotItem = (item: string, index: number) => {
         if (status === 'success') return;
-        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+        functions.vibrate('small-error');
 
         const newSlots = [...slots];
         newSlots[index] = null;
@@ -76,10 +77,10 @@ export default function OrderGameView({ step, onValid }: Props) {
 
         if (isCorrect) {
             setStatus('success');
-            Vibration.vibrate([0, 100, 50, 100, 50, 100, 200, 500]);
+            functions.vibrate('success');
         } else {
             setStatus('error');
-            Vibration.vibrate([0, 80, 50, 80, 50, 120]);
+            functions.vibrate('error');
             setTimeout(() => {
                 // On remet tout dans le pool en cas d'erreur
                 const usedItems = slots.filter(s => s !== null) as string[];
@@ -95,7 +96,7 @@ export default function OrderGameView({ step, onValid }: Props) {
     return (
         <View style={styles.container}>
             <Title0 title={step.title} color={Colors.white} isLeft />
-            <BodyText text={step.content} size='XL' color={Colors.white} style={{ marginBottom: 20 }} />
+            <BodyText text={step.content} size='XL' color={Colors.white} />
 
             {/* ZONE DE SLOTS (Réponse) */}
             <View style={[

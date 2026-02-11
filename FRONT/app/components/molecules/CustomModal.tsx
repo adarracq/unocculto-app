@@ -3,8 +3,8 @@ import Title2 from '@/app/components/atoms/Title2';
 import Colors from '@/app/constants/Colors';
 import { functions } from '@/app/utils/Functions';
 import { LinearGradient } from 'expo-linear-gradient';
-import React from 'react';
-import { Image, Modal, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { Animated, Image, Modal, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 
 interface Props {
     visible: boolean;
@@ -37,6 +37,21 @@ export default function CustomModal({
 }: Props) {
 
     const accentColor = variant === 'gold' ? Colors.gold : color;
+    const scaleAnim = useRef(new Animated.Value(0)).current;
+
+    useEffect(() => {
+        if (visible) {
+            // Animation d'apparition "Pop"
+            Animated.spring(scaleAnim, {
+                toValue: 1,
+                friction: 6,
+                tension: 40,
+                useNativeDriver: true
+            }).start();
+        } else {
+            scaleAnim.setValue(0);
+        }
+    }, [visible]);
 
     return (
         <Modal
@@ -45,7 +60,7 @@ export default function CustomModal({
             animationType="fade"
             statusBarTranslucent
         >
-            <View style={styles.overlay}>
+            <Animated.View style={[styles.overlay, { transform: [{ scale: scaleAnim }] }]}>
                 {/* On ferme si on clique dehors (optionnel) */}
                 <TouchableWithoutFeedback onPress={onCancel}>
                     <View style={styles.backgroundTouch} />
@@ -103,7 +118,7 @@ export default function CustomModal({
                     </View>
 
                 </LinearGradient>
-            </View>
+            </Animated.View >
         </Modal>
     );
 }
