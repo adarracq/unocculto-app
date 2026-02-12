@@ -671,17 +671,6 @@
         "rarity": "legendary"
     },
     {
-        "id": "col_cd_cane",
-        "rewardIconSearchTerm": "Gentleman walking stick wood flat vector",
-        "category": "art",
-        "subCategory": "sport",
-        "name": "Le Sceptre du Sapeur",
-        "description": "Plus qu'un accessoire, cette canne est l'épée pacifique des Dandys de Kinshasa. Elle incarne la résistance par l'élégance et le 'Kitendi' (la religion du tissu), affirmant la dignité humaine au milieu de la boue et de la pauvreté.",
-        "imageUri": "https://adarracq.github.io/unocculto-assets/col_cd_cane.png",
-        "countryCode": "CD",
-        "rarity": "uncommon"
-    },
-    {
         "id": "col_cd_coltan_nugget",
         "rewardIconSearchTerm": "Black mineral rock stone rough vector",
         "category": "power",

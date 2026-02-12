@@ -24,6 +24,7 @@ export default function MuseumItemGrid({ items, onSelect, getIconForSubCategory 
 
     const renderItem = (item: Collectible) => {
         const isOwned = item.isOwned;
+        //const isOwned = true; // --- IGNORE ---
         // Récupérer l'icone si la fonction est fournie
         const subCatIcon = getIconForSubCategory ? getIconForSubCategory(item.subCategory) : null;
 

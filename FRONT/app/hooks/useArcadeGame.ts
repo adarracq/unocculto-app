@@ -30,7 +30,7 @@ export const useArcadeGame = (
     useEffect(() => {
         if (regionCountries.length === 0) return;
         // Pour tester sur 3 pays seulement, décommentez la ligne suivante :
-        regionCountries = regionCountries.slice(0, 5);
+        //regionCountries = regionCountries.slice(0, 5);
 
         const generated: Question[] = [];
         // On prend TOUS les pays, mélangés

@@ -7637,8 +7637,6 @@
         "isCapital": true,
         "rarity": "uncommon",
         "xpReward": 150,
-        "rewardCollectibleId": "col_cd_cane",
-        "rewardIconSearchTerm": "Gentleman walking stick wood flat vector",
         "timeline": [
             {
                 "type": "dialogue",
@@ -11856,7 +11854,7 @@
                 "type": "dialogue",
                 "content": "Tu as vu le film '300' ? La réalité était pire. L'Agoge, l'éducation spartiate, était un traumatisme d'État organisé.",
                 "characterId": "guide_local",
-                "imageUri": null,
+                "imageUri": "https://images.unsplash.com/photo-1638302367687-ac753e78aea2?ixid=M3w4NzE5NzV8MHwxfHNlYXJjaHwxfHxTcGFydGFuJTIwaGVsbWV0fGVufDF8MHx8fDE3NzA4MjQ2MjF8MA&ixlib=rb-4.1.0&w=400&q=60&auto=format&fit=crop",
                 "imageKeywords": "Spartan helmet bronze ancient"
             },
             {
@@ -11910,7 +11908,7 @@
                 "type": "dialogue",
                 "content": "Regarde en haut. Ces monastères ne sont pas posés sur la montagne, ils sont posés sur des pitons rocheux inaccessibles.",
                 "characterId": "guide_local",
-                "imageUri": null,
+                "imageUri": "https://images.unsplash.com/photo-1547286615-8cfee9cb16f8?ixid=M3w4NzE5NzV8MHwxfHNlYXJjaHwxfHxNb25hc3RlcnklMjBvbiUyMGhpZ2glMjByb2NrJTIwY2xpZmYlMjBNZXRlb3JhfGVufDF8MHx8fDE3NzA4MjQ2MjR8MA&ixlib=rb-4.1.0&w=400&q=60&auto=format&fit=crop",
                 "imageKeywords": "Monastery on high rock cliff Meteora"
             },
             {
@@ -11968,7 +11966,7 @@
                 "type": "dialogue",
                 "content": "Cnossos, en Crète. C'est ici que Thésée aurait tué le Minotaure. Mais l'archéologie raconte une histoire différente.",
                 "characterId": "guide_local",
-                "imageUri": null,
+                "imageUri": "https://images.unsplash.com/photo-1770129574431-f9578f690d11?ixid=M3w4NzE5NzV8MHwxfHNlYXJjaHwxfHxLbm9zc29zJTIwcGFsYWNlJTIwcnVpbnMlMjByZWQlMjBjb2x1bW5zfGVufDF8MHx8fDE3NzA4MjQ2Mjd8MA&ixlib=rb-4.1.0&w=400&q=60&auto=format&fit=crop",
                 "imageKeywords": "Knossos palace ruins red columns"
             },
             {
@@ -12023,7 +12021,7 @@
                 "type": "dialogue",
                 "content": "Regarde cette baie magnifique. C'est en fait le cratère d'un volcan qui a peut-être inspiré la légende de l'Atlantide.",
                 "characterId": "guide_local",
-                "imageUri": null,
+                "imageUri": "https://images.unsplash.com/photo-1654118890957-136cbada631e?ixid=M3w4NzE5NzV8MHwxfHNlYXJjaHwxfHxTYW50b3JpbmklMjBjYWxkZXJhfGVufDF8MHx8fDE3NzA4MjQ2MzF8MA&ixlib=rb-4.1.0&w=400&q=60&auto=format&fit=crop",
                 "imageKeywords": "Santorini caldera volcanic cliff sea"
             },
             {
@@ -12078,7 +12076,7 @@
                 "type": "dialogue",
                 "content": "L'esprit olympique pur ? Mon œil. Dès l'Antiquité, il y avait du dopage, de la corruption et des scandales.",
                 "characterId": "guide_local",
-                "imageUri": null,
+                "imageUri": "https://images.unsplash.com/photo-1605524755159-a84536e4708b?ixid=M3w4NzE5NzV8MHwxfHNlYXJjaHwxfHxBbmNpZW50JTIwT2x5bXBpYSUyMHN0YWRpdW0lMjBydWlucyUyMHN0b25lfGVufDF8MHx8fDE3NzA4MjQ2MzR8MA&ixlib=rb-4.1.0&w=400&q=60&auto=format&fit=crop",
                 "imageKeywords": "Ancient Olympia stadium ruins stone"
             },
             {
@@ -12133,7 +12131,7 @@
                 "type": "dialogue",
                 "content": "C'est l'un des canaux les plus spectaculaires du monde. Une tranchée droite, profonde, taillée au couteau dans la roche.",
                 "characterId": "guide_local",
-                "imageUri": null,
+                "imageUri": "https://images.unsplash.com/photo-1603494459575-fced3678c1b8?ixid=M3w4NzE5NzV8MHwxfHNlYXJjaHwxfHxDb3JpbnRoJTIwY2FuYWwlMjBuYXJyb3clMjB3YXRlcnxlbnwxfDB8fHwxNzcwODI0NjM3fDA&ixlib=rb-4.1.0&w=400&q=60&auto=format&fit=crop",
                 "imageKeywords": "Corinth canal narrow water view"
             },
             {
@@ -12188,7 +12186,7 @@
                 "type": "dialogue",
                 "content": "Imagine enfiler tes palmes, plonger dans l'eau turquoise et tomber nez à nez avec une foule silencieuse qui te fixe. Bienvenue dans le premier parc de sculptures sous-marines au monde.",
                 "characterId": "guide_local",
-                "imageUri": null,
+                "imageUri": "https://images.unsplash.com/photo-1640107517554-be8d5e9d63c2?ixid=M3w4NzE5NzV8MHwxfHNlYXJjaHwxfHxVbmRlcndhdGVyJTIwY2VtZW50JTIwc3RhdHVlcyUyMGNvcmFsJTIwc2VhfGVufDF8MHx8fDE3NzA4MjQ2Mzl8MA&ixlib=rb-4.1.0&w=400&q=60&auto=format&fit=crop",
                 "imageKeywords": "Underwater cement statues coral sea"
             },
             {
@@ -12309,7 +12307,7 @@
                 "type": "dialogue",
                 "content": "Regarde le drapeau de la Grenade. Tu vois ce petit symbole à gauche ? C'est une noix de muscade. Ici, cette épice n'est pas juste pour la cuisine, c'est le moteur du pays.",
                 "characterId": "guide_local",
-                "imageUri": null,
+                "imageUri": "https://images.unsplash.com/photo-1723110568192-1b447dc8a744?ixid=M3w4NzE5NzV8MHwxfHNlYXJjaHwxfHxOdXRtZWclMjBmcnVpdCUyMG9wZW4lMjBtYWNlJTIwcmVkfGVufDF8MHx8fDE3NzA4MjQ2NDJ8MA&ixlib=rb-4.1.0&w=400&q=60&auto=format&fit=crop",
                 "imageKeywords": "Nutmeg fruit open mace red"
             },
             {
@@ -12364,7 +12362,7 @@
                 "type": "dialogue",
                 "content": "Tu marches dans la jungle et soudain, une pierre grise émerge de la canopée à 65 mètres de haut. Tikal n'était pas un simple village, c'était le New York des Mayas.",
                 "characterId": "guide_local",
-                "imageUri": null,
+                "imageUri": "https://images.unsplash.com/photo-1681686586304-f2c35f81a29a?ixid=M3w4NzE5NzV8MHwxfHNlYXJjaHwxfHxUaWthbCUyMHRlbXBsZSUyMGFuY2llbnQlMjBtYXlhJTIwcnVpbnMlMjBqdW5nbGV8ZW58MXwwfHx8MTc3MDgyNDY0NHww&ixlib=rb-4.1.0&w=400&q=60&auto=format&fit=crop",
                 "imageKeywords": "Tikal temple ancient maya ruins jungle"
             },
             {
@@ -12539,7 +12537,7 @@
                 "type": "dialogue",
                 "content": "Antigua est magnifique, mais elle vit avec une épée de Damoclès : le volcan Fuego, qui fume presque tous les jours à l'horizon.",
                 "characterId": "guide_local",
-                "imageUri": null,
+                "imageUri": "https://images.unsplash.com/photo-1760019519353-66ef8bfd4ca7?ixid=M3w4NzE5NzV8MHwxfHNlYXJjaHwxfHxWb2xjYW5vJTIwZXJ1cHRpb24lMjBzbW9rZSUyMGFzaCUyMGxhbmRzY2FwZXxlbnwxfDB8fHwxNzcwODI0NjUzfDA&ixlib=rb-4.1.0&w=400&q=60&auto=format&fit=crop",
                 "imageKeywords": "Volcano eruption smoke ash landscape"
             },
             {
@@ -12655,7 +12653,7 @@
                 "type": "dialogue",
                 "content": "Tu as sûrement déjà vu un djembé. Mais savais-tu qu'il vient d'ici, de l'Empire Mandingue ? Ce n'était pas juste pour la musique, c'était le téléphone de l'époque.",
                 "characterId": "guide_local",
-                "imageUri": null,
+                "imageUri": "https://images.unsplash.com/photo-1625994761169-bf23651dfb2b?ixid=M3w4NzE5NzV8MHwxfHNlYXJjaHwxfHxBZnJpY2FuJTIwZGplbWJlJTIwZHJ1bSUyMHdvb2QlMjBoYW5kc3xlbnwxfDB8fHwxNzcwODI0NjU2fDA&ixlib=rb-4.1.0&w=400&q=60&auto=format&fit=crop",
                 "imageKeywords": "African djembe drum wood hands"
             },
             {
@@ -12772,7 +12770,7 @@
                 "type": "dialogue",
                 "content": "Sur l'île d'Orango, oublie tout ce que tu sais sur les rôles traditionnels. Ici, chez les Bijagos, le pouvoir est féminin.",
                 "characterId": "guide_local",
-                "imageUri": null,
+                "imageUri": "https://images.unsplash.com/photo-1759544495192-3757beedbd80?ixid=M3w4NzE5NzV8MHwxfHNlYXJjaHwxfHxUcm9waWNhbCUyMGlzbGFuZCUyMHZpbGxhZ2UlMjB3b21lbiUyMHRyYWRpdGlvbnxlbnwxfDB8fHwxNzcwODI0NjU4fDA&ixlib=rb-4.1.0&w=400&q=60&auto=format&fit=crop",
                 "imageKeywords": "Tropical island village women tradition"
             },
             {
@@ -12829,7 +12827,7 @@
                 "type": "dialogue",
                 "content": "L'indépendance de la Guinée-Bissau et du Cap-Vert est l'œuvre d'un seul homme brillant : Amílcar Cabral. Un guerrier ? Non, un intellectuel.",
                 "characterId": "guide_local",
-                "imageUri": null,
+                "imageUri": "https://images.unsplash.com/photo-1724259230081-bf95efbffff5?ixid=M3w4NzE5NzV8MHwxfHNlYXJjaHwxfHxBbWlsY2FyJTIwQ2FicmFsJTIwc3RhdHVlJTIwbW9udW1lbnR8ZW58MXwwfHx8MTc3MDgyNDY2MXww&ixlib=rb-4.1.0&w=400&q=60&auto=format&fit=crop",
                 "imageKeywords": "Amilcar Cabral statue monument"
             },
             {
@@ -12886,7 +12884,7 @@
                 "type": "dialogue",
                 "characterId": "guide_local",
                 "content": "Bienvenue à Malabo. Regarde autour de toi. On se croirait dans une ville coloniale espagnole, non ? C'est normal, nous sommes dans la seule capitale d'Afrique où l'espagnol est la langue officielle.",
-                "imageUri": null,
+                "imageUri": "https://images.unsplash.com/photo-1709449952298-5fdfaf1ae2a2?ixid=M3w4NzE5NzV8MHwxfHNlYXJjaHwxfHxNYWxhYm8lMjBjYXRoZWRyYWwlMjBuZW9nb3RoaWMlMjBmYWNhZGUlMjBvcmFuZ2V8ZW58MXwwfHx8MTc3MDgyNDY2NHww&ixlib=rb-4.1.0&w=400&q=60&auto=format&fit=crop",
                 "imageKeywords": "Malabo cathedral neogothic facade orange"
             },
             {
@@ -12939,7 +12937,7 @@
                 "type": "dialogue",
                 "characterId": "guide_local",
                 "content": "On s'enfonce dans la jungle continentale. Imagine une ville futuriste, avec des gratte-ciels et des boulevards immenses, surgissant de nulle part au milieu de la forêt vierge. Voici Oyala, rebaptisée Ciudad de la Paz.",
-                "imageUri": null,
+                "imageUri": "https://images.unsplash.com/photo-1769591364524-183967bc2dd5?ixid=M3w4NzE5NzV8MHwxfHNlYXJjaHwxfHxNb2Rlcm4lMjBza3lzY3JhcGVycyUyMGNvbnN0cnVjdGlvbiUyMGp1bmdsZXxlbnwxfDB8fHwxNzcwODI0NjY3fDA&ixlib=rb-4.1.0&w=400&q=60&auto=format&fit=crop",
                 "imageKeywords": "Modern skyscrapers construction jungle aerial"
             },
             {
@@ -12988,7 +12986,7 @@
                 "type": "dialogue",
                 "characterId": "guide_local",
                 "content": "Attention où tu mets les pieds. Ici, pas de barrière de sécurité, pas de boutique de souvenirs. Juste la puissance brute de la rivière Potaro qui se jette dans le vide.",
-                "imageUri": null,
+                "imageUri": "https://images.unsplash.com/photo-1672860004522-5b88ffcf39ce?ixid=M3w4NzE5NzV8MHwxfHNlYXJjaHwxfHxLYWlldGV1ciUyMGZhbGxzfGVufDF8MHx8fDE3NzA4MjQ2NzF8MA&ixlib=rb-4.1.0&w=400&q=60&auto=format&fit=crop",
                 "imageKeywords": "Kaieteur falls guyana jungle aerial"
             },
             {
@@ -13042,7 +13040,7 @@
                 "type": "dialogue",
                 "characterId": "guide_local",
                 "content": "Georgetown est une ville qui a du caractère, avec ses canaux et ses maisons coloniales. Mais regarde là-bas : la cathédrale Saint-George. Elle a quelque chose de spécial.",
-                "imageUri": null,
+                "imageUri": "https://images.unsplash.com/photo-1574787350425-b2eb994b11b9?ixid=M3w4NzE5NzV8MHwxfHNlYXJjaHwxfHxTdCUyMEdlb3JnZSUyN3MlMjBDYXRoZWRyYWwlMjBHZW9yZ2V0b3duJTIwd2hpdGUlMjB3b29kfGVufDF8MHx8fDE3NzA4MjQ2NzR8MA&ixlib=rb-4.1.0&w=400&q=60&auto=format&fit=crop",
                 "imageKeywords": "St George's Cathedral Georgetown white wood"
             },
             {
@@ -13147,7 +13145,7 @@
                 "type": "dialogue",
                 "characterId": "guide_local",
                 "content": "Oublie tout ce que tu as vu dans les films d'horreur. Pas de zombies ou de magie noire ici. À Souvenance, le Vaudou est une religion de mémoire, de danse et de connexion avec les ancêtres.",
-                "imageUri": null,
+                "imageUri": "https://images.unsplash.com/photo-1730321207181-d7ea7358a4bf?ixid=M3w4NzE5NzV8MHwxfHNlYXJjaHwxfHxIYWl0aWFuJTIwdm9vZG9vJTIwY2VyZW1vbnklMjB3aGl0ZSUyMGNsb3RoZXMlMjBkcnVtc3xlbnwxfDB8fHwxNzcwODI0NjgyfDA&ixlib=rb-4.1.0&w=400&q=60&auto=format&fit=crop",
                 "imageKeywords": "Haitian voodoo ceremony white clothes drums"
             },
             {
@@ -13202,7 +13200,7 @@
                 "type": "dialogue",
                 "characterId": "guide_local",
                 "content": "Copán était surnommée l'Athènes du monde Maya. Et voici son chef-d'œuvre : l'Escalier Hiéroglyphique. Ce n'est pas juste un escalier, c'est le plus long texte maya gravé dans la pierre jamais découvert.",
-                "imageUri": null,
+                "imageUri": "https://images.unsplash.com/photo-1589883046029-5c1bc149c821?ixid=M3w4NzE5NzV8MHwxfHNlYXJjaHwxfHxDb3BhbiUyMHJ1aW5hcyUyMGhpZXJvZ2x5cGhpYyUyMHN0YWlyd2F5JTIwc3RvbmUlMjBtYXlhbnxlbnwxfDB8fHwxNzcwODI0Njg1fDA&ixlib=rb-4.1.0&w=400&q=60&auto=format&fit=crop",
                 "imageKeywords": "Copan ruinas hieroglyphic stairway stone mayan"
             },
             {
@@ -13260,7 +13258,7 @@
                 "type": "dialogue",
                 "characterId": "guide_local",
                 "content": "Tu as sûrement déjà entendu l'expression 'il pleut des cordes'. Mais à Yoro, l'expression locale serait plutôt 'il pleut des sardines'. Bienvenue au pays de la Lluvia de Peces.",
-                "imageUri": null,
+                "imageUri": "https://images.unsplash.com/photo-1491284055098-5f53b35308db?ixid=M3w4NzE5NzV8MHwxfHNlYXJjaHwxfHxGaXNoJTIwb24lMjBzdHJlZXQlMjByYWluJTIwcGF2ZW1lbnQlMjB3ZXR8ZW58MXwwfHx8MTc3MDgyNDY4OHww&ixlib=rb-4.1.0&w=400&q=60&auto=format&fit=crop",
                 "imageKeywords": "Fish on street rain pavement wet"
             },
             {
@@ -13309,7 +13307,7 @@
                 "type": "dialogue",
                 "characterId": "guide_local",
                 "content": "Le terme 'République Bananière' est souvent utilisé à tort et à travers. Mais ici, au Honduras, c'est une réalité historique brutale née au début du 20ème siècle.",
-                "imageUri": null,
+                "imageUri": "https://images.unsplash.com/photo-1752672554813-b50a9f4a9bee?ixid=M3w4NzE5NzV8MHwxfHNlYXJjaHwxfHxPbGQlMjBzdGVhbXxlbnwxfDB8fHwxNzcwODI0NjkzfDA&ixlib=rb-4.1.0&w=400&q=60&auto=format&fit=crop",
                 "imageKeywords": "Old steam train banana plantation vintage"
             },
             {
@@ -13482,7 +13480,7 @@
                 "type": "dialogue",
                 "content": "Regarde le Parlement. Sa hauteur n'est pas un hasard d'architecte, c'est une date.",
                 "characterId": "guide_local",
-                "imageUri": null,
+                "imageUri": "https://images.unsplash.com/photo-1764145468318-30ec9f9834dc?ixid=M3w4NzE5NzV8MHwxfHNlYXJjaHwxfHxCdWRhcGVzdCUyMFBhcmxpYW1lbnQlMjBnb3RoaWMlMjBhcmNoaXRlY3R1cmUlMjByaXZlciUyMERhbnViZXxlbnwxfDB8fHwxNzcwODI0Njk2fDA&ixlib=rb-4.1.0&w=400&q=60&auto=format&fit=crop",
                 "imageKeywords": "Budapest Parliament gothic architecture river Danube"
             },
             {
@@ -13535,7 +13533,7 @@
                 "type": "dialogue",
                 "content": "Le vin des Rois, le Tokaj, n'existe que grâce à une 'erreur' dégoutante de la nature.",
                 "characterId": "guide_local",
-                "imageUri": null,
+                "imageUri": "https://images.unsplash.com/photo-1676404056576-5aa63ece29fe?ixid=M3w4NzE5NzV8MHwxfHNlYXJjaHwxfHxSb3R0ZW4lMjBncmFwZXN8ZW58MXwwfHx8MTc3MDgyNDcwMXww&ixlib=rb-4.1.0&w=400&q=60&auto=format&fit=crop",
                 "imageKeywords": "Rotten grapes vineyard close up macro gold"
             },
             {
@@ -13599,7 +13597,7 @@
                 "type": "dialogue",
                 "content": "Sur les ghats de Manikarnika, un feu brûle sans interruption depuis l'âge du Fer.",
                 "characterId": "guide_local",
-                "imageUri": null,
+                "imageUri": "https://images.unsplash.com/photo-1767278614527-8028fb832db1?ixid=M3w4NzE5NzV8MHwxfHNlYXJjaHwxfHxWYXJhbmFzaSUyMGZ1bmVyYWwlMjBweXJlJTIwc21va2UlMjBuaWdodCUyMHJpdmVyJTIwR2FuZ2VzfGVufDF8MHx8fDE3NzA4MjQ3MDN8MA&ixlib=rb-4.1.0&w=400&q=60&auto=format&fit=crop",
                 "imageKeywords": "Varanasi funeral pyre smoke night river Ganges"
             },
             {
@@ -13656,7 +13654,7 @@
                 "type": "dialogue",
                 "content": "Le Taj Mahal semble parfait, mais c'est un chef-d'œuvre de mensonges optiques.",
                 "characterId": "guide_local",
-                "imageUri": null,
+                "imageUri": "https://images.unsplash.com/photo-1737560878246-d6ec8c525c70?ixid=M3w4NzE5NzV8MHwxfHNlYXJjaHwxfHxUYWolMjBNYWhhbCUyMHdoaXRlJTIwbWFyYmxlJTIwY2xvc2UlMjB1cCUyMGRldGFpbCUyMGJsdWUlMjBza3l8ZW58MXwwfHx8MTc3MDgyNDcwNnww&ixlib=rb-4.1.0&w=400&q=60&auto=format&fit=crop",
                 "imageKeywords": "Taj Mahal white marble close up detail blue sky"
             },
             {
@@ -13713,7 +13711,7 @@
                 "type": "dialogue",
                 "content": "Les meilleurs logisticiens du monde ne sont pas chez Amazon. Ils sont à Mumbai et portent des sandales.",
                 "characterId": "guide_local",
-                "imageUri": null,
+                "imageUri": "https://images.unsplash.com/photo-1738045226713-a78c11c4fe57?ixid=M3w4NzE5NzV8MHwxfHNlYXJjaHwxfHxEYWJiYXdhbGFzJTIwdGlmZmluJTIwbWV0YWwlMjBsdW5jaCUyMGJveGVzJTIwc3RhY2slMjBNdW1iYWl8ZW58MXwwfHx8MTc3MDgyNDcwOXww&ixlib=rb-4.1.0&w=400&q=60&auto=format&fit=crop",
                 "imageKeywords": "Dabbawalas tiffin metal lunch boxes stack Mumbai"
             },
             {
@@ -13771,7 +13769,7 @@
                 "type": "dialogue",
                 "content": "L'invention la plus puissante de l'histoire n'est pas une arme, mais un chiffre.",
                 "characterId": "guide_local",
-                "imageUri": null,
+                "imageUri": "https://images.unsplash.com/photo-1705628078563-966777473473?ixid=M3w4NzE5NzV8MHwxfHNlYXJjaHwxfHxBbmNpZW50JTIwc3RvbmV8ZW58MXwwfHx8MTc3MDgyNDcxM3ww&ixlib=rb-4.1.0&w=400&q=60&auto=format&fit=crop",
                 "imageKeywords": "Ancient stone inscription sanskrit temple wall"
             },
             {
@@ -13824,7 +13822,7 @@
                 "type": "dialogue",
                 "content": "Il existe une île où l'âge de pierre ne s'est jamais terminé. Y aller est un arrêt de mort.",
                 "characterId": "guide_local",
-                "imageUri": null,
+                "imageUri": "https://images.unsplash.com/photo-1758908296291-8dde3655d07a?ixid=M3w4NzE5NzV8MHwxfHNlYXJjaHwxfHxUcm9waWNhbCUyMGlzbGFuZCUyMGJlYWNoJTIwZGVuc2UlMjBqdW5nbGUlMjBvY2VhbnxlbnwxfDB8fHwxNzcwODI0NzE3fDA&ixlib=rb-4.1.0&w=400&q=60&auto=format&fit=crop",
                 "imageKeywords": "Tropical island beach dense jungle aerial ocean"
             },
             {
@@ -13897,7 +13895,7 @@
                 "type": "dialogue",
                 "content": "Rishikesh n'est pas seulement le lieu où les Beatles ont médité, c'est un laboratoire de conscience.",
                 "characterId": "guide_local",
-                "imageUri": null,
+                "imageUri": "https://images.unsplash.com/photo-1724864814923-548d7fd5f42e?ixid=M3w4NzE5NzV8MHwxfHNlYXJjaHwxfHxSaXNoaWtlc2glMjBzdXNwZW5zaW9uJTIwYnJpZGdlJTIwR2FuZ2VzJTIwcml2ZXIlMjBtb3VudGFpbnN8ZW58MXwwfHx8MTc3MDgyNDcxOXww&ixlib=rb-4.1.0&w=400&q=60&auto=format&fit=crop",
                 "imageKeywords": "Rishikesh suspension bridge Ganges river mountains"
             },
             {
@@ -13998,7 +13996,7 @@
                 "type": "dialogue",
                 "content": "Normalement, un temple s'élève vers le ciel. Rani Ki Vav creuse vers le centre de la Terre.",
                 "characterId": "guide_local",
-                "imageUri": null,
+                "imageUri": "https://images.unsplash.com/photo-1629145716577-9ade03232a5c?ixid=M3w4NzE5NzV8MHwxfHNlYXJjaHwxfHxSYW5pJTIwS2klMjBWYXYlMjBzdGVwd2VsbCUyMHN0b25lJTIwY2FydmluZ3MlMjBwZXJzcGVjdGl2ZXxlbnwxfDB8fHwxNzcwODI0NzIyfDA&ixlib=rb-4.1.0&w=400&q=60&auto=format&fit=crop",
                 "imageKeywords": "Rani Ki Vav stepwell stone carvings perspective"
             },
             {
@@ -14057,7 +14055,7 @@
                 "type": "dialogue",
                 "content": "Imagine une montagne sculptée, cachée pendant des siècles sous la cendre volcanique.",
                 "characterId": "guide_local",
-                "imageUri": null,
+                "imageUri": "https://images.unsplash.com/photo-1620549146267-8e1dd7725f2e?ixid=M3w4NzE5NzV8MHwxfHNlYXJjaHwxfHxCb3JvYnVkdXIlMjB0ZW1wbGUlMjBzdHVwYXMlMjBzdW5yaXNlJTIwbWlzdCUyMHZvbGNhbm98ZW58MXwwfHx8MTc3MDgyNDcyNXww&ixlib=rb-4.1.0&w=400&q=60&auto=format&fit=crop",
                 "imageKeywords": "Borobudur temple stupas sunrise mist volcano background"
             },
             {
@@ -14173,7 +14171,7 @@
                 "type": "dialogue",
                 "content": "Voici le plus proche parent vivant des dinosaures : le Dragon de Komodo.",
                 "characterId": "guide_local",
-                "imageUri": null,
+                "imageUri": "https://images.unsplash.com/photo-1638754813614-1c45d16532a8?ixid=M3w4NzE5NzV8MHwxfHNlYXJjaHwxfHxLb21vZG8lMjBkcmFnb24lMjB0b25ndWUlMjBvdXQlMjB3YWxraW5nJTIwZGlydCUyMG5hdHVyZXxlbnwxfDB8fHwxNzcwODI0NzI4fDA&ixlib=rb-4.1.0&w=400&q=60&auto=format&fit=crop",
                 "imageKeywords": "Komodo dragon tongue out walking dirt nature"
             },
             {
@@ -14226,7 +14224,7 @@
                 "type": "dialogue",
                 "content": "Chez les Torajas, dire adieu peut prendre des années. Littéralement.",
                 "characterId": "guide_local",
-                "imageUri": null,
+                "imageUri": "https://images.unsplash.com/photo-1754622913718-d283e2d706e9?ixid=M3w4NzE5NzV8MHwxfHNlYXJjaHwxfHxUb3JhamElMjB0cmFkaXRpb25hbCUyMGhvdXNlJTIwZnVuZXJhbCUyMGNlcmVtb255JTIwYnVmZmFsb3xlbnwxfDB8fHwxNzcwODI0NzMxfDA&ixlib=rb-4.1.0&w=400&q=60&auto=format&fit=crop",
                 "imageKeywords": "Toraja traditional house funeral ceremony buffalo"
             },
             {
@@ -14340,7 +14338,7 @@
                 "type": "dialogue",
                 "content": "Avant, la justice était la vengeance du plus fort. Puis, un roi a gravé des règles sur une pierre noire.",
                 "characterId": "guide_local",
-                "imageUri": null,
+                "imageUri": "https://images.unsplash.com/photo-1675135581790-5008a4c50abc?ixid=M3w4NzE5NzV8MHwxfHNlYXJjaHwxfHxDb2RlJTIwb2YlMjBIYW1tdXJhYmklMjBzdGVsZSUyMGJhc2FsdCUyMGN1bmVpZm9ybSUyMGRldGFpbHxlbnwxfDB8fHwxNzcwODI0NzM0fDA&ixlib=rb-4.1.0&w=400&q=60&auto=format&fit=crop",
                 "imageKeywords": "Code of Hammurabi stele basalt cuneiform detail"
             },
             {
@@ -14520,7 +14518,7 @@
                 "type": "dialogue",
                 "content": "Imagine un monde fait d'eau et de roseaux, caché au cœur du désert irakien.",
                 "characterId": "guide_local",
-                "imageUri": null,
+                "imageUri": "https://images.unsplash.com/photo-1724170944859-9dca1cf3b6b4?ixid=M3w4NzE5NzV8MHwxfHNlYXJjaHwxfHxNYXJzaCUyMEFyYWJzJTIwTXVkaGlmJTIwcmVlZCUyMGhvdXNlJTIwSXJhcSUyMHdhdGVyJTIwYmx1ZSUyMHNreXxlbnwxfDB8fHwxNzcwODI0NzM3fDA&ixlib=rb-4.1.0&w=400&q=60&auto=format&fit=crop",
                 "imageKeywords": "Marsh Arabs Mudhif reed house Iraq water blue sky"
             },
             {

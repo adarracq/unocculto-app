@@ -13,7 +13,6 @@ interface Props {
 }
 
 export default function StoryReward({ step, onNext }: Props) {
-
     const [next, setNext] = useState(false);
     // Logique d'image : 
     // Si c'est une URL/URI (http ou file), on l'utilise directement (pour les drapeaux générés)
@@ -51,17 +50,25 @@ export default function StoryReward({ step, onNext }: Props) {
 
             <View style={{ width: '100%' }}>
                 {
-                    !next &&
-                    <MyButton
-                        title="Réclamer"
-                        onPress={() => {
-                            setNext(true);
-                            onNext();
-                        }}
-                        variant="glass"
-                        rightIcon="arrow-right"
-                        bump
-                    />}
+                    !next ?
+                        <MyButton
+                            title="Réclamer"
+                            onPress={() => {
+                                setNext(true);
+                                onNext();
+                            }}
+                            variant="glass"
+                            rightIcon="arrow-right"
+                            bump
+                        />
+                        :
+                        <View style={{ alignItems: 'center', height: 58 }}>
+                            <Image
+                                source={functions.getIconSource('check')}
+                                style={{ width: 40, height: 40, tintColor: Colors.lightGrey }}
+                            />
+                        </View>
+                }
             </View>
         </View>
     );

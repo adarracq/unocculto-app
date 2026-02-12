@@ -1,6 +1,7 @@
+// backend/seeds/index.js
 require('dotenv').config(); // Pour charger ton process.env.MONGO_URI
 const mongoose = require('mongoose');
-const Collectible = require('../../models/Collectible');
+const Story = require('../../models/Story');
 const fs = require('fs');
 const path = require('path');
 
@@ -9,23 +10,23 @@ mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log('SEEDING: Connecté à MongoDB'))
     .catch(err => console.error('SEEDING: Erreur connexion', err));
 
-const seedCollectibles = async () => {
+const seedStories = async () => {
     try {
         // 2. Lire le fichier JSON
-        const filePath = path.join(__dirname, 'collectibles', 'collectibles3.json');
+        const filePath = path.join(__dirname, 'stories', 'stories_input3.json');
         const rawData = fs.readFileSync(filePath);
-        const collectibles = JSON.parse(rawData);
+        const stories = JSON.parse(rawData);
 
-        console.log(`SEEDING: ${collectibles.length} collectibles trouvées...`);
+        console.log(`SEEDING: ${stories.length} histoires trouvées...`);
 
         // 3. Boucle d'Upsert (Update or Insert)
-        for (const collectible of collectibles) {
-            await Collectible.findOneAndUpdate(
-                { id: collectible.id }, // Critère de recherche
-                collectible, // Nouvelles données
+        for (const story of stories) {
+            await Story.findOneAndUpdate(
+                { storyId: story.storyId }, // Critère de recherche
+                story, // Nouvelles données
                 { upsert: true, new: true, setDefaultsOnInsert: true } // Options
             );
-            console.log(`--> Collectible traitée : ${collectible.id}`);
+            console.log(`--> Histoire traitée : ${story.storyId}`);
         }
 
         console.log('SEEDING TERMINÉ AVEC SUCCÈS 🚀');
@@ -37,5 +38,5 @@ const seedCollectibles = async () => {
     }
 };
 
-seedCollectibles();
-//node src/scripts/seeds/seedCol.js
+seedStories();
+//node src/scripts/seeds/seedSto.js
